@@ -93,8 +93,8 @@ const unsigned int SPARE_PIN=19;  // Reserved for future use
 // outputs
 // LED_OUT 13
 const unsigned int BUZZER_OUT_PIN= 10;            // Pin to audible indicator
-const unsigned int CAMERA_TRIGGER_OUT_PIN = 12;   // Pin for focus opto-isolator
-const unsigned int CAMERA_FOCUS_OUT_PIN = 11;     // Pin for shtter opto-isoloatr
+const unsigned int CAMERA_TRIGGER_OUT_PIN = 12;   // Pin for shtter opto-isoloatr
+const unsigned int CAMERA_FOCUS_OUT_PIN = 11;     // Pin for focus opto-isolator
 const unsigned int AUX_OUT_PIN = 9;               // Pin for 2nd trigger output
 const unsigned int ARM_INDICATOR_OUT_PIN = 6;     // Indicates sensor is armed, turns laser on
 
@@ -206,6 +206,8 @@ unsigned int unique_id(){
 // Definition of output triggers
 FireTimer cameraTriggerTimer(CAMERA_TRIGGER_OUT_PIN, ON_TIME_MS );
 FireTimer cameraTriggerTimerShort(CAMERA_TRIGGER_OUT_PIN, 50 );
+FireTimer focusTrigger(CAMERA_FOCUS_OUT_PIN, ON_TIME_MS );
+
 FireTimer auxTriggerTimer(AUX_OUT_PIN, SHORT_TIME_MS ); 
 FireTimer txReceivedLEDTimer(LED_PIN, SHORT_TIME_MS ); 
 // These timers used to debounce buttons
@@ -344,6 +346,7 @@ void loop() {
     pollNonBlockingPressed.check();
     armNonBlockingPressed.check();
     cameraTriggerTimerShort.check();
+    focusTrigger.check();
 
     // Read delay pot value
     int delayms = analogRead(DELAYMS_PIN);
@@ -352,7 +355,8 @@ void loop() {
    // If user presses "fire" push button, it will trigger outputs
    // This overrides any sensor values;  "isArmed" does not have to be set
    if(   !digitalRead(PUSH_IN_PIN)    ){     
-      // fire outputs    
+      // fire outputs
+      focusTrigger.fire();    
       cameraTriggerTimer.fire();
       auxTriggerTimer.fire();
              
@@ -377,6 +381,7 @@ void loop() {
 
       
       // fire outputs
+      focusTrigger.fire();
       cameraTriggerTimer.fire();
       auxTriggerTimer.fire();
 
@@ -458,7 +463,8 @@ void loop() {
       }
     // trigger command
     if (strstr((char *)buf, "T")) {            
-            // fire outputs     
+            // fire outputs   
+            focusTrigger.fire();  
             cameraTriggerTimer.fire();
             auxTriggerTimer.fire(); 
             unsigned long t_got_trigger = millis();
