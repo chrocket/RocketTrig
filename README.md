@@ -21,10 +21,14 @@ CCW MorseTX
 https://github.com/ridencww/cww_MorseTx
 
 
-You will likely want to change the default 915.35 MHz operating frequency. This is done by a #define.  This will deconfict different users who might  vi
+You will likely want to change the default 915.35 MHz operating frequency. This is done by a #define.  This will deconfict different users who might want to simultaneously use the sytem.
 
 --------------------------------------------------------------------------------------------------------------
-In Joune 2023, I had Eureka moment. I realized that with virtuallly no changes, the RocketTrig could be used as a wireless Launch controller.  I modified the program to work with this and later worked up a separate board "REv 4_1" that could better meet both remote launch and remote camera trigger functions.
+In June 2023, I had Eureka moment. I realized that with virtuallly no changes, the RocketTrig board could be used as a wireless Launch controller and still trigger cameras.  I modified the program to work with this and later worked up a separate board "Rev 4_1" that could better meet both remote launch and remote camera trigger functions.
 
 (Remote launch can still trigger cameras both local and remote)
+
+
+Here is the Rev 4_1 board
+![New_Rev4_1_based_desgin/0b8079aaf5414c29a16c643ac7a76c68.png](https://github.com/chrocket/RocketTrig/blob/9166c33a3c0a48defc980c74ed4ebf9f931db249/RemoteLaunch_Controller/New_Rev4_1_based_desgin/0b8079aaf5414c29a16c643ac7a76c68.png)
 
