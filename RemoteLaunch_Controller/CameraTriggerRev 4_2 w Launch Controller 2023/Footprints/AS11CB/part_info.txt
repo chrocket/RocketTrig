@@ -1,0 +1,9 @@
+Manufacturer=NKK Switches
+PartNumber=AS11CB
+PartCategory=Switch
+PackageCategory=Other
+PinCount=7
+Version=1.2
+Released=2020-01-28 13:37:45
+Downloaded=2020-01-29 00:41:13
+3D=N

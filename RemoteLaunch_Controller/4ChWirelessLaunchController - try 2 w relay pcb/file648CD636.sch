@@ -1,0 +1,93 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 2 4
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Switch:SW_SPST SW?
+U 1 1 64923DCC
+P 3000 2350
+F 0 "SW?" H 3000 2585 50  0000 C CNN
+F 1 "Power" H 3000 2494 50  0000 C CNN
+F 2 "" H 3000 2350 50  0001 C CNN
+F 3 "~" H 3000 2350 50  0001 C CNN
+	1    3000 2350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW?
+U 1 1 64924589
+P 3550 4550
+F 0 "SW?" H 3550 4835 50  0000 C CNN
+F 1 "Fire" H 3550 4744 50  0000 C CNN
+F 2 "" H 3550 4750 50  0001 C CNN
+F 3 "~" H 3550 4750 50  0001 C CNN
+	1    3550 4550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPDT SW?
+U 1 1 64924AB7
+P 3650 3650
+F 0 "SW?" H 3650 3935 50  0000 C CNN
+F 1 "Continuity-Armed" H 3650 3844 50  0000 C CNN
+F 2 "" H 3650 3650 50  0001 C CNN
+F 3 "~" H 3650 3650 50  0001 C CNN
+	1    3650 3650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPST SW?
+U 1 1 64924F9D
+P 5150 2600
+F 0 "SW?" H 5150 2835 50  0000 C CNN
+F 1 "Ch1 Arm" H 5150 2744 50  0000 C CNN
+F 2 "" H 5150 2600 50  0001 C CNN
+F 3 "~" H 5150 2600 50  0001 C CNN
+	1    5150 2600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPST SW?
+U 1 1 64925091
+P 5150 3100
+F 0 "SW?" H 5150 3335 50  0000 C CNN
+F 1 "SW_SPST" H 5150 3244 50  0000 C CNN
+F 2 "" H 5150 3100 50  0001 C CNN
+F 3 "~" H 5150 3100 50  0001 C CNN
+	1    5150 3100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPST SW?
+U 1 1 64925401
+P 5150 3450
+F 0 "SW?" H 5150 3685 50  0000 C CNN
+F 1 "SW_SPST" H 5150 3594 50  0000 C CNN
+F 2 "" H 5150 3450 50  0001 C CNN
+F 3 "~" H 5150 3450 50  0001 C CNN
+	1    5150 3450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPST SW?
+U 1 1 6492554B
+P 5150 3850
+F 0 "SW?" H 5150 4085 50  0000 C CNN
+F 1 "SW_SPST" H 5150 3994 50  0000 C CNN
+F 2 "" H 5150 3850 50  0001 C CNN
+F 3 "~" H 5150 3850 50  0001 C CNN
+	1    5150 3850
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC

@@ -1,0 +1,308 @@
+EESchema Schematic File Version 4
+LIBS:CameraTriggerSensorNodeOnly-cache
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 7 7
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Transistor_Array:ULN2803A U5
+U 1 1 64825ECE
+P 6350 3850
+F 0 "U5" H 6350 4417 50  0000 C CNN
+F 1 "ULN2803A" H 6350 4326 50  0000 C CNN
+F 2 "CameraTriggerPCB:SOIC127P1030X265-18N" H 6400 3200 50  0001 L CNN
+F 3 "http://www.ti.com/lit/ds/symlink/uln2803a.pdf" H 6450 3650 50  0001 C CNN
+F 4 "C9683" H 6350 3850 50  0001 C CNN "LCSC"
+	1    6350 3850
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR033
+U 1 1 64827265
+P 6350 4550
+F 0 "#PWR033" H 6350 4300 50  0001 C CNN
+F 1 "GND" H 6355 4377 50  0000 C CNN
+F 2 "" H 6350 4550 50  0001 C CNN
+F 3 "" H 6350 4550 50  0001 C CNN
+	1    6350 4550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6750 3550 6850 3550
+Wire Wire Line
+	6850 3550 6850 3450
+$Comp
+L power:+3.3V #PWR031
+U 1 1 6482B3F1
+P 2800 2450
+F 0 "#PWR031" H 2800 2300 50  0001 C CNN
+F 1 "+3.3V" H 2815 2623 50  0000 C CNN
+F 2 "" H 2800 2450 50  0001 C CNN
+F 3 "" H 2800 2450 50  0001 C CNN
+	1    2800 2450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR029
+U 1 1 6482D6BA
+P 1750 3650
+F 0 "#PWR029" H 1750 3500 50  0001 C CNN
+F 1 "+3.3V" H 1765 3823 50  0000 C CNN
+F 2 "" H 1750 3650 50  0001 C CNN
+F 3 "" H 1750 3650 50  0001 C CNN
+	1    1750 3650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1750 3650 2100 3650
+$Comp
+L power:GND #PWR030
+U 1 1 6482E782
+P 2100 4600
+F 0 "#PWR030" H 2100 4350 50  0001 C CNN
+F 1 "GND" H 2105 4427 50  0000 C CNN
+F 2 "" H 2100 4600 50  0001 C CNN
+F 3 "" H 2100 4600 50  0001 C CNN
+	1    2100 4600
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR032
+U 1 1 6482E90A
+P 2800 4650
+F 0 "#PWR032" H 2800 4400 50  0001 C CNN
+F 1 "GND" H 2805 4477 50  0000 C CNN
+F 2 "" H 2800 4650 50  0001 C CNN
+F 3 "" H 2800 4650 50  0001 C CNN
+	1    2800 4650
+	1    0    0    -1  
+$EndComp
+Text GLabel 2100 3350 0    50   Input ~ 0
+INTB
+Text GLabel 2100 3450 0    50   Input ~ 0
+INTA
+Text GLabel 2100 2750 0    50   Input ~ 0
+SDA_qwiic
+Text GLabel 7000 4550 0    50   Input ~ 0
+OUT_2
+Text GLabel 7000 4450 0    50   Input ~ 0
+OUT_1
+Text GLabel 2100 2850 0    50   Input ~ 0
+SCL_qwiic
+Text GLabel 4600 3350 0    50   Input ~ 0
+IN_2
+Text GLabel 4600 3250 0    50   Input ~ 0
+IN_1
+$Comp
+L Connector:Screw_Terminal_01x12 J7
+U 1 1 648506B0
+P 4800 2850
+F 0 "J7" H 4880 2842 50  0000 L CNN
+F 1 "In" H 4880 2751 50  0000 L CNN
+F 2 "CameraTriggerPCB:TB00750812BE" H 4800 2850 50  0001 C CNN
+F 3 "~" H 4800 2850 50  0001 C CNN
+	1    4800 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Screw_Terminal_01x12 J8
+U 1 1 64851833
+P 7200 4050
+F 0 "J8" H 7280 4042 50  0000 L CNN
+F 1 "Out" H 7280 3951 50  0000 L CNN
+F 2 "CameraTriggerPCB:TB00750812BE" H 7200 4050 50  0001 C CNN
+F 3 "~" H 7200 4050 50  0001 C CNN
+	1    7200 4050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6750 3650 7000 3650
+Wire Wire Line
+	6750 3750 7000 3750
+Wire Wire Line
+	6750 3850 7000 3850
+Wire Wire Line
+	6750 3950 7000 3950
+Wire Wire Line
+	6750 4050 7000 4050
+Wire Wire Line
+	6750 4150 7000 4150
+Wire Wire Line
+	6750 4250 7000 4250
+Wire Wire Line
+	6750 4350 7000 4350
+$Comp
+L power:GND #PWR043
+U 1 1 6485948F
+P 7000 4650
+F 0 "#PWR043" H 7000 4400 50  0001 C CNN
+F 1 "GND" H 7005 4477 50  0000 C CNN
+F 2 "" H 7000 4650 50  0001 C CNN
+F 3 "" H 7000 4650 50  0001 C CNN
+	1    7000 4650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3950 2750 3950 2450
+Wire Wire Line
+	4000 2850 4000 2550
+Wire Wire Line
+	4100 2950 4100 2650
+Wire Wire Line
+	4150 3050 4150 2750
+Wire Wire Line
+	4200 3150 4200 2850
+Wire Wire Line
+	3950 2450 4600 2450
+Wire Wire Line
+	4000 2550 4600 2550
+Wire Wire Line
+	4100 2650 4600 2650
+Wire Wire Line
+	4150 2750 4600 2750
+Wire Wire Line
+	4200 2850 4600 2850
+Wire Wire Line
+	4250 3250 4250 2950
+Wire Wire Line
+	4250 2950 4600 2950
+Wire Wire Line
+	4300 3350 4300 3050
+Wire Wire Line
+	4300 3050 4600 3050
+Connection ~ 2100 4350
+Wire Wire Line
+	2100 4350 2100 4600
+Connection ~ 2100 4250
+Wire Wire Line
+	2100 4250 2100 4350
+Wire Wire Line
+	2100 4150 2100 4250
+Wire Wire Line
+	3500 4350 5950 4350
+Wire Wire Line
+	3500 4250 5950 4250
+Wire Wire Line
+	3500 4150 5950 4150
+Wire Wire Line
+	3500 4050 5950 4050
+Wire Wire Line
+	3500 3950 5950 3950
+Wire Wire Line
+	3500 3850 5950 3850
+Wire Wire Line
+	3500 3750 5950 3750
+Wire Wire Line
+	3500 3650 5950 3650
+Wire Wire Line
+	3500 3350 4300 3350
+Wire Wire Line
+	3500 3250 4250 3250
+Wire Wire Line
+	3500 3150 4200 3150
+Wire Wire Line
+	3500 3050 4150 3050
+Wire Wire Line
+	3500 2950 4100 2950
+Wire Wire Line
+	3500 2850 4000 2850
+Wire Wire Line
+	3500 2750 3950 2750
+$Comp
+L Interface_Expansion:MCP23017_SO U4
+U 1 1 6481D8E1
+P 2800 3550
+F 0 "U4" H 2800 4831 50  0000 C CNN
+F 1 "MCP23017T-E/SO" H 2800 4740 50  0000 C CNN
+F 2 "Package_SO:SOIC-28W_7.5x17.9mm_P1.27mm" H 3000 2550 50  0001 L CNN
+F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/20001952C.pdf" H 3000 2450 50  0001 L CNN
+F 4 "C629440" H 2800 3550 50  0001 C CNN "LCSC"
+	1    2800 3550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3500 3450 4350 3450
+Wire Wire Line
+	4350 3450 4350 3150
+Wire Wire Line
+	4350 3150 4600 3150
+$Comp
+L power:GND #PWR036
+U 1 1 6486D165
+P 4600 2350
+F 0 "#PWR036" H 4600 2100 50  0001 C CNN
+F 1 "GND" H 4605 2177 50  0000 C CNN
+F 2 "" H 4600 2350 50  0001 C CNN
+F 3 "" H 4600 2350 50  0001 C CNN
+	1    4600 2350
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR037
+U 1 1 6486D997
+P 4600 3450
+F 0 "#PWR037" H 4600 3200 50  0001 C CNN
+F 1 "GND" H 4605 3277 50  0000 C CNN
+F 2 "" H 4600 3450 50  0001 C CNN
+F 3 "" H 4600 3450 50  0001 C CNN
+	1    4600 3450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6850 3450 7000 3450
+Wire Wire Line
+	7000 3450 7000 3550
+Connection ~ 6850 3450
+Wire Wire Line
+	6850 3450 6850 3400
+$Comp
+L power:+12P #PWR034
+U 1 1 64A25429
+P 6850 3350
+F 0 "#PWR034" H 6850 3200 50  0001 C CNN
+F 1 "+12P" H 6865 3523 50  0000 C CNN
+F 2 "" H 6850 3350 50  0001 C CNN
+F 3 "" H 6850 3350 50  0001 C CNN
+	1    6850 3350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Jumper:SolderJumper_2_Open JP1
+U 1 1 64B5415C
+P 6550 3150
+F 0 "JP1" H 6550 3355 50  0000 C CNN
+F 1 " " H 6550 3264 50  0000 C CNN
+F 2 "Jumper:SolderJumper-2_P1.3mm_Open_TrianglePad1.0x1.5mm" H 6550 3150 50  0001 C CNN
+F 3 "~" H 6550 3150 50  0001 C CNN
+	1    6550 3150
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+12V #PWR046
+U 1 1 64B54E52
+P 6400 3150
+F 0 "#PWR046" H 6400 3000 50  0001 C CNN
+F 1 "+12V" H 6415 3323 50  0000 C CNN
+F 2 "" H 6400 3150 50  0001 C CNN
+F 3 "" H 6400 3150 50  0001 C CNN
+	1    6400 3150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6700 3150 6700 3400
+Wire Wire Line
+	6700 3400 6850 3400
+Connection ~ 6850 3400
+Wire Wire Line
+	6850 3400 6850 3350
+$EndSCHEMATC

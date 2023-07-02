@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name CameraTriggerSensorNodeOnly-rescue)(type Legacy)(uri ${KIPRJMOD}/CameraTriggerSensorNodeOnly-rescue.lib)(options "")(descr ""))
+)
