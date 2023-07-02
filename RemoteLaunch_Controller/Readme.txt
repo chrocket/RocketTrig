@@ -14,3 +14,12 @@ After system is in "arm", hit "launch" to fire the ignitors in the remote box fo
 - Hitting "clear" will turn off ignitors, if still in the 2 s window
 
 Schematics enclosed for external board connections, as well as BOM.
+
+***********************************************
+NOTE  Variations
+***********************************************
+RocketTrig_based_board  is based on the orinal board   6/2023
+
+
+CameraTriggerRev 4_2 w Launch Controller 2023  is a re-do with i2c i/o expander and darlington driver array  7/2023
+4ChWirelessLaunchController - try 2 w relay pcb - is a relay board for Rev 4_2  7/2023
