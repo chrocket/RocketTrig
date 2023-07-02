@@ -1,0 +1,96 @@
+PCBNEW-LibModule-V1  
+# encoding utf-8
+Units mm
+$INDEX
+CUI_TB007-508-08BE
+$EndINDEX
+$MODULE CUI_TB007-508-08BE
+Po 0 0 0 15 00000000 00000000 ~~
+Li CUI_TB007-508-08BE
+Cd 
+Sc 00000000
+At STD
+Op 0 0 0
+.SolderMask 0
+.SolderPaste 0
+T0 0.016 -7.239 1.4 1.4 0 0.05 N V 21 "CUI_TB007-508-08BE"
+T1 0.905 6.261 1.4 1.4 0 0.05 N V 21 "VAL**"
+DS -2.54 4.9 -2.54 -5.35 0.127 27
+DS -2.54 -5.35 38.1 -5.35 0.127 27
+DS 38.1 -5.35 38.1 4.9 0.127 27
+DS 38.1 4.9 -2.54 4.9 0.127 27
+DS -2.54 4.9 -2.54 -5.35 0.127 21
+DS 38.1 -5.35 38.1 4.9 0.127 21
+DS -2.54 -5.35 38.1 -5.35 0.127 21
+DS 38.1 4.9 -2.54 4.9 0.127 21
+DS -2.79 -5.6 38.35 -5.6 0.05 26
+DS 38.35 5.15 -2.79 5.15 0.05 26
+DS -2.79 5.15 -2.79 -5.6 0.05 26
+DS 38.35 -5.6 38.35 5.15 0.05 26
+DC 0 5.9 0.1 5.9 0.2 21
+DC 0 5.9 0.1 5.9 0.2 27
+$PAD
+Sh "1" R 2.4 2.4 0 0 0
+Dr 1.6 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 0 0
+$EndPAD
+$PAD
+Sh "2" C 2.4 2.4 0 0 0
+Dr 1.6 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 5.08 0
+$EndPAD
+$PAD
+Sh "3" C 2.4 2.4 0 0 0
+Dr 1.6 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 10.16 0
+$EndPAD
+$PAD
+Sh "4" C 2.4 2.4 0 0 0
+Dr 1.6 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 15.24 0
+$EndPAD
+$PAD
+Sh "5" C 2.4 2.4 0 0 0
+Dr 1.6 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 20.32 0
+$EndPAD
+$PAD
+Sh "6" C 2.4 2.4 0 0 0
+Dr 1.6 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 25.4 0
+$EndPAD
+$PAD
+Sh "7" C 2.4 2.4 0 0 0
+Dr 1.6 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 30.48 0
+$EndPAD
+$PAD
+Sh "8" C 2.4 2.4 0 0 0
+Dr 1.6 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 35.56 0
+$EndPAD
+$EndMODULE CUI_TB007-508-08BE

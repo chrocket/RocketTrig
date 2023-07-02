@@ -1,0 +1,558 @@
+EESchema Schematic File Version 4
+LIBS:4ChWirelessLaunchController-cache
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 2 2
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Connector:Screw_Terminal_01x02 J1
+U 1 1 648CD781
+P 1150 1800
+F 0 "J1" V 1114 1612 50  0000 R CNN
+F 1 "Pad power and switch" V 1023 1612 50  0000 R CNN
+F 2 "CameraTriggerPCB:CUI_TB007-508-02BE" H 1150 1800 50  0001 C CNN
+F 3 "~" H 1150 1800 50  0001 C CNN
+	1    1150 1800
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	1150 2000 650  2000
+Wire Wire Line
+	650  2000 650  700 
+Wire Wire Line
+	4700 1850 4700 2050
+Text GLabel 2850 1150 0    50   Input ~ 0
+ArmedRelayPin1
+Connection ~ 650  2000
+Connection ~ 3950 2050
+Wire Wire Line
+	3950 2050 4700 2050
+Wire Wire Line
+	650  2000 650  2350
+$Comp
+L Device:R R1
+U 1 1 648EF776
+P 1150 2350
+F 0 "R1" V 943 2350 50  0000 C CNN
+F 1 "1000" V 1034 2350 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 1080 2350 50  0001 C CNN
+F 3 "~" H 1150 2350 50  0001 C CNN
+	1    1150 2350
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	650  2350 1000 2350
+Connection ~ 650  2350
+Wire Wire Line
+	650  2350 650  2600
+Wire Wire Line
+	1300 2350 1550 2350
+Text GLabel 8300 950  0    50   Input ~ 0
+Relay1_1
+Text GLabel 8750 5050 0    50   Input ~ 0
+Relay4_1
+Wire Wire Line
+	2200 2000 2200 2350
+Wire Wire Line
+	10050 1150 9000 1150
+$Comp
+L Connector:Screw_Terminal_01x06 J2
+U 1 1 649C9CF7
+P 2200 4000
+F 0 "J2" H 2118 3475 50  0000 C CNN
+F 1 "Control board" H 2118 3566 50  0000 C CNN
+F 2 "CameraTriggerPCB:CUI_TB007-508-06BE" H 2200 4000 50  0001 C CNN
+F 3 "~" H 2200 4000 50  0001 C CNN
+	1    2200 4000
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	4700 2050 5350 2050
+Connection ~ 4700 2050
+Text GLabel 5350 2050 2    50   Input ~ 0
+Pad_common
+Text GLabel 10350 1150 2    50   Input ~ 0
+Relay_common
+Wire Wire Line
+	10050 1150 10350 1150
+Connection ~ 10050 1150
+Text GLabel 2400 4200 2    50   Input ~ 0
+Relay_common
+Text GLabel 3250 1150 2    50   Input ~ 0
+Relay_common
+Text GLabel 2400 4100 2    50   Input ~ 0
+ArmedRelayPin1
+Text GLabel 2400 4000 2    50   Input ~ 0
+Relay1_1
+Text GLabel 2400 3900 2    50   Input ~ 0
+Relay2_1
+Text GLabel 2400 3700 2    50   Input ~ 0
+Relay4_1
+$Comp
+L Device:R R2
+U 1 1 649FB9F7
+P 9000 2300
+F 0 "R2" V 8793 2300 50  0000 C CNN
+F 1 "1000 ohm" V 8884 2300 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 8930 2300 50  0001 C CNN
+F 3 "~" H 9000 2300 50  0001 C CNN
+	1    9000 2300
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R4
+U 1 1 649FD4AB
+P 9150 4900
+F 0 "R4" V 8943 4900 50  0000 C CNN
+F 1 "1000 ohm" V 9034 4900 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 9080 4900 50  0001 C CNN
+F 3 "~" H 9150 4900 50  0001 C CNN
+	1    9150 4900
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R5
+U 1 1 649FEC0C
+P 9150 6450
+F 0 "R5" V 8943 6450 50  0000 C CNN
+F 1 "1000 ohm" V 9034 6450 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 9080 6450 50  0001 C CNN
+F 3 "~" H 9150 6450 50  0001 C CNN
+	1    9150 6450
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	9300 6450 9650 6450
+Wire Wire Line
+	9300 4900 9650 4900
+Connection ~ 9650 4900
+$Comp
+L Device:R R3
+U 1 1 64A05D85
+P 9050 3500
+F 0 "R3" V 8843 3500 50  0000 C CNN
+F 1 "1000 ohm" V 8934 3500 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 8980 3500 50  0001 C CNN
+F 3 "~" H 9050 3500 50  0001 C CNN
+	1    9050 3500
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	9200 3500 9650 3500
+Connection ~ 9650 3500
+$Comp
+L Connector:Screw_Terminal_01x04 J3
+U 1 1 64A11F1B
+P 6650 2250
+F 0 "J3" H 6568 1825 50  0000 C CNN
+F 1 "Pad ch 1" H 6568 1916 50  0000 C CNN
+F 2 "CameraTriggerPCB:CUI_TB007-508-04BE" H 6650 2250 50  0001 C CNN
+F 3 "~" H 6650 2250 50  0001 C CNN
+	1    6650 2250
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector:Screw_Terminal_01x04 J4
+U 1 1 64A12EB5
+P 6750 3400
+F 0 "J4" H 6668 2975 50  0000 C CNN
+F 1 "Pad ch 2" H 6668 3066 50  0000 C CNN
+F 2 "CameraTriggerPCB:CUI_TB007-508-04BE" H 6750 3400 50  0001 C CNN
+F 3 "~" H 6750 3400 50  0001 C CNN
+	1    6750 3400
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector:Screw_Terminal_01x04 J5
+U 1 1 64A1565D
+P 6750 4550
+F 0 "J5" H 6668 4125 50  0000 C CNN
+F 1 "Pad ch 3" H 6668 4216 50  0000 C CNN
+F 2 "CameraTriggerPCB:CUI_TB007-508-04BE" H 6750 4550 50  0001 C CNN
+F 3 "~" H 6750 4550 50  0001 C CNN
+	1    6750 4550
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector:Screw_Terminal_01x04 J6
+U 1 1 64A16F1E
+P 6800 5650
+F 0 "J6" H 6718 5225 50  0000 C CNN
+F 1 "Pad ch 4" H 6718 5316 50  0000 C CNN
+F 2 "CameraTriggerPCB:CUI_TB007-508-04BE" H 6800 5650 50  0001 C CNN
+F 3 "~" H 6800 5650 50  0001 C CNN
+	1    6800 5650
+	-1   0    0    1   
+$EndComp
+Text GLabel 7200 2050 2    50   Input ~ 0
+Pad_common
+Text GLabel 7150 3200 2    50   Input ~ 0
+Pad_common
+Text GLabel 7250 4350 2    50   Input ~ 0
+Pad_common
+Text GLabel 7200 5450 2    50   Input ~ 0
+Pad_common
+Wire Wire Line
+	7900 5550 7900 5950
+Wire Wire Line
+	6850 2250 7000 2250
+Wire Wire Line
+	6950 3400 7100 3400
+Wire Wire Line
+	6950 4550 7100 4550
+Wire Wire Line
+	6850 2350 8550 2350
+Wire Wire Line
+	8550 2300 8850 2300
+Wire Wire Line
+	7750 5750 7750 6450
+Wire Wire Line
+	7750 6450 9000 6450
+Wire Wire Line
+	6950 4650 8100 4650
+Wire Wire Line
+	8100 4650 8100 4900
+Wire Wire Line
+	8100 4900 9000 4900
+Wire Wire Line
+	6900 3500 6950 3500
+Connection ~ 6950 3500
+Wire Wire Line
+	6950 3500 8900 3500
+Text Notes 6300 2100 0    50   ~ 0
+Starter
+Text Notes 6050 2300 0    50   ~ 0
+Continuity SW
+Text Notes 6300 3250 0    50   ~ 0
+Starter
+Text Notes 6050 3450 0    50   ~ 0
+Continuity SW
+Text Notes 6350 4350 0    50   ~ 0
+Starter
+Text Notes 6100 4550 0    50   ~ 0
+Continuity SW
+Text Notes 6350 5500 0    50   ~ 0
+Starter
+Text Notes 6100 5700 0    50   ~ 0
+Continuity SW
+Wire Wire Line
+	1250 2000 2200 2000
+Connection ~ 2200 2000
+Wire Wire Line
+	7000 5750 7750 5750
+NoConn ~ 8850 3200
+Text GLabel 2400 3800 2    50   Input ~ 0
+Relay3_1
+Text GLabel 8650 3700 0    50   Input ~ 0
+Relay3_1
+Text GLabel 8450 2400 0    50   Input ~ 0
+Relay2_1
+Wire Wire Line
+	1350 650  9650 650 
+$Comp
+L G8N-1U-DC12:G8N-1U-DC12 K1
+U 1 1 64A84921
+P 3050 1550
+F 0 "K1" V 3004 1880 50  0000 L CNN
+F 1 "G8N-1U-DC12" V 3095 1880 50  0000 L CNN
+F 2 "CameraTriggerPCB:RELAY_G8N-1U-DC12" H 3050 1550 50  0001 L BNN
+F 3 "" H 3050 1550 50  0001 L BNN
+F 4 "NA" H 3050 1550 50  0001 L BNN "PARTREV"
+F 5 "Manufacturer Recommendations" H 3050 1550 50  0001 L BNN "STANDARD"
+F 6 "13.8mm" H 3050 1550 50  0001 L BNN "MAXIMUM_PACKAGE_HEIGHT"
+F 7 "Omron" H 3050 1550 50  0001 L BNN "MANUFACTURER"
+	1    3050 1550
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	650  700  1350 700 
+Wire Wire Line
+	1350 700  1350 650 
+Wire Wire Line
+	3950 2600 3950 2550
+Wire Wire Line
+	650  2600 3950 2600
+Wire Wire Line
+	3250 1950 3450 1950
+Wire Wire Line
+	3450 1950 3450 1850
+Wire Wire Line
+	3050 1950 3050 2000
+Wire Wire Line
+	2850 1950 2850 2050
+Wire Wire Line
+	2850 2050 3950 2050
+Wire Wire Line
+	2200 2000 3050 2000
+Wire Wire Line
+	8500 1750 8500 2150
+NoConn ~ 8700 1750
+Connection ~ 8850 2300
+Wire Wire Line
+	8850 2300 8900 2300
+Wire Wire Line
+	8550 2350 8550 2300
+Connection ~ 9650 2300
+Wire Wire Line
+	9650 650  9650 1950
+$Comp
+L G8N-1U-DC12:G8N-1U-DC12 K2
+U 1 1 64ABA437
+P 8500 1350
+F 0 "K2" V 8454 1680 50  0000 L CNN
+F 1 "Ch 1 relay" V 8545 1680 50  0000 L CNN
+F 2 "CameraTriggerPCB:RELAY_G8N-1U-DC12" H 8500 1350 50  0001 L BNN
+F 3 "" H 8500 1350 50  0001 L BNN
+F 4 "NA" H 8500 1350 50  0001 L BNN "PARTREV"
+F 5 "Manufacturer Recommendations" H 8500 1350 50  0001 L BNN "STANDARD"
+F 6 "13.8mm" H 8500 1350 50  0001 L BNN "MAXIMUM_PACKAGE_HEIGHT"
+F 7 "Omron" H 8500 1350 50  0001 L BNN "MANUFACTURER"
+	1    8500 1350
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	8700 950  9000 950 
+Wire Wire Line
+	9000 950  9000 1150
+Wire Wire Line
+	8300 1750 8300 1950
+Wire Wire Line
+	8300 1950 9650 1950
+Connection ~ 9650 1950
+Wire Wire Line
+	9650 1950 9650 2300
+Wire Wire Line
+	9150 2300 9650 2300
+Wire Wire Line
+	9650 2300 9650 3400
+$Comp
+L G8N-1U-DC12:G8N-1U-DC12 K3
+U 1 1 64AF51C1
+P 8650 2800
+F 0 "K3" V 8604 3130 50  0000 L CNN
+F 1 "G8N-1U-DC12" V 8695 3130 50  0000 L CNN
+F 2 "CameraTriggerPCB:RELAY_G8N-1U-DC12" H 8650 2800 50  0001 L BNN
+F 3 "" H 8650 2800 50  0001 L BNN
+F 4 "NA" H 8650 2800 50  0001 L BNN "PARTREV"
+F 5 "Manufacturer Recommendations" H 8650 2800 50  0001 L BNN "STANDARD"
+F 6 "13.8mm" H 8650 2800 50  0001 L BNN "MAXIMUM_PACKAGE_HEIGHT"
+F 7 "Omron" H 8650 2800 50  0001 L BNN "MANUFACTURER"
+	1    8650 2800
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	10050 1150 10050 2400
+Wire Wire Line
+	8850 2400 10050 2400
+Connection ~ 10050 2400
+Wire Wire Line
+	8650 3300 8650 3200
+Wire Wire Line
+	8450 3200 8450 3400
+Wire Wire Line
+	8450 3400 9650 3400
+Connection ~ 9650 3400
+Wire Wire Line
+	9650 3400 9650 3500
+Wire Wire Line
+	10050 2400 10050 3700
+$Comp
+L G8N-1U-DC12:G8N-1U-DC12 K4
+U 1 1 64B1415C
+P 8850 4100
+F 0 "K4" V 8804 4430 50  0000 L CNN
+F 1 "G8N-1U-DC12" V 8895 4430 50  0000 L CNN
+F 2 "CameraTriggerPCB:RELAY_G8N-1U-DC12" H 8850 4100 50  0001 L BNN
+F 3 "" H 8850 4100 50  0001 L BNN
+F 4 "NA" H 8850 4100 50  0001 L BNN "PARTREV"
+F 5 "Manufacturer Recommendations" H 8850 4100 50  0001 L BNN "STANDARD"
+F 6 "13.8mm" H 8850 4100 50  0001 L BNN "MAXIMUM_PACKAGE_HEIGHT"
+F 7 "Omron" H 8850 4100 50  0001 L BNN "MANUFACTURER"
+	1    8850 4100
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	8200 4450 8200 4700
+Wire Wire Line
+	8200 4700 8850 4700
+Wire Wire Line
+	8850 4700 8850 4500
+Wire Wire Line
+	8650 4500 8650 4650
+Wire Wire Line
+	8650 4650 9650 4650
+Connection ~ 9650 4650
+Wire Wire Line
+	9650 4650 9650 4900
+NoConn ~ 9050 4500
+$Comp
+L G8N-1U-DC12:G8N-1U-DC12 K5
+U 1 1 64B24F39
+P 8950 5450
+F 0 "K5" V 8904 5780 50  0000 L CNN
+F 1 "G8N-1U-DC12" V 8995 5780 50  0000 L CNN
+F 2 "CameraTriggerPCB:RELAY_G8N-1U-DC12" H 8950 5450 50  0001 L BNN
+F 3 "" H 8950 5450 50  0001 L BNN
+F 4 "NA" H 8950 5450 50  0001 L BNN "PARTREV"
+F 5 "Manufacturer Recommendations" H 8950 5450 50  0001 L BNN "STANDARD"
+F 6 "13.8mm" H 8950 5450 50  0001 L BNN "MAXIMUM_PACKAGE_HEIGHT"
+F 7 "Omron" H 8950 5450 50  0001 L BNN "MANUFACTURER"
+	1    8950 5450
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	8750 5850 8750 6200
+Wire Wire Line
+	8750 6200 9650 6200
+Connection ~ 9650 6200
+Wire Wire Line
+	9650 6200 9650 6450
+Wire Wire Line
+	7900 5950 8950 5950
+Wire Wire Line
+	8950 5950 8950 5850
+Wire Wire Line
+	9650 3500 9650 4650
+Wire Wire Line
+	9650 4900 9650 6200
+Wire Wire Line
+	9150 5050 10050 5050
+Wire Wire Line
+	9050 3700 10050 3700
+Connection ~ 10050 3700
+Wire Wire Line
+	10050 3700 10050 5050
+Wire Wire Line
+	6950 4450 8200 4450
+Wire Wire Line
+	7100 4550 7100 4350
+Wire Wire Line
+	6950 4350 7100 4350
+Connection ~ 7100 4350
+Wire Wire Line
+	7100 4350 7250 4350
+Wire Wire Line
+	6950 3200 7100 3200
+Wire Wire Line
+	6950 3300 8650 3300
+Wire Wire Line
+	7100 3400 7100 3200
+Connection ~ 7100 3200
+Wire Wire Line
+	7100 3200 7150 3200
+Wire Wire Line
+	6850 2050 7000 2050
+Wire Wire Line
+	6850 2150 8500 2150
+Wire Wire Line
+	7000 2250 7000 2050
+Connection ~ 7000 2050
+Wire Wire Line
+	7000 2050 7200 2050
+Wire Wire Line
+	7000 5550 7900 5550
+Wire Wire Line
+	7000 5650 7100 5650
+Wire Wire Line
+	7100 5650 7100 5450
+Wire Wire Line
+	7000 5450 7100 5450
+Connection ~ 7100 5450
+Wire Wire Line
+	7100 5450 7200 5450
+$Comp
+L Connector:Screw_Terminal_01x02 J7
+U 1 1 64A0ED56
+P 4150 2450
+F 0 "J7" H 4230 2442 50  0000 L CNN
+F 1 "Armed siren" H 4230 2351 50  0000 L CNN
+F 2 "CameraTriggerPCB:CUI_TB007-508-02BE" H 4150 2450 50  0001 C CNN
+F 3 "~" H 4150 2450 50  0001 C CNN
+	1    4150 2450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3950 2050 3950 2450
+$Comp
+L Connector:Screw_Terminal_01x02 J8
+U 1 1 64A14734
+P 4600 1650
+F 0 "J8" V 4564 1462 50  0000 R CNN
+F 1 "LED/Buzzer Continuity indicator" V 4473 1462 50  0000 R CNN
+F 2 "CameraTriggerPCB:CUI_TB007-508-02BE" H 4600 1650 50  0001 C CNN
+F 3 "~" H 4600 1650 50  0001 C CNN
+	1    4600 1650
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	3450 1850 4600 1850
+NoConn ~ 9150 5850
+NoConn ~ 9550 5550
+$Comp
+L Connector:Screw_Terminal_01x02 J9
+U 1 1 64A22BDE
+P 1550 2150
+F 0 "J9" V 1514 1962 50  0000 R CNN
+F 1 "LED power indicator" V 1423 1962 50  0000 R CNN
+F 2 "CameraTriggerPCB:CUI_TB007-508-02BE" H 1550 2150 50  0001 C CNN
+F 3 "~" H 1550 2150 50  0001 C CNN
+	1    1550 2150
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	1650 2350 2200 2350
+$Comp
+L Mechanical:MountingHole H1
+U 1 1 64A50E69
+P 1300 5550
+F 0 "H1" H 1400 5596 50  0000 L CNN
+F 1 "MountingHole" H 1400 5505 50  0000 L CNN
+F 2 "MountingHole:MountingHole_5.3mm_M5_DIN965_Pad" H 1300 5550 50  0001 C CNN
+F 3 "~" H 1300 5550 50  0001 C CNN
+	1    1300 5550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H2
+U 1 1 64A5125F
+P 1350 6050
+F 0 "H2" H 1450 6096 50  0000 L CNN
+F 1 "MountingHole" H 1450 6005 50  0000 L CNN
+F 2 "MountingHole:MountingHole_5.3mm_M5" H 1350 6050 50  0001 C CNN
+F 3 "~" H 1350 6050 50  0001 C CNN
+	1    1350 6050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H3
+U 1 1 64A5188E
+P 2200 5500
+F 0 "H3" H 2300 5546 50  0000 L CNN
+F 1 "MountingHole" H 2300 5455 50  0000 L CNN
+F 2 "MountingHole:MountingHole_5.3mm_M5" H 2200 5500 50  0001 C CNN
+F 3 "~" H 2200 5500 50  0001 C CNN
+	1    2200 5500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H4
+U 1 1 64A51E67
+P 2200 6100
+F 0 "H4" H 2300 6146 50  0000 L CNN
+F 1 "MountingHole" H 2300 6055 50  0000 L CNN
+F 2 "MountingHole:MountingHole_5.3mm_M5" H 2200 6100 50  0001 C CNN
+F 3 "~" H 2200 6100 50  0001 C CNN
+	1    2200 6100
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC
