@@ -1,0 +1,126 @@
+(kicad_sch (version 20230121) (generator eeschema)
+
+  (uuid be0400c2-1232-4f08-847a-2fb9cb6273cc)
+
+  (paper "A4")
+
+  (lib_symbols
+  )
+
+
+  (text "RocketTrig  Curtis Heisey" (at 190.5 175.26 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid ddb310df-d0af-4d64-bec0-57fe55920934)
+  )
+
+  (label "2B" (at 271.78 194.31 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 5eb5b42c-a242-4f85-9505-f28a7f6e5f84)
+  )
+
+  (sheet (at 184.15 105.41) (size 29.21 21.59) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-0000621d0b8b)
+    (property "Sheetname" "CameraIO" (at 184.15 104.6984 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "CameraIO.kicad_sch" (at 184.15 127.5846 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "CameraTriggerSensorNodeOnly"
+        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc" (page "5"))
+      )
+    )
+  )
+
+  (sheet (at 130.81 68.58) (size 36.83 20.32) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-0000621ecc98)
+    (property "Sheetname" "Sheet621ECC97" (at 130.81 67.8684 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "3178MCU.kicad_sch" (at 130.81 89.4846 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "CameraTriggerSensorNodeOnly"
+        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc" (page "4"))
+      )
+    )
+  )
+
+  (sheet (at 194.31 83.82) (size 20.32 13.97) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-0000621f5f45)
+    (property "Sheetname" "Sheet621F5F44" (at 194.31 83.1084 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "Buzzer and Indicators.kicad_sch" (at 194.31 98.3746 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "CameraTriggerSensorNodeOnly"
+        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc" (page "6"))
+      )
+    )
+  )
+
+  (sheet (at 212.09 26.67) (size 35.56 35.56) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-00006220007f)
+    (property "Sheetname" "Sheet6220007E" (at 212.09 25.9584 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "PowerSupply.kicad_sch" (at 212.09 62.8146 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "CameraTriggerSensorNodeOnly"
+        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc" (page "7"))
+      )
+    )
+  )
+
+  (sheet (at 19.05 139.7) (size 26.67 13.97) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-00006220c31b)
+    (property "Sheetname" "Sheet6220C31A" (at 19.05 138.9884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "I2C_andSerial_interfaces.kicad_sch" (at 19.05 154.2546 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "CameraTriggerSensorNodeOnly"
+        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc" (page "2"))
+      )
+    )
+  )
+
+  (sheet (at 97.79 135.89) (size 30.48 31.75) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-00006481c245)
+    (property "Sheetname" "newGPIOinput" (at 97.79 135.1784 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "newGPIOinput.kicad_sch" (at 97.79 168.2246 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "CameraTriggerSensorNodeOnly"
+        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc" (page "3"))
+      )
+    )
+  )
+
+  (sheet_instances
+    (path "/" (page "1"))
+  )
+)
