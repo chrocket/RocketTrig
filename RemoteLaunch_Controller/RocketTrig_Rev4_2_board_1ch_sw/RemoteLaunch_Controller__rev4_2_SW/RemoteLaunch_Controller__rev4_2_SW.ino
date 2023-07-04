@@ -1,11 +1,16 @@
-
-
-
-
-
-
 // rf65/rf95 (lora) RocketTrig
+// This version is a 1ch remote launcher using Rev 4_2 board
 
+// Connections
+// J7 position 2 - arm pushbutton
+// J7 position 3 - clear pushbutton
+// J7 position 4 - fire pushbutton
+// J8 position 2  - LED armed indicator
+// J8 position 3 - fire relay
+
+#include <Wire.h>
+//MCP23017 lib by Bertand Lemasle - install using Arduino IDE library manager
+#include <MCP23017.h>
 
 
 
@@ -14,35 +19,39 @@
 // For use with Adafruit 3176 (RFM69( or Adafruit 3178 (LoRo RFM95) Feather M0 Packet radio modules
 //  SX1276 LoRa®
 //
-// Requires RadioHead libs
+// Requires RadioHead libs - - install using Arduino IDE library manager
 // https://www.airspayce.com/mikem/arduino/RadioHead/index.html
-// Using ver 1.122  http://www.airspayce.com/mikem/arduino/RadioHead/RadioHead-1.122.zip
+// Using ver 1.122.1  http://www.airspayce.com/mikem/arduino/RadioHead/RadioHead-1.122.zip
 #include <RadioHead.h>
 
 // Other libs
 //CRC32 by Christopher Baker  - install using Arduino IDE library manager
 #include <CRC32.h>
 // https://github.com/bakercp/CRC32/blob/master/examples/CRC32/CRC32.ino
-// SPI
-#include <SPI.h>
+
 // But ensure you have installed the Crypto directory from arduinolibs first:
 // http://rweather.github.io/arduinolibs/index.html
 
 
 
+#define MCP23017_ADDR 0x20
+MCP23017 mcp = MCP23017(MCP23017_ADDR);
+
+#if defined(ARDUINO_SAMD_ZERO) && defined(SERIAL_PORT_USBVIRTUAL)
+  // Required for Serial on Zero based boards
+  #define Serial SERIAL_PORT_USBVIRTUAL
+#endif
+
 
 // pin assignments
-const unsigned int FIRE_IN_PIN = A0;
-const unsigned int ARM_IN_PIN = A1;
-const unsigned int DISARM_IN_PIN = A2;
-const unsigned int DISARM_DUP_IN_PIN = A3;
-
 const unsigned int BUZZER_OUT_PIN = 10;          // Pin to audible indicator
 const unsigned int CAMERA_TRIGGER_OUT_PIN = 12;  // Pin for shtter opto-isoloatr
 const unsigned int CAMERA_FOCUS_OUT_PIN = 11;    // Pin for focus opto-isolator
 const unsigned int LED_OUT_PIN = 13;
-const unsigned int AUX_OUT_PIN = 9;            // Pin for 2nd trigger output
-const unsigned int ARM_INDICATOR_OUT_PIN = 6;  // Indicates sensor is armed, turns laser on
+const unsigned int ARM_INDICATOR_OUT_PIN = 0; //MCP23017Pin::GPA0
+const unsigned int RELAY_OUT_PIN = 1; //MCP23017Pin::GPA1
+
+
 
 // Radio module stuff
 // Pick one module of the other
@@ -127,6 +136,41 @@ public:
 /*
  * FireTimer CLASS DEFINITION
  */
+class FireTimerMCP : public NonBlockingTimer {
+private:
+  byte pinLED;
+
+public:
+  FireTimerMCP(byte pinLED, unsigned long timeLedOn)
+    : NonBlockingTimer(timeLedOn) {
+    this->pinLED = pinLED;
+ 
+    mcp.digitalWrite(pinLED, LOW);
+    isPressed = LOW;
+  }
+  void fire() {
+    isPressed = HIGH;
+    mcp.digitalWrite(pinLED, isPressed);
+    unsigned long currentTime = millis();
+    nextChangeTime = currentTime + timeFireOn;
+  }
+
+
+  // Checks whether it is time to turn on or off the Output
+  bool check() {
+    unsigned long currentTime = millis();
+    if (currentTime >= nextChangeTime) {
+      // Turn output off when time expires
+      isPressed = LOW;
+    }
+    mcp.digitalWrite(pinLED, isPressed);
+    return isPressed;
+  }
+};
+
+/*
+ * FireTimer CLASS DEFINITION
+ */
 class FireTimer : public NonBlockingTimer {
 private:
   byte pinLED;
@@ -158,6 +202,9 @@ public:
     return isPressed;
   }
 };
+
+
+
 
 void printChipId(char *buf) {
   volatile uint32_t val1, val2, val3, val4;
@@ -267,6 +314,7 @@ void radioInit() {
 #endif
 }
 
+
 // state variables for commands received by radio
 bool isRadioArmRequest = false;
 bool isRadioDisarmRequest = false;
@@ -319,11 +367,10 @@ const unsigned int ARMED_TIMED = 10000;  // 10-15 s
 const unsigned int FIRE_TIME = 2000;     // 2 s
 const unsigned int POLL_TIME = 200;
 
-FireTimer armed(ARM_INDICATOR_OUT_PIN, ARMED_TIMED);
+FireTimerMCP armed(ARM_INDICATOR_OUT_PIN, ARMED_TIMED);
 FireTimer cameraTrigger(CAMERA_TRIGGER_OUT_PIN, FIRE_TIME);
 FireTimer focusTrigger(CAMERA_FOCUS_OUT_PIN, FIRE_TIME);
-FireTimer fireLED(LED_OUT_PIN, FIRE_TIME);
-FireTimer fireRelay(AUX_OUT_PIN, FIRE_TIME);
+FireTimerMCP fireRelay(RELAY_OUT_PIN, FIRE_TIME);
 
 
 
@@ -332,34 +379,51 @@ FireTimer fireRelay(AUX_OUT_PIN, FIRE_TIME);
 //TODO need to check for Adafruit Feather M0
 #endif
 void setup() {
+
+  while (!Serial) { } // wait for serial port to connect.
+   Wire.begin();
+  Serial.begin(9600);
   // output pins
-  pinMode(ARM_INDICATOR_OUT_PIN, OUTPUT);
+
   pinMode(CAMERA_TRIGGER_OUT_PIN, OUTPUT);
   pinMode(CAMERA_FOCUS_OUT_PIN, OUTPUT);
   pinMode(LED_OUT_PIN, OUTPUT);
-  pinMode(AUX_OUT_PIN, OUTPUT);
-  digitalWrite(ARM_INDICATOR_OUT_PIN, LOW);
+
+ 
   digitalWrite(CAMERA_TRIGGER_OUT_PIN, LOW);
   digitalWrite(CAMERA_FOCUS_OUT_PIN, LOW);
   digitalWrite(LED_OUT_PIN, LOW);
-  digitalWrite(AUX_OUT_PIN, LOW);
 
-  // input pin assignments for push buttons
-  pinMode(FIRE_IN_PIN, INPUT_PULLUP);
-  pinMode(ARM_IN_PIN, INPUT_PULLUP);
-  pinMode(DISARM_IN_PIN, INPUT_PULLUP);
-  pinMode(DISARM_DUP_IN_PIN, INPUT_PULLUP);
+
+  // input pin assignments for push buttons - reoive
+
+   // 23017 i/o expander
+    mcp.init();
+    mcp.portMode(MCP23017Port::A, 0);          //Port A as output
+    mcp.portMode(MCP23017Port::B, 0b11111111); //Port B as input
+
+    mcp.writeRegister(MCP23017Register::GPIO_A, 0x00);  //Reset port A 
+    mcp.writeRegister(MCP23017Register::GPIO_B, 0x00);  //Reset port B
+
+    // Invert inputs (press a button to lit a led (button press gives a "1")
+    mcp.writeRegister(MCP23017Register::IPOL_B, 0xFF);
+    // Pull up resisters
+    mcp.writeRegister(MCP23017Register::GPPU_B, 0b11111111);
+    Serial.println("mcp init done");
 
   // init timers
   fireRelay.init();
   armed.init();
   cameraTrigger.init();
   focusTrigger.init();
-  fireLED.init();
-
-  delay(1000);
+  Serial.println("Non-blocking timer init done");
 
   radioInit();
+  Serial.println("Radio init done");
+  delay(1000);
+
+
+
 }
 
 
@@ -369,12 +433,21 @@ void loop() {
   armed.check();
   focusTrigger.check();
   cameraTrigger.check();
-  fireLED.check();
   fireRelay.check();
 
+    // read state of push buttons
+    uint8_t io_expander_inputs = mcp.readPort(MCP23017Port::B);
+    bool stateArmSwitch     = 0x1 & io_expander_inputs;
+    bool stateDisarmSwitch = 0x2 & io_expander_inputs;
+    bool fireSwitch        = 0x4 & io_expander_inputs;
+    // debugging only
+    if(stateArmSwitch){
+      digitalWrite(LED_OUT_PIN,stateArmSwitch );
+      Serial.println("Arm swith high");
+      delay(1000);
+    }
 
   // Read arm switch
-  bool stateArmSwitch = !digitalRead(ARM_IN_PIN);
   if (stateArmSwitch || isRadioArmRequest) {
     isRadioArmRequest=false;
     armed.fire();
@@ -387,10 +460,9 @@ void loop() {
     Serial.println("Armed ...");
   }
   // disarm
-  bool stateDisarmSwitch = !(digitalRead(DISARM_IN_PIN) && digitalRead(DISARM_DUP_IN_PIN));
   if (stateDisarmSwitch|| isRadioDisarmRequest) {
      
-    fireLED.clear();
+ 
     fireRelay.clear();
     armed.clear();
     
@@ -409,8 +481,7 @@ void loop() {
     digitalWrite(CAMERA_FOCUS_OUT_PIN, LOW);
     isRadioDisarmRequest=false;
   }
-  //
-  bool fireSwitch = !digitalRead(FIRE_IN_PIN);
+  //  fire button is  pressed
   if (fireSwitch || isRadioFireRequest) {
     isRadioFireRequest=false;
     focusTrigger.fire();
@@ -419,7 +490,7 @@ void loop() {
       radioSendFireCommand();
     }
     if (armed.check()) {
-      fireLED.fire();
+
       fireRelay.fire();
       armed.clear();
       tone(BUZZER_OUT_PIN, 4000 /* hz*/, 2000 /* ms */);

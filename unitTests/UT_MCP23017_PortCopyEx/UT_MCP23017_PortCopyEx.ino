@@ -15,7 +15,7 @@ MCP23017 mcp = MCP23017(MCP23017_ADDR);
 
 void setup() {
     Wire.begin();
-    Serial.begin(115200);
+    Serial.begin(9600);
 
     pinMode(LED_BUILTIN, OUTPUT);
     
@@ -38,12 +38,17 @@ void loop() {
     uint8_t currentB;
 
     currentB = mcp.readPort(MCP23017Port::B);
-    Serial.println(currentB);
-    bool test   = 0x1 & currentB;
-  
-    Serial.println(test);
+    Serial.print("Input Register: ");
+    Serial.print(currentB);
 
-     digitalWrite(LED_BUILTIN, test);
+
+    bool testPin   = 0x4 & currentB;
+
+    Serial.print("   ... test pin, position 3: ");
+    Serial.println(testPin);
+    digitalWrite(LED_BUILTIN, testPin);
+
+    // Have outputs mirror inputs
     mcp.writePort(MCP23017Port::A, currentB);
-  //  delay(1000);
+    delay(1000);
 }

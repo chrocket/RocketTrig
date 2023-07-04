@@ -8,6 +8,7 @@ const unsigned int ARM_INDICATOR_OUT_PIN = 5;  // Indicates sensor is armed, tur
 
 
 void setup() {
+
 // output pins
   pinMode(ARM_INDICATOR_OUT_PIN, OUTPUT);
   pinMode(CAMERA_TRIGGER_OUT_PIN, OUTPUT);
@@ -19,6 +20,7 @@ void setup() {
   digitalWrite(CAMERA_FOCUS_OUT_PIN, LOW);
   digitalWrite(LED_OUT_PIN, LOW);
   
+  Serial.begin(9600);
 
 }
 
@@ -44,6 +46,7 @@ void loop() {
   digitalWrite(CAMERA_TRIGGER_OUT_PIN, LOW);
   digitalWrite(CAMERA_FOCUS_OUT_PIN, LOW);
   digitalWrite(LED_OUT_PIN, LOW);
+  Serial.println("Bottom of loop");
 
   delay(2000);
 
