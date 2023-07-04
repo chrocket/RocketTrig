@@ -23,3 +23,7 @@ RocketTrig_based_board  is based on the orinal board   6/2023
 
 CameraTriggerRev 4_2 w Launch Controller 2023  is a re-do with i2c i/o expander and darlington driver array  7/2023
 4ChWirelessLaunchController - try 2 w relay pcb - is a relay board for Rev 4_2  7/2023
+
+***********************************************
+NOTE  Migrated to Kicad 7
+***********************************************
