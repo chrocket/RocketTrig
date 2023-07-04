@@ -1,0 +1,31 @@
+(kicad_sch (version 20230121) (generator eeschema)
+
+  (uuid eeec8993-d09e-49cb-a9f8-4cbca24d477a)
+
+  (paper "A4")
+
+  (lib_symbols
+  )
+
+
+  (sheet (at 152.4 48.26) (size 87.63 59.69) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-0000648cd677)
+    (property "Sheetname" "RemoteStation4ch" (at 152.4 47.5484 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "file648CD676.kicad_sch" (at 152.4 108.5346 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "4ChWirelessLaunchController"
+        (path "/eeec8993-d09e-49cb-a9f8-4cbca24d477a" (page "2"))
+      )
+    )
+  )
+
+  (sheet_instances
+    (path "/" (page "1"))
+  )
+)
