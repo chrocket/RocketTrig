@@ -48,9 +48,10 @@ const unsigned int BUZZER_OUT_PIN = 10;          // Pin to audible indicator
 const unsigned int CAMERA_TRIGGER_OUT_PIN = 12;  // Pin for shtter opto-isoloatr
 const unsigned int CAMERA_FOCUS_OUT_PIN = 11;    // Pin for focus opto-isolator
 const unsigned int LED_OUT_PIN = 13;
-const unsigned int ARM_INDICATOR_OUT_PIN = 0; //MCP23017Pin::GPA0
+const unsigned int ARM_OUT_PIN = 0; //MCP23017Pin::GPA0
 const unsigned int RELAY_OUT_PIN = 1; //MCP23017Pin::GPA1
-
+const unsigned int FIRE_INDICATOR_OUT_PIN = 24;
+const unsigned int ARM_INDICATOR_OUT_PIN = 22; 
 
 
 // Radio module stuff
@@ -133,40 +134,7 @@ public:
     nextChangeTime = 4294967294;
   }
 };
-/*
- * FireTimer CLASS DEFINITION
- */
-class FireTimerMCP : public NonBlockingTimer {
-private:
-  byte pinLED;
 
-public:
-  FireTimerMCP(byte pinLED, unsigned long timeLedOn)
-    : NonBlockingTimer(timeLedOn) {
-    this->pinLED = pinLED;
- 
-    mcp.digitalWrite(pinLED, LOW);
-    isPressed = LOW;
-  }
-  void fire() {
-    isPressed = HIGH;
-    mcp.digitalWrite(pinLED, isPressed);
-    unsigned long currentTime = millis();
-    nextChangeTime = currentTime + timeFireOn;
-  }
-
-
-  // Checks whether it is time to turn on or off the Output
-  bool check() {
-    unsigned long currentTime = millis();
-    if (currentTime >= nextChangeTime) {
-      // Turn output off when time expires
-      isPressed = LOW;
-    }
-    mcp.digitalWrite(pinLED, isPressed);
-    return isPressed;
-  }
-};
 
 /*
  * FireTimer CLASS DEFINITION
@@ -367,10 +335,10 @@ const unsigned int ARMED_TIMED = 10000;  // 10-15 s
 const unsigned int FIRE_TIME = 2000;     // 2 s
 const unsigned int POLL_TIME = 200;
 
-FireTimerMCP armed(ARM_INDICATOR_OUT_PIN, ARMED_TIMED);
+FireTimer armed(ARM_INDICATOR_OUT_PIN, ARMED_TIMED);
 FireTimer cameraTrigger(CAMERA_TRIGGER_OUT_PIN, FIRE_TIME);
 FireTimer focusTrigger(CAMERA_FOCUS_OUT_PIN, FIRE_TIME);
-FireTimerMCP fireRelay(RELAY_OUT_PIN, FIRE_TIME);
+FireTimer fireRelay(FIRE_INDICATOR_OUT_PIN, FIRE_TIME);
 
 
 
@@ -382,18 +350,19 @@ void setup() {
 
   while (!Serial) { } // wait for serial port to connect.
    Wire.begin();
-  Serial.begin(9600);
-  // output pins
+  Serial.begin(19200);
 
+  // output pins
   pinMode(CAMERA_TRIGGER_OUT_PIN, OUTPUT);
   pinMode(CAMERA_FOCUS_OUT_PIN, OUTPUT);
   pinMode(LED_OUT_PIN, OUTPUT);
+  
 
- 
+ // initial output states
   digitalWrite(CAMERA_TRIGGER_OUT_PIN, LOW);
   digitalWrite(CAMERA_FOCUS_OUT_PIN, LOW);
   digitalWrite(LED_OUT_PIN, LOW);
-
+ 
 
   // input pin assignments for push buttons - reoive
 
@@ -409,6 +378,8 @@ void setup() {
     mcp.writeRegister(MCP23017Register::IPOL_B, 0xFF);
     // Pull up resisters
     mcp.writeRegister(MCP23017Register::GPPU_B, 0b11111111);
+    mcp.digitalWrite(RELAY_OUT_PIN, LOW);
+    mcp.digitalWrite(ARM_OUT_PIN, LOW);
     Serial.println("mcp init done");
 
   // init timers
@@ -495,6 +466,17 @@ void loop() {
       armed.clear();
       tone(BUZZER_OUT_PIN, 4000 /* hz*/, 2000 /* ms */);
     }
+  }
+  // MCP23017 outputs
+  if(armed.check()){
+      mcp.digitalWrite(ARM_OUT_PIN, HIGH);
+  }else {
+      mcp.digitalWrite(ARM_OUT_PIN, LOW);
+  }
+    if(fireRelay.check()){
+      mcp.digitalWrite(RELAY_OUT_PIN, HIGH);
+  }else {
+      mcp.digitalWrite(RELAY_OUT_PIN, LOW);
   }
 
   // Receive commands
