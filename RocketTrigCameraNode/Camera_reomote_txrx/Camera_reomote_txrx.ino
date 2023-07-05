@@ -50,6 +50,7 @@
 #endif
 
 // Library https://github.com/ridencww/cww_MorseTx
+// arduino lib manager "CWW Morse Transmit" by Ralph Iden
 #include <cww_MorseTx.h>
 
 #include <CRC32.h>

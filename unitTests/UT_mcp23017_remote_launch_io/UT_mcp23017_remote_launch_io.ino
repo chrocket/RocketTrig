@@ -9,6 +9,19 @@
 // J8 position 2  - LED armed indicator
 // J8 position 3 - fire relay
  
+Press "arm" - will arm for 15 seconds unless one of the following occur:
+1) 15 sec timout
+2) "clear" is pressed
+3) "fire" is pressed
+
+"fire" will only turn on fire relay (pos 2) for 2 seconds if "arm" has been set
+
+"clear" will turn off fire, if it is on
+
+
+
+
+
  */
 #include <Wire.h>
 #include <MCP23017.h>
@@ -117,7 +130,8 @@ void setup() {
     Wire.begin();
     Serial.begin(9600);
 
-    pinMode(ARM_INDICATOR_OUT_PIN, OUTPUT);
+    pinMode(LED_BUILTIN, OUTPUT);
+    pinMode(LED_BUILTIN, LOW);
     
     mcp.init();
     mcp.portMode(MCP23017Port::A, 0);          //Port A as output
@@ -133,7 +147,7 @@ void setup() {
     // Pull up resisters
     mcp.writeRegister(MCP23017Register::GPPU_B, 0b11111111);
 
-
+    // init non-blocking timers
     armed.init();
     fireRelay.init();
 }
@@ -154,7 +168,7 @@ void loop() {
     bool fireSwitch        = 0x4 & io_expander_inputs;
 
     Serial.print("Input Register: ");
-    Serial.print(io_expander_inputs);
+    Serial.println(io_expander_inputs);
     if(stateArmSwitch){
       armed.fire();
     }
