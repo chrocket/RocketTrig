@@ -347,9 +347,11 @@ FireTimer fireRelay(FIRE_INDICATOR_OUT_PIN, FIRE_TIME);
 //TODO need to check for Adafruit Feather M0
 #endif
 void setup() {
-
+#ifdef DEBUG
   while (!Serial) { } // wait for serial port to connect.
+#endif
    Wire.begin();
+
   Serial.begin(19200);
 
   // output pins
