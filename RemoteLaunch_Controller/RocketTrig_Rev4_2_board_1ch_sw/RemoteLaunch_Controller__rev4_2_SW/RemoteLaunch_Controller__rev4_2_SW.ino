@@ -331,7 +331,7 @@ void pollResponse(){
 }
 
 
-const unsigned int ARMED_TIMED = 10000;  // 10-15 s
+const unsigned int ARMED_TIMED = 60000;  // 10-15 s // 11/19/23 changed to 60 s
 const unsigned int FIRE_TIME = 2000;     // 2 s
 const unsigned int POLL_TIME = 200;
 
@@ -413,7 +413,10 @@ void loop() {
     bool stateArmSwitch     = 0x1 & io_expander_inputs;
     bool stateDisarmSwitch = 0x2 & io_expander_inputs;
     bool fireSwitch        = 0x4 & io_expander_inputs;
-    // debugging only
+    // Setting this - only external sensor will trigger camera 
+    // (launch fire will not)
+    bool externalSensorCameraOnly =  0x8 & io_expander_inputs;
+    // write state of armed switch to LED
     if(stateArmSwitch){
       digitalWrite(LED_OUT_PIN,stateArmSwitch );
       Serial.println("Arm swith high");
@@ -457,8 +460,10 @@ void loop() {
   //  fire button is  pressed
   if (fireSwitch || isRadioFireRequest) {
     isRadioFireRequest=false;
-    focusTrigger.fire();
-    cameraTrigger.fire();
+    if(!externalSensorCameraOnly){
+        focusTrigger.fire();
+        cameraTrigger.fire();
+    }
     if( fireSwitch){
       radioSendFireCommand();
     }
@@ -513,6 +518,12 @@ void loop() {
          isRadioDisarmRequest = true;
       } else if (strstr((char *)buf, "T")){
         isRadioTriggerRequest= true;
+        // trigger cameras only from sensor
+        if(externalSensorCameraOnly){
+          focusTrigger.fire();
+          cameraTrigger.fire();
+        }
+
       } else if (strstr((char *)buf, "R")){
           pollResponse();
       } else if (strstr((char *)buf, "F")){
