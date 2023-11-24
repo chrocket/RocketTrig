@@ -5,8 +5,11 @@
 // J7 position 2 - arm pushbutton
 // J7 position 3 - clear pushbutton
 // J7 position 4 - fire pushbutton
+// J7 podiyion 6 - local (launch fire) /remote (sensor in) camera trigger
+//
 // J8 position 2  - LED armed indicator
 // J8 position 3 - fire relay
+// J8 position 4 - remote node in contact (poll received)
 
 #include <Wire.h>
 //MCP23017 lib by Bertand Lemasle - install using Arduino IDE library manager
@@ -50,8 +53,11 @@ const unsigned int CAMERA_FOCUS_OUT_PIN = 11;    // Pin for focus opto-isolator
 const unsigned int LED_OUT_PIN = 13;
 const unsigned int ARM_OUT_PIN = 0; //MCP23017Pin::GPA0
 const unsigned int RELAY_OUT_PIN = 1; //MCP23017Pin::GPA1
+const unsigned int REMOTE_NODE_IN_CONTACT_LED = 2; //MCP23017Pin::GPA2
 const unsigned int FIRE_INDICATOR_OUT_PIN = 24;
 const unsigned int ARM_INDICATOR_OUT_PIN = 22; 
+const unsigned int OUT_1=10;
+const unsigned int OUT_2=17;
 
 
 // Radio module stuff
@@ -334,11 +340,14 @@ void pollResponse(){
 const unsigned int ARMED_TIMED = 60000;  // 10-15 s // 11/19/23 changed to 60 s
 const unsigned int FIRE_TIME = 2000;     // 2 s
 const unsigned int POLL_TIME = 200;
+const unsigned int POLL_INTERVAL = 3000;
 
 FireTimer armed(ARM_INDICATOR_OUT_PIN, ARMED_TIMED);
 FireTimer cameraTrigger(CAMERA_TRIGGER_OUT_PIN, FIRE_TIME);
 FireTimer focusTrigger(CAMERA_FOCUS_OUT_PIN, FIRE_TIME);
 FireTimer fireRelay(FIRE_INDICATOR_OUT_PIN, FIRE_TIME);
+NonBlockingTimer remoteNodeInContact(POLL_INTERVAL); // fires if poll response received
+NonBlockingTimer pollInterval(POLL_INTERVAL); // sends out a poll request
 
 
 
@@ -382,6 +391,7 @@ void setup() {
     mcp.writeRegister(MCP23017Register::GPPU_B, 0b11111111);
     mcp.digitalWrite(RELAY_OUT_PIN, LOW);
     mcp.digitalWrite(ARM_OUT_PIN, LOW);
+    mcp.digitalWrite(REMOTE_NODE_IN_CONTACT_LED, LOW);
     Serial.println("mcp init done");
 
   // init timers
@@ -389,6 +399,10 @@ void setup() {
   armed.init();
   cameraTrigger.init();
   focusTrigger.init();
+  remoteNodeInContact.init();
+  pollInterval.init();
+  pollInterval.check();
+  pollInterval.fire(); // send out a poll request;
   Serial.println("Non-blocking timer init done");
 
   radioInit();
@@ -407,6 +421,8 @@ void loop() {
   focusTrigger.check();
   cameraTrigger.check();
   fireRelay.check();
+  remoteNodeInContact.check();
+
 
     // read state of push buttons
     uint8_t io_expander_inputs = mcp.readPort(MCP23017Port::B);
@@ -485,6 +501,17 @@ void loop() {
   }else {
       mcp.digitalWrite(RELAY_OUT_PIN, LOW);
   }
+  if(remoteNodeInContact.check()){
+     mcp.digitalWrite(REMOTE_NODE_IN_CONTACT_LED, HIGH);
+  }else{
+     mcp.digitalWrite(REMOTE_NODE_IN_CONTACT_LED, LOW);
+
+  }
+  if( !pollInterval.check() ){
+    radioSendPoll();
+    pollInterval.fire();
+  }
+
 
   // Receive commands
   if (radio_m0.available()) {
@@ -512,8 +539,10 @@ void loop() {
         //    isRadioArmRequest = true;
         // }
         isRadioArmRequest = true;
-      } else if (strstr((char *)buf, "P")){
-         radioSendPoll();
+      } else if (strstr((char *)buf, "P")){// poll request
+         pollResponse();
+         remoteNodeInContact.fire();
+
       } else if (strstr((char *)buf, "D")){
          isRadioDisarmRequest = true;
       } else if (strstr((char *)buf, "T")){
@@ -525,7 +554,8 @@ void loop() {
         }
 
       } else if (strstr((char *)buf, "R")){
-          pollResponse();
+         // pollResponse();
+          
       } else if (strstr((char *)buf, "F")){
         isRadioFireRequest = true;
       }
@@ -533,5 +563,5 @@ void loop() {
   }
 
   Serial.println("Loop ...");
-  delay(50);
+  delay(5);
 }
