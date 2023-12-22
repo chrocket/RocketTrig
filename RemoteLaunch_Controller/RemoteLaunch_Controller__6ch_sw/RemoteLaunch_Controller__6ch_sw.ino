@@ -95,7 +95,7 @@ RH_RF95 radio_m0(RFM95_CS, RFM95_INT);  // Adafruit 3178
 #endif
 
 // ISM 33cm band USA 902-928 MHZ
-#define FREQ 915.3
+#define FREQ 920.3
 #define RF95_FREQ FREQ
 #define RF69_FREQ FREQ
 
@@ -290,41 +290,26 @@ void radioInit() {
 }
 
 
-// state variables for commands received by radio
-//bool isRadioArmRequest = false;
-//bool isRadioDisarmRequest = false;
-//bool isRadioTriggerRequest  = false;
-//bool isRadioFireRequest  = false;
 
-void radioSendPoll() {
+void radioSendPoll1() {
   // Poll requeset to destination nodes
   radiopacket[0] = 'P';
   radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
   radio_m0.waitPacketSent();
 }
-void radioSendCameraTrigger() {
-  // Trigger destination nodes
-  radiopacket[0] = 'T';
+void radioSendPoll2() {
+  // Poll requeset to destination nodes
+  radiopacket[0] = 'Q';
   radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
   radio_m0.waitPacketSent();
 }
-void radioSendArmedCommand() {
-  radiopacket[0] = 'A';
-  radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
-  radiopacket[4] = 'Y';
-  radio_m0.waitPacketSent();
 
-}
-void radioSendDisarmCommand() {
-  radiopacket[0] = 'D';
-  radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
-  radiopacket[4] = 'N';
-  radio_m0.waitPacketSent();
-  
-}
-void radioSendFireCommand() {
+
+
+void radioSendFireCommand(uint8_t in) {
   // Trigger destination nodes
   radiopacket[0] = 'F';
+  radiopacket[1]=in;
   radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
   radio_m0.waitPacketSent();
 }
@@ -338,13 +323,10 @@ void pollResponse(){
 }
 
 
-const unsigned int ARMED_TIMED = 10000;  // 10-15 s
 const unsigned int FIRE_TIME = 2000;     // 2 s
-const unsigned int POLL_TIME = 200;
 
 
-//FireTimer cameraTrigger(CAMERA_TRIGGER_OUT_PIN, FIRE_TIME);
-//FireTimer focusTrigger(CAMERA_FOCUS_OUT_PIN, FIRE_TIME);
+
 
 NonBlockingTimer fire(FIRE_TIME);
 
@@ -362,19 +344,6 @@ void setup() {
 
   Serial.begin(19200);
 
-  // output pins
-  //pinMode(CAMERA_TRIGGER_OUT_PIN, OUTPUT);
-  //pinMode(CAMERA_FOCUS_OUT_PIN, OUTPUT);
-
-  
-
- // initial output states
- // digitalWrite(CAMERA_TRIGGER_OUT_PIN, LOW);
- // digitalWrite(CAMERA_FOCUS_OUT_PIN, LOW);
-
- 
-
-  // input pin assignments for push buttons - reoive
 
    // 23017 i/o expander
     mcp.init();
@@ -406,14 +375,9 @@ void setup() {
 
 }
 
+void relayLogic( uint8_t io_expander_inputs, bool send){
 
-void loop() {
-
-  fire.check();
-
-    // read state of push buttons
-    uint8_t io_expander_inputs = mcp.readPort(MCP23017Port::B);
-    bool stateContinuityArmSwitch = 0x1 & io_expander_inputs;
+   bool stateContinuityArmSwitch = 0x1 & io_expander_inputs;
     bool stateFireCommandSwitch = 0x2 & io_expander_inputs;
     bool stateCh1ActiveSwitch =  0x4 & io_expander_inputs;
     bool stateCh2ActiveSwitch =  0x8 & io_expander_inputs;
@@ -443,30 +407,42 @@ void loop() {
       mcp.digitalWrite(ARM_OUT_PIN, HIGH);
       Serial.println("Relay ... arm out");
       if(fire.check()){
-        if(stateCh1ActiveSwitch){
-          mcp.digitalWrite(FIRE_CH1_PIN, HIGH);
-          Serial.println("Relay ... ch 1 relay");
-        }
-        if(stateCh2ActiveSwitch){
-             mcp.digitalWrite(FIRE_CH2_PIN, HIGH);
-             Serial.println("Relay ... ch 1 relay");
+        if( stateCh1ActiveSwitch|| stateCh2ActiveSwitch){
+          if(stateCh1ActiveSwitch){
+            mcp.digitalWrite(FIRE_CH1_PIN, HIGH);
+            Serial.println("Relay ... ch 1 relay");
+          }
+          if(stateCh2ActiveSwitch){
+              mcp.digitalWrite(FIRE_CH2_PIN, HIGH);
+              Serial.println("Relay ... ch 1 relay");
           } 
+          if(send){
+             radioSendFireCommand(io_expander_inputs);
+          }
+        }
       }
-
   }else{
       mcp.digitalWrite(ARM_OUT_PIN, LOW);
-    //  mcp.digitalWrite(FIRE_CH1_PIN, LOW);
-    //  mcp.digitalWrite(FIRE_CH2_PIN, LOW);
-
-
   }
 
 
   if( !fire.check() ){
       mcp.digitalWrite(FIRE_CH1_PIN, LOW);
       mcp.digitalWrite(FIRE_CH2_PIN, LOW);
-
   }
+
+
+
+}
+
+void loop() {
+
+  fire.check();
+
+    // read state of push buttons
+    uint8_t io_expander_inputs = mcp.readPort(MCP23017Port::B);
+    relayLogic(io_expander_inputs, true);
+ 
  
   // Receive commands
   if (radio_m0.available()) {
@@ -475,35 +451,12 @@ void loop() {
       if (!len) return;
       // buf[len] = 0;
       buf[5] = 0;
-      /*
-      Serial.print("Received [");
-      Serial.print(len);
-      Serial.print("]: ");
-      Serial.println((char*)buf);
-      Serial.print("RSSI: ");
-      Serial.println(radio_m0.lastRssi(), DEC);
-      */
-     
+      if (strstr((char *)buf, "P")){
+      
+      } else if (strstr((char *)buf, "Q")){
 
-      if (strstr((char *)buf, "A")) {
-        // memcpy(buf, &radiopacket, 4);
-        // if( radiopacket[4]=='N' ){
-        //    isRadioDisarmRequest = true;
-        //    isRadioArmRequest = false;
-        // }else if( radiopacket[4]=='Y' ){
-        //    isRadioArmRequest = true;
-        // }
-       // isRadioArmRequest = true;
-      } else if (strstr((char *)buf, "P")){
-         radioSendPoll();
-      } else if (strstr((char *)buf, "D")){
-  //       isRadioDisarmRequest = true;
-      } else if (strstr((char *)buf, "T")){
- //       isRadioTriggerRequest= true;
-      } else if (strstr((char *)buf, "R")){
-          pollResponse();
       } else if (strstr((char *)buf, "F")){
-  //      isRadioFireRequest = true;
+            relayLogic(buf[1], false);
       }
     }
   }
