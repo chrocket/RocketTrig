@@ -179,7 +179,7 @@ public:
 };
 
 
-
+/
 
 void printChipId(char *buf) {
   volatile uint32_t val1, val2, val3, val4;
@@ -329,7 +329,9 @@ const unsigned int FIRE_TIME = 2000;     // 2 s
 
 
 NonBlockingTimer fire(FIRE_TIME);
-
+NonBlockingTimer arm( FIRE_TIME);
+NonBlockingTimer ch1( FIRE_TIME);
+NonBlockingTimer ch2( FIRE_TIME);
 
 
 
@@ -404,16 +406,16 @@ void relayLogic( uint8_t io_expander_inputs, bool send){
     fire.fire();
   }
   if (stateContinuityArmSwitch){
-      mcp.digitalWrite(ARM_OUT_PIN, HIGH);
+      arm.fire();
       Serial.println("Relay ... arm out");
       if(fire.check()){
         if( stateCh1ActiveSwitch|| stateCh2ActiveSwitch){
           if(stateCh1ActiveSwitch){
-            mcp.digitalWrite(FIRE_CH1_PIN, HIGH);
+            ch1.fire();
             Serial.println("Relay ... ch 1 relay");
           }
           if(stateCh2ActiveSwitch){
-              mcp.digitalWrite(FIRE_CH2_PIN, HIGH);
+              ch2.fire();
               Serial.println("Relay ... ch 1 relay");
           } 
           if(send){
@@ -422,13 +424,25 @@ void relayLogic( uint8_t io_expander_inputs, bool send){
         }
       }
   }else{
-      mcp.digitalWrite(ARM_OUT_PIN, LOW);
+      arm.clear();
+      mcp.digitalWrite(ARM_OUT_PIN,LOW);
   }
 
 
   if( !fire.check() ){
-      mcp.digitalWrite(FIRE_CH1_PIN, LOW);
-      mcp.digitalWrite(FIRE_CH2_PIN, LOW);
+      ch1.clear();
+      ch2.clear();
+      mcp.digitalWrite(FIRE_CH1_PIN,LOW);
+      mcp.digitalWrite(FIRE_CH2_PIN,LOW);
+  }
+  if(arm.check()){
+    mcp.digitalWrite(ARM_OUT_PIN, HIGH);
+  }
+  if(ch1.check()){
+    mcp.digitalWrite(FIRE_CH1_PIN,HIGH);
+  }
+ if(ch2.check()){
+    mcp.digitalWrite(FIRE_CH2_PIN,HIGH);
   }
 
 
@@ -438,6 +452,9 @@ void relayLogic( uint8_t io_expander_inputs, bool send){
 void loop() {
 
   fire.check();
+  arm.check();
+  ch1.check();
+  ch2.check();
 
     // read state of push buttons
     uint8_t io_expander_inputs = mcp.readPort(MCP23017Port::B);
