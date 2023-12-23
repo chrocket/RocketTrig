@@ -3,7 +3,7 @@
 
 // Connections
 // J7 position 2 - continuity/arm
-// J7 position 3 - fire 
+// J7 position 3 - fire
 // J7 position 4 - Ch 1 activate
 // J7 position 5 - Ch 2
 // J7 position 6 - Ch 3
@@ -12,7 +12,7 @@
 // J7 position 9 - Ch 6
 
 
-// J8 position 2  
+// J8 position 2
 // J8 position 3 - fire relay
 
 #include <Wire.h>
@@ -45,20 +45,27 @@
 MCP23017 mcp = MCP23017(MCP23017_ADDR);
 
 #if defined(ARDUINO_SAMD_ZERO) && defined(SERIAL_PORT_USBVIRTUAL)
-  // Required for Serial on Zero based boards
-  #define Serial SERIAL_PORT_USBVIRTUAL
+// Required for Serial on Zero based boards
+#define Serial SERIAL_PORT_USBVIRTUAL
 #endif
 
 
 // pin assignments
-const unsigned int BUZZER_OUT_PIN = 10;          // Pin to audible indicator
+const unsigned int BUZZER_OUT_PIN = 10;  // Pin to audible indicator
 //const unsigned int CAMERA_TRIGGER_OUT_PIN = 12;  // Pin for shtter opto-isoloatr
 //const unsigned int CAMERA_FOCUS_OUT_PIN = 11;    // Pin for focus opto-isolator
-const unsigned int ARM_OUT_PIN = 0; //MCP23017Pin::GPA0; 
-const unsigned int FIRE_CH1_PIN = 1; //MCP23017Pin::GPA1;
-const unsigned int FIRE_CH2_PIN = 2; //MCP23017Pin::GPA2;
-const unsigned int FIRE_INDICATOR_OUT_PIN = 16; // D_2
-const unsigned int ARM_INDICATOR_OUT_PIN = 17; // OUT_2  // check
+const unsigned int ARM_OUT_PIN = 0;   //MCP23017Pin::GPA0;
+const unsigned int FIRE_CH1_PIN = 1;  //MCP23017Pin::GPA1;
+const unsigned int FIRE_CH2_PIN = 2;  //MCP23017Pin::GPA2;
+const unsigned int FIRE_CH3_PIN = 3;
+const unsigned int FIRE_CH4_PIN = 4;
+const unsigned int FIRE_CH5_PIN = 5;
+const unsigned int FIRE_CH6_PIN = 6;
+
+
+
+const unsigned int FIRE_INDICATOR_OUT_PIN = 16;  // D_2
+const unsigned int ARM_INDICATOR_OUT_PIN = 17;   // OUT_2  // check
 
 
 // Radio module stuff
@@ -73,26 +80,17 @@ const unsigned int ARM_INDICATOR_OUT_PIN = 17; // OUT_2  // check
 #include <SPI.h>
 
 
-#define RFM69_CS 8
-#define RFM69_INT 3
-#define RFM69_RST 4
+
 #define LED_PIN 13
 
-// Singleton instance of the radio driver
-#if defined(MODULE_RFM69)
 
 
-#include <RH_RF69.h>
-RH_RF69 radio_m0(RFM69_CS, RFM69_INT);  // Adafruit 3176
-#define MAX_MESSAGE_LEN RH_RF69_MAX_MESSAGE_LEN
-#else
 #include <RH_RF95.h>
 #define RFM95_CS 8
 #define RFM95_RST 4
 #define RFM95_INT 3
 RH_RF95 radio_m0(RFM95_CS, RFM95_INT);  // Adafruit 3178
 #define MAX_MESSAGE_LEN RH_RF95_MAX_MESSAGE_LEN
-#endif
 
 // ISM 33cm band USA 902-928 MHZ
 #define FREQ 920.3
@@ -179,7 +177,7 @@ public:
 };
 
 
-/
+
 
 void printChipId(char *buf) {
   volatile uint32_t val1, val2, val3, val4;
@@ -223,30 +221,14 @@ void radioInit() {
   Serial.println("CWH Camera Trigger RFM69/RFM95 TXRX!");
   Serial.println();
 
-  // RFM69 Reset pin definition
-#if defined(MODULE_RFM69)
-  pinMode(RFM69_RST, OUTPUT);
-  digitalWrite(RFM69_RST, LOW);
-
-#else
   pinMode(RFM95_RST, OUTPUT);
   digitalWrite(RFM95_RST, HIGH);
 
-#endif
 
-  // manual reset
 
-#if defined(MODULE_RFM69)
-  digitalWrite(RFM69_RST, HIGH);
-  delay(10);
-  digitalWrite(RFM69_RST, LOW);
-  delay(10);
-  Serial.println("Using module RFM65");
-#else
   Serial.println("Using module RFM95");
 
 
-#endif
 
 
   while (!radio_m0.init()) {
@@ -309,158 +291,194 @@ void radioSendPoll2() {
 void radioSendFireCommand(uint8_t in) {
   // Trigger destination nodes
   radiopacket[0] = 'F';
-  radiopacket[1]=in;
+  radiopacket[1] = in;
   radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
   radio_m0.waitPacketSent();
 }
-void pollResponse(){
-       Serial.print("Got an id response back: ");
-        Serial.print((char*)buf);
-        Serial.print(", RSSI: ");
-        Serial.println(radio_m0.lastRssi(), DEC);
-        tone(BUZZER_OUT_PIN, 1500 /* hz*/, 100 /* ms */);
-  
+void pollResponse() {
+  Serial.print("Got an id response back: ");
+  Serial.print((char *)buf);
+  Serial.print(", RSSI: ");
+  Serial.println(radio_m0.lastRssi(), DEC);
+  tone(BUZZER_OUT_PIN, 1500 /* hz*/, 100 /* ms */);
 }
-
-
-const unsigned int FIRE_TIME = 2000;     // 2 s
-
-
-
-
+const unsigned int FIRE_TIME = 2000;  // 2 s
 NonBlockingTimer fire(FIRE_TIME);
-NonBlockingTimer arm( FIRE_TIME);
-NonBlockingTimer ch1( FIRE_TIME);
-NonBlockingTimer ch2( FIRE_TIME);
+NonBlockingTimer arm(FIRE_TIME);
+NonBlockingTimer ch1(FIRE_TIME);
+NonBlockingTimer ch2(FIRE_TIME);
+NonBlockingTimer ch3(FIRE_TIME);
+NonBlockingTimer ch4(FIRE_TIME);
+NonBlockingTimer ch5(FIRE_TIME);
+NonBlockingTimer ch6(FIRE_TIME);
 
 
 
-#if defined(ADAFRUIT_FEATHER_M0)  // Feather M0 w/Radio
-//TODO need to check for Adafruit Feather M0
-#endif
 void setup() {
 #ifdef DEBUG
-  while (!Serial) { } // wait for serial port to connect.
+  while (!Serial) {}  // wait for serial port to connect.
 #endif
-   Wire.begin();
+  Wire.begin();
 
   Serial.begin(19200);
 
 
-   // 23017 i/o expander
-    mcp.init();
-    mcp.portMode(MCP23017Port::A, 0);          //Port A as output
-    mcp.portMode(MCP23017Port::B, 0b11111111); //Port B as input
+  // 23017 i/o expander
+  mcp.init();
+  mcp.portMode(MCP23017Port::A, 0);           //Port A as output
+  mcp.portMode(MCP23017Port::B, 0b11111111);  //Port B as input
 
-    mcp.writeRegister(MCP23017Register::GPIO_A, 0x00);  //Reset port A 
-    mcp.writeRegister(MCP23017Register::GPIO_B, 0x00);  //Reset port B
+  mcp.writeRegister(MCP23017Register::GPIO_A, 0x00);  //Reset port A
+  mcp.writeRegister(MCP23017Register::GPIO_B, 0x00);  //Reset port B
 
-    // Invert inputs (press a button to lit a led (button press gives a "1")
-    mcp.writeRegister(MCP23017Register::IPOL_B, 0xFF);
-    // Pull up resisters
-    mcp.writeRegister(MCP23017Register::GPPU_B, 0b11111111);
-    
-    mcp.digitalWrite(ARM_OUT_PIN, LOW);
-    Serial.println("mcp init done");
+  // Invert inputs (press a button to lit a led (button press gives a "1")
+  mcp.writeRegister(MCP23017Register::IPOL_B, 0xFF);
+  // Pull up resisters
+  mcp.writeRegister(MCP23017Register::GPPU_B, 0b11111111);
 
-  // init timers
-
-  fire.init();
-
-  Serial.println("Non-blocking timer init done");
-
-  radioInit();
-  Serial.println("Radio init done");
-  delay(1000);
+  mcp.writePort(MCP23017Port::A, LOW);
+  Serial.println("mcp init done");
 
 
-
+  radioInit() ;
 }
 
-void relayLogic( uint8_t io_expander_inputs, bool send){
 
-   bool stateContinuityArmSwitch = 0x1 & io_expander_inputs;
-    bool stateFireCommandSwitch = 0x2 & io_expander_inputs;
-    bool stateCh1ActiveSwitch =  0x4 & io_expander_inputs;
-    bool stateCh2ActiveSwitch =  0x8 & io_expander_inputs;
-    bool stateCh3ActiveSwitch =  0x16 & io_expander_inputs; 
-    bool stateCh4ActiveSwitch =  0x32 & io_expander_inputs; 
-    bool stateCh5ActiveSwitch =  0x64 & io_expander_inputs;
-    bool stateCh6ActiveSwitch =  0x128 & io_expander_inputs;
-
-    if(stateContinuityArmSwitch )
-        Serial.println("Got Arm");
-
-    if(stateFireCommandSwitch)
-        Serial.println("Got Fire");
-
-    if(stateCh1ActiveSwitch)
-         Serial.println("Got Ch1 ");
-
-    if(stateCh2ActiveSwitch)
-         Serial.println("Got Ch2 ");
-
-
-
-  if(stateFireCommandSwitch){
-    fire.fire();
-  }
-  if (stateContinuityArmSwitch){
-      arm.fire();
-      Serial.println("Relay ... arm out");
-      if(fire.check()){
-        if( stateCh1ActiveSwitch|| stateCh2ActiveSwitch){
-          if(stateCh1ActiveSwitch){
-            ch1.fire();
-            Serial.println("Relay ... ch 1 relay");
-          }
-          if(stateCh2ActiveSwitch){
-              ch2.fire();
-              Serial.println("Relay ... ch 1 relay");
-          } 
-          if(send){
-             radioSendFireCommand(io_expander_inputs);
-          }
-        }
-      }
-  }else{
-      arm.clear();
-      mcp.digitalWrite(ARM_OUT_PIN,LOW);
-  }
-
-
-  if( !fire.check() ){
-      ch1.clear();
-      ch2.clear();
-      mcp.digitalWrite(FIRE_CH1_PIN,LOW);
-      mcp.digitalWrite(FIRE_CH2_PIN,LOW);
-  }
-  if(arm.check()){
-    mcp.digitalWrite(ARM_OUT_PIN, HIGH);
-  }
-  if(ch1.check()){
-    mcp.digitalWrite(FIRE_CH1_PIN,HIGH);
-  }
- if(ch2.check()){
-    mcp.digitalWrite(FIRE_CH2_PIN,HIGH);
-  }
-
-
-
-}
 
 void loop() {
 
+
+  // init timersf
   fire.check();
   arm.check();
   ch1.check();
   ch2.check();
+  ch3.check();
+  ch4.check();
+  ch5.check();
+  ch6.check();
 
-    // read state of push buttons
-    uint8_t io_expander_inputs = mcp.readPort(MCP23017Port::B);
-    relayLogic(io_expander_inputs, true);
- 
- 
+  // read state of push buttons
+  uint8_t io_expander_inputs = mcp.readPort(MCP23017Port::B);
+
+  uint32_t t = millis();
+  if (io_expander_inputs) {
+    Serial.print(t);
+    Serial.print(" Got = ");
+    Serial.println(io_expander_inputs, BIN);
+   
+  }
+ bool stateContinuityArmSwitch = B00000001 & io_expander_inputs;
+  bool stateFireCommandSwitch   = B00000010 & io_expander_inputs;
+  bool stateCh1ActiveSwitch     = B00000100 & io_expander_inputs;
+  bool stateCh2ActiveSwitch     = B00001000 & io_expander_inputs;
+  bool stateCh3ActiveSwitch     = B00010000 & io_expander_inputs;
+  bool stateCh4ActiveSwitch     = B00100000 & io_expander_inputs;
+  bool stateCh5ActiveSwitch     = B01000000 & io_expander_inputs;
+  bool stateCh6ActiveSwitch     = B10000000 & io_expander_inputs;
+  if (stateContinuityArmSwitch) {
+    Serial.println("  ... Got arm");
+  }
+  if (stateFireCommandSwitch) {
+    Serial.println("  ... Got launch");
+  }
+  if (stateCh1ActiveSwitch) {
+    Serial.println("  ... Ch 1");
+  }
+  if (stateCh2ActiveSwitch) {
+    Serial.println("  ... Ch 2");
+  }
+  if (stateCh3ActiveSwitch) {
+    Serial.println("  ... Ch 3");
+  }
+  if (stateCh4ActiveSwitch) {
+    Serial.println("  ... Ch 4");
+  }
+  if (stateCh5ActiveSwitch) {
+    Serial.println("  ... Ch 5");
+  }
+  if (stateCh6ActiveSwitch) {
+    Serial.println("  ... Ch 6");
+  }
+
+
+  if (stateFireCommandSwitch) {
+    fire.fire();
+  }
+  if (stateContinuityArmSwitch) {
+    arm.fire();
+    Serial.println("Relay ... arm out");
+    if (fire.check()) {
+      if (stateCh1ActiveSwitch
+          || stateCh2ActiveSwitch
+          || stateCh3ActiveSwitch
+          || stateCh4ActiveSwitch
+          || stateCh5ActiveSwitch
+          || stateCh6ActiveSwitch) {
+        if (stateCh1ActiveSwitch) {
+          ch1.fire();
+        }
+        if (stateCh2ActiveSwitch) {
+          ch2.fire();
+        }
+        if (stateCh3ActiveSwitch) {
+          ch3.fire();
+        }
+        if (stateCh4ActiveSwitch) {
+          ch4.fire();
+        }
+        if (stateCh5ActiveSwitch) {
+          ch5.fire();
+        }
+        if (stateCh6ActiveSwitch) {
+          ch6.fire();
+        }
+        Serial.print("Sending: ");
+        Serial.println(io_expander_inputs, BIN);
+        radioSendFireCommand(io_expander_inputs);
+        
+      }
+    }
+  } else {
+    arm.clear();
+    mcp.digitalWrite(ARM_OUT_PIN, LOW);
+  }
+
+
+  if (!fire.check()) {
+    ch1.clear();
+    ch2.clear();
+    ch3.clear();
+    ch4.clear();
+    ch5.clear();
+    ch6.clear();
+    mcp.writePort(MCP23017Port::A, LOW);
+  }
+  if (arm.check()) {
+    mcp.digitalWrite(ARM_OUT_PIN, HIGH);
+  }
+  if (ch1.check()) {
+    mcp.digitalWrite(FIRE_CH1_PIN, HIGH);
+  }
+  if (ch2.check()) {
+    mcp.digitalWrite(FIRE_CH2_PIN, HIGH);
+  }
+  if (ch3.check()) {
+    mcp.digitalWrite(FIRE_CH3_PIN, HIGH);
+  }
+
+  if (ch4.check()) {
+    mcp.digitalWrite(FIRE_CH4_PIN, HIGH);
+  }
+
+  if (ch5.check()) {
+    mcp.digitalWrite(FIRE_CH5_PIN, HIGH);
+  }
+
+  if (ch6.check()) {
+    mcp.digitalWrite(FIRE_CH6_PIN, HIGH);
+  }
+
   // Receive commands
   if (radio_m0.available()) {
     uint8_t len = sizeof(buf);
@@ -468,16 +486,16 @@ void loop() {
       if (!len) return;
       // buf[len] = 0;
       buf[5] = 0;
-      if (strstr((char *)buf, "P")){
-      
-      } else if (strstr((char *)buf, "Q")){
+      if (strstr((char *)buf, "P")) {
 
-      } else if (strstr((char *)buf, "F")){
-            relayLogic(buf[1], false);
+      } else if (strstr((char *)buf, "Q")) {
+
+      } else if (strstr((char *)buf, "F")) {
+   //     relayLogic(buf[1], false);
       }
     }
   }
 
-  Serial.println("Loop ...");
   delay(50);
+  //  delay(1000);
 }
