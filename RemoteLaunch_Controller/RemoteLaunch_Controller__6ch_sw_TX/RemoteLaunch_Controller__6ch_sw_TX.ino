@@ -486,12 +486,11 @@ void loop() {
       if (!len) return;
       // buf[len] = 0;
       buf[5] = 0;
-      if (strstr((char *)buf, "P")) {
+      char test = buf[0];
+      if (strstr(test, "P")) {
 
-      } else if (strstr((char *)buf, "Q")) {
+      } else if (strstr(test, "!")) {
 
-      } else if (strstr((char *)buf, "F")) {
-   //     relayLogic(buf[1], false);
       }
     }
   }

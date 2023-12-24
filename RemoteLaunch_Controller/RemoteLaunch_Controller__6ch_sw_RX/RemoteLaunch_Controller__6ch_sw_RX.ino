@@ -223,14 +223,7 @@ void radioInit() {
 
   pinMode(RFM95_RST, OUTPUT);
   digitalWrite(RFM95_RST, HIGH);
-
-
-
   Serial.println("Using module RFM95");
-
-
-
-
   while (!radio_m0.init()) {
     Serial.println("LoRa radio init failed");
     Serial.println("Uncomment '#define SERIAL_DEBUG' in RH_RF95.cpp for detailed debug info");
@@ -275,13 +268,7 @@ void radioSendPoll2() {
   radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
   radio_m0.waitPacketSent();
 }
-void pollResponse() {
-  Serial.print("Got an id response back: ");
-  Serial.print((char *)buf);
-  Serial.print(", RSSI: ");
-  Serial.println(radio_m0.lastRssi(), DEC);
-  tone(BUZZER_OUT_PIN, 1500 /* hz*/, 100 /* ms */);
-}
+
 const unsigned int FIRE_TIME = 2000;  // 2 s
 NonBlockingTimer fire(FIRE_TIME);
 NonBlockingTimer arm(FIRE_TIME);
@@ -484,12 +471,13 @@ void loop() {
         if (!len) return;
         // buf[len] = 0;
         buf[5] = 0;
-        if (strstr((char *)buf, "R")) {
+        char test = buf[0];
+        if (strstr(&test, "R")) {
           
-   //     } else if (strstr((char *)buf, "C")) {
-   //         Serial.print("RX got ...Clear");
-   //         mcp.writePort(MCP23017Port::A, LOW);
-        } else if (strstr((char *)buf, "F")) {
+        } else if (strstr(&test, "C")) {
+            Serial.print("RX got ...Clear");
+            mcp.writePort(MCP23017Port::A, LOW);
+        } else if (strstr(&test, "F")) {
           io_expander_inputs = buf[1];
         }
       }
