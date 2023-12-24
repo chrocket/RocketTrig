@@ -252,26 +252,16 @@ void radioInit() {
 
   // If you are using a high power RF69 eg RFM69HW, you *must* set a Tx power with the
   // ishighpowermodule flag set like this:
-#if defined(MODULE_RFM69)
-  radio_m0.setTxPower(20, true);  // range from 14-20 for power, 2nd arg must be true for 69HCW
-#else
+
   radio_m0.setTxPower(23, false);
-#endif
-
-
-
 
   // The encryption keyhas to be the same as the one in the server
   uint8_t key[] = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
                     0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08 };
-#if defined(MODULE_RFM69)
-  radio_m0.setEncryptionKey(key);
-#else
-// no encryption
-#endif
+
+ // radio_m0.setEncryptionKey(key);
+
 }
-
-
 
 void radioSendPoll1() {
   // Poll requeset to destination nodes
@@ -282,16 +272,6 @@ void radioSendPoll1() {
 void radioSendPoll2() {
   // Poll requeset to destination nodes
   radiopacket[0] = 'Q';
-  radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
-  radio_m0.waitPacketSent();
-}
-
-
-
-void radioSendFireCommand(uint8_t in) {
-  // Trigger destination nodes
-  radiopacket[0] = 'F';
-  radiopacket[1] = in;
   radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
   radio_m0.waitPacketSent();
 }
@@ -312,12 +292,12 @@ NonBlockingTimer ch4(FIRE_TIME);
 NonBlockingTimer ch5(FIRE_TIME);
 NonBlockingTimer ch6(FIRE_TIME);
 
-
+uint8_t io_expander_inputs = 0;
 
 void setup() {
-#ifdef DEBUG
-  while (!Serial) {}  // wait for serial port to connect.
-#endif
+
+//  while (!Serial) {}  // wait for serial port to connect.
+
   Wire.begin();
 
   Serial.begin(19200);
@@ -340,10 +320,10 @@ void setup() {
   Serial.println("mcp init done");
 
 
-  radioInit() ;
+  radioInit();
 }
 
-  uint8_t io_expander_inputs = 0;
+
 
 void loop() {
 
@@ -365,47 +345,27 @@ void loop() {
     Serial.print(t);
     Serial.print(" Got = ");
     Serial.println(io_expander_inputs, BIN);
-   
   }
- bool stateContinuityArmSwitch = B00000001 & io_expander_inputs;
-  bool stateFireCommandSwitch   = B00000010 & io_expander_inputs;
-  bool stateCh1ActiveSwitch     = B00000100 & io_expander_inputs;
-  bool stateCh2ActiveSwitch     = B00001000 & io_expander_inputs;
-  bool stateCh3ActiveSwitch     = B00010000 & io_expander_inputs;
-  bool stateCh4ActiveSwitch     = B00100000 & io_expander_inputs;
-  bool stateCh5ActiveSwitch     = B01000000 & io_expander_inputs;
-  bool stateCh6ActiveSwitch     = B10000000 & io_expander_inputs;
-  if (stateContinuityArmSwitch) {
-    Serial.println("  ... Got arm");
-  }
-  if (stateFireCommandSwitch) {
-    Serial.println("  ... Got launch");
-  }
-  if (stateCh1ActiveSwitch) {
-    Serial.println("  ... Ch 1");
-  }
-  if (stateCh2ActiveSwitch) {
-    Serial.println("  ... Ch 2");
-  }
-  if (stateCh3ActiveSwitch) {
-    Serial.println("  ... Ch 3");
-  }
-  if (stateCh4ActiveSwitch) {
-    Serial.println("  ... Ch 4");
-  }
-  if (stateCh5ActiveSwitch) {
-    Serial.println("  ... Ch 5");
-  }
-  if (stateCh6ActiveSwitch) {
-    Serial.println("  ... Ch 6");
-  }
+  bool stateContinuityArmSwitch = B00000001 & io_expander_inputs;
+  bool stateFireCommandSwitch = B00000010 & io_expander_inputs;
+  bool stateCh1ActiveSwitch = B00000100 & io_expander_inputs;
+  bool stateCh2ActiveSwitch = B00001000 & io_expander_inputs;
+  bool stateCh3ActiveSwitch = B00010000 & io_expander_inputs;
+  bool stateCh4ActiveSwitch = B00100000 & io_expander_inputs;
+  bool stateCh5ActiveSwitch = B01000000 & io_expander_inputs;
+  bool stateCh6ActiveSwitch = B10000000 & io_expander_inputs;
+  
 
 
   if (stateFireCommandSwitch) {
-    fire.fire();
+    if (!fire.check() ) {
+      fire.fire();
+    } 
   }
   if (stateContinuityArmSwitch) {
-    arm.fire();
+    if (!arm.check()) {
+      arm.fire();
+    }
     Serial.println("Relay ... arm out");
     if (fire.check()) {
       if (stateCh1ActiveSwitch
@@ -415,88 +375,101 @@ void loop() {
           || stateCh5ActiveSwitch
           || stateCh6ActiveSwitch) {
         if (stateCh1ActiveSwitch) {
-          ch1.fire();
+          if (!ch1.check()) {
+            ch1.fire();
+          }
         }
         if (stateCh2ActiveSwitch) {
-          ch2.fire();
+          if (!ch2.check()) {
+            ch2.fire();
+          }
         }
         if (stateCh3ActiveSwitch) {
-          ch3.fire();
+          if (!ch3.check()) {
+            ch3.fire();
+          }
         }
         if (stateCh4ActiveSwitch) {
-          ch4.fire();
+          if (!ch4.check()) {
+            ch4.fire();
+          }
         }
         if (stateCh5ActiveSwitch) {
-          ch5.fire();
+          if (!ch5.check()) {
+            ch5.fire();
+          }
         }
         if (stateCh6ActiveSwitch) {
-          ch6.fire();
+          if (!ch6.check()) {
+            ch6.fire();
+          }
         }
-
-        
       }
     }
-  } else {
-    arm.clear();
-    mcp.digitalWrite(ARM_OUT_PIN, LOW);
+    if (!arm.check()) {
+      arm.clear();
+      mcp.digitalWrite(ARM_OUT_PIN, LOW);
+    }
+    if (!fire.check()) {
+      ch1.clear();
+      ch2.clear();
+      ch3.clear();
+      ch4.clear();
+      ch5.clear();
+      ch6.clear();
+      mcp.writePort(MCP23017Port::A, LOW);
+    }
+    if (arm.check()) {
+      mcp.digitalWrite(ARM_OUT_PIN, HIGH);
+    }
+    if (ch1.check()) {
+      mcp.digitalWrite(FIRE_CH1_PIN, HIGH);
+    }
+    if (ch2.check()) {
+      mcp.digitalWrite(FIRE_CH2_PIN, HIGH);
+    }
+    if (ch3.check()) {
+      mcp.digitalWrite(FIRE_CH3_PIN, HIGH);
+    }
+    if (ch4.check()) {
+      mcp.digitalWrite(FIRE_CH4_PIN, HIGH);
+    }
+    if (ch5.check()) {
+      mcp.digitalWrite(FIRE_CH5_PIN, HIGH);
+    }
+    if (ch6.check()) {
+      mcp.digitalWrite(FIRE_CH6_PIN, HIGH);
+    }
   }
+  if( !fire.check() || !arm.check()){
+   mcp.writePort(MCP23017Port::A, LOW);
+  }
+    // Receive commands
+    io_expander_inputs = 0;
 
 
-  if (!fire.check()) {
-    ch1.clear();
-    ch2.clear();
-    ch3.clear();
-    ch4.clear();
-    ch5.clear();
-    ch6.clear();
-    mcp.writePort(MCP23017Port::A, LOW);
-  }
-  if (arm.check()) {
-    mcp.digitalWrite(ARM_OUT_PIN, HIGH);
-  }
-  if (ch1.check()) {
-    mcp.digitalWrite(FIRE_CH1_PIN, HIGH);
-  }
-  if (ch2.check()) {
-    mcp.digitalWrite(FIRE_CH2_PIN, HIGH);
-  }
-  if (ch3.check()) {
-    mcp.digitalWrite(FIRE_CH3_PIN, HIGH);
-  }
+    if (radio_m0.available()) {
+      uint8_t len = sizeof(buf);
+      Serial.print("RX got ...");
+      Serial.println(buf[1]);
+      if (radio_m0.recv(buf, &len)) {
+        if (!len) return;
+        // buf[len] = 0;
+        buf[5] = 0;
+        if (strstr((char *)buf, "P")) {
 
-  if (ch4.check()) {
-    mcp.digitalWrite(FIRE_CH4_PIN, HIGH);
-  }
+        } else if (strstr((char *)buf, "Q")) {
 
-  if (ch5.check()) {
-    mcp.digitalWrite(FIRE_CH5_PIN, HIGH);
-  }
-
-  if (ch6.check()) {
-    mcp.digitalWrite(FIRE_CH6_PIN, HIGH);
-  }
-
-  // Receive commands
-  io_expander_inputs = 0;
-
-  if (radio_m0.available()) {
-    uint8_t len = sizeof(buf);
-    Serial.print("RX got ...");
-    Serial.println(buf[1]);
-    if (radio_m0.recv(buf, &len)) {
-      if (!len) return;
-      // buf[len] = 0;
-      buf[5] = 0;
-      if (strstr((char *)buf, "P")) {
-
-      } else if (strstr((char *)buf, "Q")) {
-
-      } else if (strstr((char *)buf, "F")) {
+        } else if (strstr((char *)buf, "F")) {
           io_expander_inputs = buf[1];
+        }
       }
     }
-  }
 
-  delay(50);
-  //  delay(1000);
+    delay(50);
+    //  delay(1000);
+
+
+      
+  
 }
