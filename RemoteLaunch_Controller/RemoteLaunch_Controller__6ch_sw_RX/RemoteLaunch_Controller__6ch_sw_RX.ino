@@ -355,12 +355,34 @@ void loop() {
   bool stateCh5ActiveSwitch = B01000000 & io_expander_inputs;
   bool stateCh6ActiveSwitch = B10000000 & io_expander_inputs;
   
+  if (stateContinuityArmSwitch) {
+    Serial.println("  ... Got arm");
+  }
+  if (stateFireCommandSwitch) {
+    Serial.println("  ... Got launch");
+  }
+  if (stateCh1ActiveSwitch) {
+    Serial.println("  ... Ch 1");
+  }
+  if (stateCh2ActiveSwitch) {
+    Serial.println("  ... Ch 2");
+  }
+  if (stateCh3ActiveSwitch) {
+    Serial.println("  ... Ch 3");
+  }
+  if (stateCh4ActiveSwitch) {
+    Serial.println("  ... Ch 4");
+  }
+  if (stateCh5ActiveSwitch) {
+    Serial.println("  ... Ch 5");
+  }
+  if (stateCh6ActiveSwitch) {
+    Serial.println("  ... Ch 6");
+  }
 
 
   if (stateFireCommandSwitch) {
-    if (!fire.check() ) {
       fire.fire();
-    } 
   }
   if (stateContinuityArmSwitch) {
     if (!arm.check()) {
@@ -424,21 +446,27 @@ void loop() {
     }
     if (ch1.check()) {
       mcp.digitalWrite(FIRE_CH1_PIN, HIGH);
+      Serial.println("Relay .. ch1 out");
     }
     if (ch2.check()) {
       mcp.digitalWrite(FIRE_CH2_PIN, HIGH);
+      Serial.println("Relay .. ch2 out");
     }
     if (ch3.check()) {
       mcp.digitalWrite(FIRE_CH3_PIN, HIGH);
+      Serial.println("Relay .. ch3 out");
     }
     if (ch4.check()) {
       mcp.digitalWrite(FIRE_CH4_PIN, HIGH);
+      Serial.println("Relay .. ch4 out");
     }
     if (ch5.check()) {
       mcp.digitalWrite(FIRE_CH5_PIN, HIGH);
+      Serial.println("Relay .. ch5 out");
     }
     if (ch6.check()) {
       mcp.digitalWrite(FIRE_CH6_PIN, HIGH);
+      Serial.println("Relay .. ch6 out");
     }
   }
   if( !fire.check() || !arm.check()){
@@ -450,16 +478,17 @@ void loop() {
 
     if (radio_m0.available()) {
       uint8_t len = sizeof(buf);
-      Serial.print("RX got ...");
-      Serial.println(buf[1]);
+  //    Serial.print("RX got ...");
+  //    Serial.println(buf[1]);
       if (radio_m0.recv(buf, &len)) {
         if (!len) return;
         // buf[len] = 0;
         buf[5] = 0;
-        if (strstr((char *)buf, "P")) {
-
-        } else if (strstr((char *)buf, "Q")) {
-
+        if (strstr((char *)buf, "R")) {
+          
+   //     } else if (strstr((char *)buf, "C")) {
+   //         Serial.print("RX got ...Clear");
+   //         mcp.writePort(MCP23017Port::A, LOW);
         } else if (strstr((char *)buf, "F")) {
           io_expander_inputs = buf[1];
         }
