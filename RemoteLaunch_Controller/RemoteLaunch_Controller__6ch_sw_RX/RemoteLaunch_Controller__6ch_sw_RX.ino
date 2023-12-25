@@ -63,9 +63,7 @@ const unsigned int FIRE_CH5_PIN = 5;
 const unsigned int FIRE_CH6_PIN = 6;
 
 
-
-const unsigned int FIRE_INDICATOR_OUT_PIN = 16;  // D_2
-const unsigned int ARM_INDICATOR_OUT_PIN = 17;   // OUT_2  // check
+const unsigned int HEARTBEAT_TX_INDICATOR_OUT_PIN = 14;  // D_1 14 OUT_1 10
 
 
 // Radio module stuff
@@ -278,6 +276,8 @@ NonBlockingTimer ch3(FIRE_TIME);
 NonBlockingTimer ch4(FIRE_TIME);
 NonBlockingTimer ch5(FIRE_TIME);
 NonBlockingTimer ch6(FIRE_TIME);
+NonBlockingTimer poll(FIRE_TIME);
+FireTimer txheartbeat(HEARTBEAT_TX_INDICATOR_OUT_PIN, FIRE_TIME);
 
 uint8_t io_expander_inputs = 0;
 
@@ -306,6 +306,18 @@ void setup() {
   mcp.writePort(MCP23017Port::A, LOW);
   Serial.println("mcp init done");
 
+ //init timers
+  fire.init();
+  arm.init();
+  ch1.init();
+  ch2.init();
+  ch3.init();
+  ch4.init();
+  ch5.init();
+  ch6.init();
+  poll.init();
+  txheartbeat.init();
+
 
   radioInit();
 }
@@ -324,6 +336,8 @@ void loop() {
   ch4.check();
   ch5.check();
   ch6.check();
+  poll.check();
+  txheartbeat.check();
 
 
 
@@ -430,6 +444,7 @@ void loop() {
     }
     if (arm.check()) {
       mcp.digitalWrite(ARM_OUT_PIN, HIGH);
+      tone(BUZZER_OUT_PIN, 1500 /* hz*/, 40 /* ms */);
     }
     if (ch1.check()) {
       mcp.digitalWrite(FIRE_CH1_PIN, HIGH);
@@ -459,6 +474,11 @@ void loop() {
   if( !fire.check() || !arm.check()){
    mcp.writePort(MCP23017Port::A, LOW);
   }
+   if( !poll.check()){
+    radioSendPoll1(); 
+    poll.fire();
+    Serial.println("Sending poll");
+  }
     // Receive commands
     io_expander_inputs = 0;
 
@@ -472,8 +492,8 @@ void loop() {
         // buf[len] = 0;
         buf[5] = 0;
         char test = buf[0];
-        if (strstr(&test, "R")) {
-          
+        if (strstr(&test, "T")) {  // Tx heartbeat
+          txheartbeat.fire();
         } else if (strstr(&test, "C")) {
             Serial.print("RX got ...Clear");
             mcp.writePort(MCP23017Port::A, LOW);

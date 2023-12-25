@@ -64,8 +64,8 @@ const unsigned int FIRE_CH6_PIN = 6;
 
 
 
-const unsigned int FIRE_INDICATOR_OUT_PIN = 16;  // D_2
-const unsigned int ARM_INDICATOR_OUT_PIN = 17;   // OUT_2  // check
+const unsigned int HEARTBEAT_REMOTE1_INDICATOR_OUT_PIN = 14;  // D_1 14 OUT_1 10
+const unsigned int HEARTBEAT_REMOTE2_INDICATOR_OUT_PIN = 17;   // D_2 16 OUT_2 17  // check
 
 
 // Radio module stuff
@@ -273,15 +273,9 @@ void radioInit() {
 
 
 
-void radioSendPoll1() {
+void radioSendPollTx() {
   // Poll requeset to destination nodes
-  radiopacket[0] = 'P';
-  radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
-  radio_m0.waitPacketSent();
-}
-void radioSendPoll2() {
-  // Poll requeset to destination nodes
-  radiopacket[0] = 'Q';
+  radiopacket[0] = 'T';
   radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
   radio_m0.waitPacketSent();
 }
@@ -311,6 +305,8 @@ NonBlockingTimer ch3(FIRE_TIME);
 NonBlockingTimer ch4(FIRE_TIME);
 NonBlockingTimer ch5(FIRE_TIME);
 NonBlockingTimer ch6(FIRE_TIME);
+NonBlockingTimer poll(FIRE_TIME);
+FireTimer  heartbeat1(HEARTBEAT_REMOTE1_INDICATOR_OUT_PIN, FIRE_TIME);
 
 
 
@@ -339,6 +335,17 @@ void setup() {
   mcp.writePort(MCP23017Port::A, LOW);
   Serial.println("mcp init done");
 
+ //init timers
+  fire.init();
+  arm.init();
+  ch1.init();
+  ch2.init();
+  ch3.init();
+  ch4.init();
+  ch5.init();
+  ch6.init();
+  poll.init();
+  heartbeat1.init();
 
   radioInit() ;
 }
@@ -348,7 +355,7 @@ void setup() {
 void loop() {
 
 
-  // init timersf
+  // check timers
   fire.check();
   arm.check();
   ch1.check();
@@ -357,6 +364,8 @@ void loop() {
   ch4.check();
   ch5.check();
   ch6.check();
+  poll.check();
+  heartbeat1.check();
 
   // read state of push buttons
   uint8_t io_expander_inputs = mcp.readPort(MCP23017Port::B);
@@ -456,6 +465,7 @@ void loop() {
   }
   if (arm.check()) {
     mcp.digitalWrite(ARM_OUT_PIN, HIGH);
+     tone(BUZZER_OUT_PIN, 1500 /* hz*/, 40 /* ms */);
   }
   if (ch1.check()) {
     mcp.digitalWrite(FIRE_CH1_PIN, HIGH);
@@ -478,6 +488,11 @@ void loop() {
   if (ch6.check()) {
     mcp.digitalWrite(FIRE_CH6_PIN, HIGH);
   }
+  if( !poll.check()){
+    radioSendPollTx(); 
+    Serial.println("Sending Poll Tx");
+    poll.fire();
+  }
 
   // Receive commands
   if (radio_m0.available()) {
@@ -486,11 +501,14 @@ void loop() {
       if (!len) return;
       // buf[len] = 0;
       buf[5] = 0;
+      Serial.print("RX got ...");
+      Serial.println(buf[1]);
       char test = buf[0];
-      if (strstr(test, "P")) {
-
-      } else if (strstr(test, "!")) {
-
+      if (strstr(&test, "P")) {
+            heartbeat1.fire();
+            Serial.println("Got poll 1");
+     } else if (strstr(&test, "Q")) {
+            Serial.println("Got poll 2");
       }
     }
   }
