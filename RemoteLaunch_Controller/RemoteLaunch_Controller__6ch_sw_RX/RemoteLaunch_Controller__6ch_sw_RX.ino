@@ -239,18 +239,12 @@ void radioInit() {
   Serial.print("Set Freq to: ");
   Serial.println(FREQ);
 
-
-
-  // If you are using a high power RF69 eg RFM69HW, you *must* set a Tx power with the
-  // ishighpowermodule flag set like this:
-
+ // High power mode
   radio_m0.setTxPower(23, false);
+  ///< Bw = 125 kHz, Cr = 4/8, Sf = 4096chips/symbol, low data rate, CRC on. Slow+long range
+//  radio_m0.setModemConfig( RH_RF95::ModemConfigChoice::Bw125Cr48Sf4096);
 
-  // The encryption keyhas to be the same as the one in the server
-  uint8_t key[] = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
-                    0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08 };
 
- // radio_m0.setEncryptionKey(key);
 
 }
 
