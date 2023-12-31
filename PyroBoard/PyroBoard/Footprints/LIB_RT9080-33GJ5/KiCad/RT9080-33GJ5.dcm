@@ -1,9 +1,0 @@
-EESchema-DOCLIB  Version 2.0
-#
-$CMP RT9080-33GJ5
-D IC REG LIN 3.3V 600MA TSOT23-5
-K
-F https://www.richtek.com/assets/product_file/RT9080/DS9080-05.pdf
-$ENDCMP
-#
-#End Doc Library
