@@ -1,15 +1,6 @@
 // rf65/rf95 (lora) RocketTrig
 // This version is a 1ch remote launcher using Rev 4_2 board
 
-// Connections
-// J7 position 2 - continuity/arm
-// J7 position 3 - fire
-// J7 position 4 - Ch 1 activate
-// J7 position 5 - Ch 2
-// J7 position 6 - Ch 3
-// J7 position 7 - Ch 4
-// J7 position 8 - Ch 5
-// J7 position 9 - Ch 6
 
 
 // J8 position 2
@@ -63,7 +54,7 @@ const unsigned int FIRE_CH5_PIN = 5;
 const unsigned int FIRE_CH6_PIN = 6;
 
 
-const unsigned int HEARTBEAT_TX_INDICATOR_OUT_PIN = 14;  // D_1 14 OUT_1 10
+const unsigned int HEARTBEAT_TX_INDICATOR_OUT_PIN = 21;  // // J8 pos 11
 
 
 // Radio module stuff
@@ -488,11 +479,16 @@ void loop() {
         char test = buf[0];
         if (strstr(&test, "T")) {  // Tx heartbeat
           txheartbeat.fire();
+          Serial.println("RX got ...heartbeat");
         } else if (strstr(&test, "C")) {
-            Serial.print("RX got ...Clear");
+            Serial.println("RX got ...Clear");
             mcp.writePort(MCP23017Port::A, LOW);
         } else if (strstr(&test, "F")) {
           io_expander_inputs = buf[1];
+          Serial.print("RX got ...fire: ");
+          Serial.println(io_expander_inputs);
+          
+
         }
       }
     }

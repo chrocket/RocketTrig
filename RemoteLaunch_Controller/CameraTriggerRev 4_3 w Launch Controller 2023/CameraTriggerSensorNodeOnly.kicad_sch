@@ -1,6 +1,6 @@
 (kicad_sch (version 20230121) (generator eeschema)
 
-  (uuid be0400c2-1232-4f08-847a-2fb9cb6273cc)
+  (uuid 47aaa642-cf41-4a4c-b77d-3e3bf0a3114c)
 
   (paper "A4")
 
@@ -10,12 +10,12 @@
 
   (text "RocketTrig  Curtis Heisey" (at 190.5 175.26 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
-    (uuid ddb310df-d0af-4d64-bec0-57fe55920934)
+    (uuid 9eedd9a7-d253-4cec-9f2d-f948fd316da9)
   )
 
-  (label "2B" (at 271.78 194.31 0) (fields_autoplaced)
+  (label "2B" (at 271.78 194.31 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
-    (uuid 5eb5b42c-a242-4f85-9505-f28a7f6e5f84)
+    (uuid fc117a3d-c39b-4f74-8562-891dcd75b045)
   )
 
   (sheet (at 184.15 105.41) (size 29.21 21.59) (fields_autoplaced)
@@ -30,7 +30,7 @@
     )
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc" (page "5"))
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c" (page "5"))
       )
     )
   )
@@ -47,7 +47,7 @@
     )
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc" (page "4"))
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c" (page "4"))
       )
     )
   )
@@ -64,7 +64,7 @@
     )
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc" (page "6"))
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c" (page "6"))
       )
     )
   )
@@ -81,7 +81,7 @@
     )
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc" (page "7"))
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c" (page "7"))
       )
     )
   )
@@ -98,7 +98,7 @@
     )
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc" (page "2"))
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c" (page "2"))
       )
     )
   )
@@ -115,7 +115,7 @@
     )
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc" (page "3"))
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c" (page "3"))
       )
     )
   )

@@ -1,6 +1,6 @@
 (kicad_sch (version 20230121) (generator eeschema)
 
-  (uuid 376a2de7-5a55-4a87-b41d-1cd2ff35697a)
+  (uuid 95c1d52c-8cf6-4b71-b558-0de2985a0ebc)
 
   (paper "A4")
 
@@ -720,221 +720,221 @@
     )
   )
 
-  (junction (at 152.4 74.93) (diameter 0) (color 0 0 0 0)
-    (uuid 0f6bacfa-3cce-4ad7-81c1-92d00ae2176d)
-  )
-  (junction (at 119.38 80.01) (diameter 0) (color 0 0 0 0)
-    (uuid 37442a63-5415-4e10-8f2c-c886cb23dab0)
-  )
-  (junction (at 116.84 59.69) (diameter 0) (color 0 0 0 0)
-    (uuid 46666450-524f-4855-a61d-8fea75b8ebfc)
-  )
-  (junction (at 153.67 74.93) (diameter 0) (color 0 0 0 0)
-    (uuid 6fc87109-d765-4e8f-848b-14b07a461a6a)
-  )
-  (junction (at 85.09 78.74) (diameter 0) (color 0 0 0 0)
-    (uuid 901f0a7a-23d7-4e2b-a0ae-c90437807aea)
-  )
-  (junction (at 101.6 78.74) (diameter 0) (color 0 0 0 0)
-    (uuid 90595724-29bc-47a0-be57-c271bc38fdf9)
+  (junction (at 120.65 80.01) (diameter 0) (color 0 0 0 0)
+    (uuid 2efa8826-e1ba-4754-8ac1-801b24142371)
   )
   (junction (at 116.84 80.01) (diameter 0) (color 0 0 0 0)
-    (uuid 99760b6a-602d-47eb-b8c8-4aabdec04aa5)
+    (uuid 334ca0cd-e94a-48e8-b9a7-19088c609a72)
   )
-  (junction (at 120.65 80.01) (diameter 0) (color 0 0 0 0)
-    (uuid c161182e-224e-4c79-af91-d7e510df2729)
+  (junction (at 152.4 74.93) (diameter 0) (color 0 0 0 0)
+    (uuid 44ae0e44-f4c3-4bc0-92ca-65c799e1e465)
+  )
+  (junction (at 119.38 80.01) (diameter 0) (color 0 0 0 0)
+    (uuid 4a2bc27a-fcf7-46d8-897e-f6d78ce43f7f)
+  )
+  (junction (at 153.67 74.93) (diameter 0) (color 0 0 0 0)
+    (uuid 5678de9f-dbe7-4fcd-b7f9-fe7dd4b58237)
+  )
+  (junction (at 116.84 59.69) (diameter 0) (color 0 0 0 0)
+    (uuid 66faf3e2-b690-4eb9-a835-4e86c9c20068)
   )
   (junction (at 92.71 78.74) (diameter 0) (color 0 0 0 0)
-    (uuid d9205e54-1c28-41bf-83f8-f83ddb7906af)
+    (uuid 84260889-626a-410c-9d4e-a63a0d1a9f67)
+  )
+  (junction (at 85.09 78.74) (diameter 0) (color 0 0 0 0)
+    (uuid c6d0b9e3-080a-4b5a-800b-20875b8bc003)
+  )
+  (junction (at 101.6 78.74) (diameter 0) (color 0 0 0 0)
+    (uuid e6c7ed89-210b-4a2f-8a4d-9002b6746e14)
   )
 
   (wire (pts (xy 76.2 86.36) (xy 76.2 88.9))
     (stroke (width 0) (type default))
-    (uuid 00a6731e-c2a0-4da6-9b61-916e5ea65b31)
-  )
-  (wire (pts (xy 114.3 66.04) (xy 125.73 66.04))
-    (stroke (width 0) (type default))
-    (uuid 02d1df90-bf20-4d49-abca-14672b729079)
-  )
-  (wire (pts (xy 152.4 60.96) (xy 152.4 74.93))
-    (stroke (width 0) (type default))
-    (uuid 038bb235-cdac-4719-8eb0-bb4153a84ebd)
+    (uuid 016c846d-a57a-4438-8845-a478f5b97f71)
   )
   (wire (pts (xy 114.3 66.04) (xy 114.3 77.47))
     (stroke (width 0) (type default))
-    (uuid 07beb967-e430-40c6-be46-bcf5f01fbcd1)
-  )
-  (wire (pts (xy 101.6 69.85) (xy 105.41 69.85))
-    (stroke (width 0) (type default))
-    (uuid 1073a46a-bf79-4143-b7db-008ad305ab71)
-  )
-  (wire (pts (xy 85.09 78.74) (xy 92.71 78.74))
-    (stroke (width 0) (type default))
-    (uuid 1307fd5d-020d-4cce-9d10-34e3588f0861)
-  )
-  (wire (pts (xy 148.59 68.58) (xy 148.59 60.96))
-    (stroke (width 0) (type default))
-    (uuid 1c2b2cb2-bd00-4661-9cec-4f9183323df6)
-  )
-  (wire (pts (xy 119.38 68.58) (xy 148.59 68.58))
-    (stroke (width 0) (type default))
-    (uuid 1ec04019-5942-4c60-aa26-55dd31f601a9)
-  )
-  (wire (pts (xy 144.78 88.9) (xy 144.78 74.93))
-    (stroke (width 0) (type default))
-    (uuid 21382072-593f-49e8-90c8-abe0b62ca461)
-  )
-  (wire (pts (xy 101.6 78.74) (xy 101.6 69.85))
-    (stroke (width 0) (type default))
-    (uuid 21b8057f-5152-42ed-a7fd-dde3bcce7ac7)
-  )
-  (wire (pts (xy 116.84 80.01) (xy 119.38 80.01))
-    (stroke (width 0) (type default))
-    (uuid 22285379-cac6-4e1f-945c-37dd6f563d89)
-  )
-  (wire (pts (xy 92.71 49.53) (xy 109.22 49.53))
-    (stroke (width 0) (type default))
-    (uuid 227dfa1a-93cf-428c-9062-8dd61890ff0a)
-  )
-  (wire (pts (xy 116.84 59.69) (xy 115.57 59.69))
-    (stroke (width 0) (type default))
-    (uuid 2b03abd5-5b41-4cc0-b095-47f98e1b158e)
-  )
-  (wire (pts (xy 153.67 74.93) (xy 153.67 88.9))
-    (stroke (width 0) (type default))
-    (uuid 2d04141b-3378-43e0-b0e5-18473db368cf)
-  )
-  (wire (pts (xy 144.78 74.93) (xy 152.4 74.93))
-    (stroke (width 0) (type default))
-    (uuid 44508aef-3ca2-4441-a433-306de44cd9b9)
-  )
-  (wire (pts (xy 120.65 80.01) (xy 119.38 80.01))
-    (stroke (width 0) (type default))
-    (uuid 45a5e5a3-8d5d-4c35-868b-7bff93e4cf14)
-  )
-  (wire (pts (xy 120.65 80.01) (xy 124.46 80.01))
-    (stroke (width 0) (type default))
-    (uuid 48aea3b8-8077-4baf-bbaa-bda403970e3b)
-  )
-  (wire (pts (xy 105.41 69.85) (xy 105.41 66.04))
-    (stroke (width 0) (type default))
-    (uuid 48df5593-e290-4c01-ba2f-d85a1397b889)
-  )
-  (wire (pts (xy 113.03 80.01) (xy 116.84 80.01))
-    (stroke (width 0) (type default))
-    (uuid 49ea8057-c09a-44ea-bdea-0a3f5d466c66)
-  )
-  (wire (pts (xy 113.03 77.47) (xy 113.03 80.01))
-    (stroke (width 0) (type default))
-    (uuid 4f5579c2-4c7a-4086-bcfa-71762923e9b1)
-  )
-  (wire (pts (xy 242.57 97.79) (xy 242.57 92.71))
-    (stroke (width 0) (type default))
-    (uuid 5217aaf2-b181-4ba1-bac6-2edd3aba4bff)
-  )
-  (wire (pts (xy 109.22 49.53) (xy 109.22 52.07))
-    (stroke (width 0) (type default))
-    (uuid 55f3fd66-0577-46f7-898f-fad517f060dd)
-  )
-  (wire (pts (xy 76.2 78.74) (xy 85.09 78.74))
-    (stroke (width 0) (type default))
-    (uuid 578b3bb1-4feb-4683-bdb9-969a05c3569a)
-  )
-  (wire (pts (xy 76.2 96.52) (xy 76.2 101.6))
-    (stroke (width 0) (type default))
-    (uuid 57f0bb86-68b1-45db-98db-8d0811bf4721)
-  )
-  (wire (pts (xy 119.38 76.2) (xy 119.38 80.01))
-    (stroke (width 0) (type default))
-    (uuid 5a9dd7bf-e9d9-43b2-926c-55c3f6bf2f9f)
-  )
-  (wire (pts (xy 92.71 66.04) (xy 92.71 49.53))
-    (stroke (width 0) (type default))
-    (uuid 5aa1e596-9164-4fe0-8300-a92cbea468c7)
-  )
-  (wire (pts (xy 92.71 78.74) (xy 101.6 78.74))
-    (stroke (width 0) (type default))
-    (uuid 6478a32f-8ec5-4643-a23d-daada995c3fa)
-  )
-  (wire (pts (xy 93.98 134.62) (xy 93.98 128.27))
-    (stroke (width 0) (type default))
-    (uuid 6dc1e254-e4e7-436a-8073-341181eef768)
-  )
-  (wire (pts (xy 254 92.71) (xy 254 97.79))
-    (stroke (width 0) (type default))
-    (uuid 725884ef-6a98-4be4-9f31-31cb8dda7e93)
-  )
-  (wire (pts (xy 57.15 130.81) (xy 57.15 132.08))
-    (stroke (width 0) (type default))
-    (uuid 77e02935-100b-485b-824e-54b797f8e06b)
-  )
-  (wire (pts (xy 153.67 88.9) (xy 152.4 88.9))
-    (stroke (width 0) (type default))
-    (uuid 79059364-e4d1-43b8-af43-979566ae9958)
-  )
-  (wire (pts (xy 120.65 88.9) (xy 120.65 92.71))
-    (stroke (width 0) (type default))
-    (uuid 7aa9b768-d1da-4d09-889d-a87fc80d1752)
-  )
-  (wire (pts (xy 162.56 78.74) (xy 176.53 78.74))
-    (stroke (width 0) (type default))
-    (uuid 7ab382bf-f1fc-4af7-bcb9-8ad9350c69c8)
-  )
-  (wire (pts (xy 125.73 66.04) (xy 125.73 59.69))
-    (stroke (width 0) (type default))
-    (uuid 8280443a-c1a4-4c47-9b09-142390d2c7d8)
+    (uuid 0396602a-336c-4b51-ad6f-e51c64b56640)
   )
   (wire (pts (xy 101.6 78.74) (xy 101.6 81.28))
     (stroke (width 0) (type default))
-    (uuid 883ebb92-6fc9-4651-88b8-e27ffa6f0080)
+    (uuid 06c0facd-bf8c-4ff5-82b9-ab67d7e0ae6b)
   )
-  (wire (pts (xy 101.6 88.9) (xy 101.6 92.71))
+  (wire (pts (xy 144.78 74.93) (xy 152.4 74.93))
     (stroke (width 0) (type default))
-    (uuid 8a2e4665-3ae8-45c0-82e8-6b193deb5a24)
-  )
-  (wire (pts (xy 114.3 77.47) (xy 113.03 77.47))
-    (stroke (width 0) (type default))
-    (uuid 91e2f177-f547-46df-9f40-30e1b0c8f013)
-  )
-  (wire (pts (xy 120.65 80.01) (xy 120.65 81.28))
-    (stroke (width 0) (type default))
-    (uuid a06956a2-8266-49e2-8edf-8aa0802d1e8d)
-  )
-  (wire (pts (xy 105.41 66.04) (xy 92.71 66.04))
-    (stroke (width 0) (type default))
-    (uuid a8840793-bbcc-492a-87d5-3c7a1eababdd)
-  )
-  (wire (pts (xy 148.59 60.96) (xy 149.86 60.96))
-    (stroke (width 0) (type default))
-    (uuid aa588872-0824-4a06-9955-db247dc65bf4)
-  )
-  (wire (pts (xy 116.84 78.74) (xy 116.84 80.01))
-    (stroke (width 0) (type default))
-    (uuid b6e53dff-eb9e-42f6-8b9f-f152f28f2708)
+    (uuid 102651af-34f7-4958-b499-9c90d438aecb)
   )
   (wire (pts (xy 125.73 59.69) (xy 116.84 59.69))
     (stroke (width 0) (type default))
-    (uuid bce4b3a7-bdf7-4334-9fcb-7dd2f5a4d869)
+    (uuid 1c979741-4030-4946-b115-c9f5ac39fa78)
   )
-  (wire (pts (xy 152.4 74.93) (xy 153.67 74.93))
+  (wire (pts (xy 92.71 49.53) (xy 109.22 49.53))
     (stroke (width 0) (type default))
-    (uuid c16143cb-08bf-4085-a9ab-3daa4933fe98)
+    (uuid 1fd29f4a-ebf4-4801-9deb-f117e6efa65f)
+  )
+  (wire (pts (xy 92.71 78.74) (xy 101.6 78.74))
+    (stroke (width 0) (type default))
+    (uuid 272f0be4-a408-4072-8ae1-a910dde163d8)
+  )
+  (wire (pts (xy 116.84 59.69) (xy 115.57 59.69))
+    (stroke (width 0) (type default))
+    (uuid 2effa8e1-60a4-4ae3-9224-0ec3f27f86fc)
   )
   (wire (pts (xy 162.56 74.93) (xy 162.56 78.74))
     (stroke (width 0) (type default))
-    (uuid d9f3f266-c963-4090-a7c2-63a77d4f5efd)
+    (uuid 2f2fed69-b8bb-4f23-87b1-4bbdda2988a6)
+  )
+  (wire (pts (xy 119.38 68.58) (xy 148.59 68.58))
+    (stroke (width 0) (type default))
+    (uuid 3167ff84-4ede-4ebd-b61b-9178290d8f15)
+  )
+  (wire (pts (xy 116.84 78.74) (xy 116.84 80.01))
+    (stroke (width 0) (type default))
+    (uuid 32863b72-b863-4692-b061-bb61b669a923)
+  )
+  (wire (pts (xy 101.6 78.74) (xy 101.6 69.85))
+    (stroke (width 0) (type default))
+    (uuid 3502d883-23af-475d-9e1c-6d485256680b)
+  )
+  (wire (pts (xy 125.73 66.04) (xy 125.73 59.69))
+    (stroke (width 0) (type default))
+    (uuid 3aec39b8-6499-47db-a03a-678331df7adb)
+  )
+  (wire (pts (xy 152.4 60.96) (xy 152.4 74.93))
+    (stroke (width 0) (type default))
+    (uuid 459e2077-bb2a-4d7a-bc90-310a63137c06)
+  )
+  (wire (pts (xy 148.59 60.96) (xy 149.86 60.96))
+    (stroke (width 0) (type default))
+    (uuid 4728e83a-dfb0-42bb-9286-3a216b251938)
   )
   (wire (pts (xy 242.57 110.49) (xy 242.57 105.41))
     (stroke (width 0) (type default))
-    (uuid dfddd97a-e4dc-4e50-a264-1247eb8d75e5)
+    (uuid 4caa4f19-03c8-49bc-8a1a-0363f450cf4f)
+  )
+  (wire (pts (xy 85.09 78.74) (xy 92.71 78.74))
+    (stroke (width 0) (type default))
+    (uuid 4db11a2f-b91d-4ffa-bb24-d6f86ad1d998)
+  )
+  (wire (pts (xy 76.2 78.74) (xy 85.09 78.74))
+    (stroke (width 0) (type default))
+    (uuid 4f28ed2d-5543-4ad4-888b-aad5c3075291)
+  )
+  (wire (pts (xy 119.38 76.2) (xy 119.38 80.01))
+    (stroke (width 0) (type default))
+    (uuid 52fd7c44-b996-4f17-b377-76e8b5631c4c)
+  )
+  (wire (pts (xy 113.03 77.47) (xy 113.03 80.01))
+    (stroke (width 0) (type default))
+    (uuid 5ea08e77-af9f-48be-a18d-db045511c219)
+  )
+  (wire (pts (xy 105.41 69.85) (xy 105.41 66.04))
+    (stroke (width 0) (type default))
+    (uuid 63f52d7c-8787-41c9-b186-0adabf030cdd)
+  )
+  (wire (pts (xy 109.22 49.53) (xy 109.22 52.07))
+    (stroke (width 0) (type default))
+    (uuid 7eae40e4-bf25-49ca-a743-7b65950d45c5)
+  )
+  (wire (pts (xy 101.6 69.85) (xy 105.41 69.85))
+    (stroke (width 0) (type default))
+    (uuid 8324e4fa-bdfe-4e01-9065-52cee84b42cb)
+  )
+  (wire (pts (xy 120.65 80.01) (xy 124.46 80.01))
+    (stroke (width 0) (type default))
+    (uuid 8a134277-c7a2-44e6-bf0c-33230b5e4abc)
+  )
+  (wire (pts (xy 153.67 74.93) (xy 153.67 88.9))
+    (stroke (width 0) (type default))
+    (uuid 8a4347e1-f8dd-46a3-a5f7-0a3135b764c4)
+  )
+  (wire (pts (xy 93.98 134.62) (xy 93.98 128.27))
+    (stroke (width 0) (type default))
+    (uuid 8ee6a38d-111e-4a43-9a4a-e46ee62a1a8f)
   )
   (wire (pts (xy 153.67 74.93) (xy 162.56 74.93))
     (stroke (width 0) (type default))
-    (uuid efb8133b-291e-45b3-9289-af3e1c13c62d)
+    (uuid 91ea3d71-220e-4302-8a7c-7c5021b9f21d)
+  )
+  (wire (pts (xy 116.84 80.01) (xy 119.38 80.01))
+    (stroke (width 0) (type default))
+    (uuid 94aa5001-e421-4e93-aa38-bca9f802b265)
+  )
+  (wire (pts (xy 120.65 80.01) (xy 119.38 80.01))
+    (stroke (width 0) (type default))
+    (uuid 970d05d2-13fc-4794-a275-46acacd32929)
+  )
+  (wire (pts (xy 148.59 68.58) (xy 148.59 60.96))
+    (stroke (width 0) (type default))
+    (uuid 97338459-eeed-42da-9eb7-b4d092ab3a47)
+  )
+  (wire (pts (xy 254 92.71) (xy 254 97.79))
+    (stroke (width 0) (type default))
+    (uuid 979f2dd2-0555-40f0-a5e1-0033b7082d0e)
+  )
+  (wire (pts (xy 105.41 66.04) (xy 92.71 66.04))
+    (stroke (width 0) (type default))
+    (uuid a2ad9cb7-5750-42c6-a7fe-3b2d7135a932)
+  )
+  (wire (pts (xy 162.56 78.74) (xy 176.53 78.74))
+    (stroke (width 0) (type default))
+    (uuid afc7fe43-a639-4505-9730-2a7c2885ed07)
+  )
+  (wire (pts (xy 76.2 96.52) (xy 76.2 101.6))
+    (stroke (width 0) (type default))
+    (uuid b24d2f94-993d-490a-8f99-5105414005fb)
+  )
+  (wire (pts (xy 57.15 130.81) (xy 57.15 132.08))
+    (stroke (width 0) (type default))
+    (uuid b6492d29-793d-464b-b4ff-d6b9e74353c0)
+  )
+  (wire (pts (xy 144.78 88.9) (xy 144.78 74.93))
+    (stroke (width 0) (type default))
+    (uuid b6f495b9-df39-4e13-ba23-ef2ad9d8f114)
+  )
+  (wire (pts (xy 114.3 66.04) (xy 125.73 66.04))
+    (stroke (width 0) (type default))
+    (uuid c4c4d14d-0a32-4219-aa2c-f086267881b7)
+  )
+  (wire (pts (xy 120.65 80.01) (xy 120.65 81.28))
+    (stroke (width 0) (type default))
+    (uuid c79d6e25-8bac-4ab8-ba58-0ce5ef57b94a)
+  )
+  (wire (pts (xy 92.71 66.04) (xy 92.71 49.53))
+    (stroke (width 0) (type default))
+    (uuid c8f71261-e96f-4e6e-9484-b6e77da7df41)
+  )
+  (wire (pts (xy 242.57 97.79) (xy 242.57 92.71))
+    (stroke (width 0) (type default))
+    (uuid d0c8555b-89cb-4141-9ad4-8a555f261810)
+  )
+  (wire (pts (xy 114.3 77.47) (xy 113.03 77.47))
+    (stroke (width 0) (type default))
+    (uuid d71aa50b-4983-4262-9a4d-991197a6a9ac)
   )
   (wire (pts (xy 254 105.41) (xy 254 107.95))
     (stroke (width 0) (type default))
-    (uuid f5572fdf-f8a5-4916-84b0-20fd3d7e5e7b)
+    (uuid dbf3fc98-ea21-40e4-88fd-2c2cb56ca0ae)
+  )
+  (wire (pts (xy 101.6 88.9) (xy 101.6 92.71))
+    (stroke (width 0) (type default))
+    (uuid de83e9a5-bb1e-4196-a6e0-2614a8a51a25)
+  )
+  (wire (pts (xy 152.4 74.93) (xy 153.67 74.93))
+    (stroke (width 0) (type default))
+    (uuid f249007e-dd0f-412d-be33-37a47a8daf82)
+  )
+  (wire (pts (xy 120.65 88.9) (xy 120.65 92.71))
+    (stroke (width 0) (type default))
+    (uuid f3705c5f-632c-4bc5-a497-e1f5f4fbf754)
+  )
+  (wire (pts (xy 153.67 88.9) (xy 152.4 88.9))
+    (stroke (width 0) (type default))
+    (uuid fc9d83ae-0d61-40c5-874b-4f658f082291)
+  )
+  (wire (pts (xy 113.03 80.01) (xy 116.84 80.01))
+    (stroke (width 0) (type default))
+    (uuid fd1c0f42-16c1-43dc-ba0e-0d2a845a504f)
   )
 
   (symbol (lib_id "power:GND") (at 120.65 92.71 0) (mirror y) (unit 1)
@@ -952,13 +952,13 @@
     (property "Datasheet" "" (at 120.65 92.71 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid baf7c4b6-0226-4980-9ac3-bef1eb763b72))
+    (pin "1" (uuid d011c0c9-8f85-45d9-98dc-d3a4dd483610))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "#PWR017") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "#PWR?") (unit 1)
         )
       )
@@ -980,13 +980,13 @@
     (property "Datasheet" "" (at 101.6 92.71 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 7ffdf919-4ed3-46f2-9600-730f371e206a))
+    (pin "1" (uuid 2638dc78-e939-41d4-8ac6-4bf7b456824b))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "#PWR014") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "#PWR?") (unit 1)
         )
       )
@@ -1014,14 +1014,14 @@
     (property "Field5" "" (at 101.6 85.09 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid dfa97b53-6d8d-4561-a258-0f351a244e69))
-    (pin "2" (uuid edc9d2c2-ea58-4ce0-a865-5dbccdff1738))
+    (pin "1" (uuid 9b5d68aa-2fa4-418a-9faf-8dd5ff5eddff))
+    (pin "2" (uuid 26d6f624-132b-4e46-b71e-a51b532aedd5))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "C1") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "C?") (unit 1)
         )
       )
@@ -1046,14 +1046,14 @@
     (property "LCSC" " C2895283 " (at 120.65 85.09 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid faac373a-71e7-4ac7-a712-1ae3b27762e3))
-    (pin "2" (uuid 15b68282-5e82-43c4-a6ae-bf50aa427c23))
+    (pin "1" (uuid 745bf538-3f66-406b-99e3-14480c47fa3b))
+    (pin "2" (uuid 5c715629-cb70-471b-abc0-aac8a7b1dd74))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "C2") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "C?") (unit 1)
         )
       )
@@ -1075,13 +1075,13 @@
     (property "Datasheet" "" (at 101.6 59.69 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 4a97241c-c527-4df0-9dac-247fb76a3759))
+    (pin "1" (uuid a3b5b90b-54bf-40b4-93ca-c257a22ffe5e))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "#PWR016") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "#PWR?") (unit 1)
         )
       )
@@ -1106,14 +1106,14 @@
     (property "LCSC" "C110485" (at 119.38 72.39 90)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid ee73cad3-bb52-411d-b54e-d346469ba902))
-    (pin "2" (uuid 37a1886e-fb97-415d-bfae-2532b0b9329c))
+    (pin "1" (uuid e7b6c0f1-f1a2-4962-995f-13ce2d32997b))
+    (pin "2" (uuid c2b02caf-a7af-4616-aead-9282f84cb425))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "D3") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "D?") (unit 1)
         )
       )
@@ -1144,14 +1144,14 @@
     (property "ALT" " C146215 " (at 76.2 92.71 90)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 26ffb40e-eb3e-4ad3-8170-baf520240c19))
-    (pin "2" (uuid c3fe8f06-b006-4e0f-a212-1d6fdd4ea12b))
+    (pin "1" (uuid 2920dcf4-2968-406a-8c40-36b42d34aae3))
+    (pin "2" (uuid 20da57fd-cca2-468c-b141-ff999336d406))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "D2") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "D?") (unit 1)
         )
       )
@@ -1173,13 +1173,13 @@
     (property "Datasheet" "" (at 76.2 101.6 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid a07b61fc-b9c0-49d1-ae59-83b0ef0b1d20))
+    (pin "1" (uuid 33824544-aa9f-4131-a83c-c48a7ae875f9))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "#PWR010") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "#PWR?") (unit 1)
         )
       )
@@ -1201,13 +1201,13 @@
     (property "Datasheet" "" (at 85.09 78.74 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 60d98803-c533-4fad-b5e8-e33435fcf4ec))
+    (pin "1" (uuid 1694cdb0-a2e6-4167-a2f6-ea8e5cd636b2))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "#PWR012") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "#PWR?") (unit 1)
         )
       )
@@ -1235,15 +1235,15 @@
     (property "Field5" "" (at 109.22 59.69 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 87aa0765-028c-48f5-9750-df827ad8b1aa))
-    (pin "2" (uuid 21e8b063-6481-4733-8690-53e2670cd7c4))
-    (pin "3" (uuid c1c43989-1d34-4e40-8ad4-216c26c0a4d1))
+    (pin "1" (uuid b0c3948b-76ce-45bd-ad02-0de27006b954))
+    (pin "2" (uuid 3999ccb7-ebab-4775-9826-d23c995c2503))
+    (pin "3" (uuid 86dd26da-38b0-4d29-b1d6-fec37d57a4ab))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "U1") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "U?") (unit 1)
         )
       )
@@ -1265,13 +1265,13 @@
     (property "Datasheet" "~" (at 97.79 78.74 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 15d36850-59f6-48b4-bfc9-4770d76195e3))
+    (pin "1" (uuid 9fd22b2c-a47d-4282-9912-c0cbde43480c))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "TP1+1") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "TP1+?") (unit 1)
         )
       )
@@ -1293,13 +1293,13 @@
     (property "Datasheet" "~" (at 176.53 78.74 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 0450d4e5-de0e-47f4-9493-6fdcbba62461))
+    (pin "1" (uuid 6dcd4e20-e422-4a62-958c-ce18643b6996))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "#FLG03") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "#FLG?") (unit 1)
         )
       )
@@ -1321,13 +1321,13 @@
     (property "Datasheet" "~" (at 124.46 80.01 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid f2b622d2-d03b-4f79-9df2-d7c7ed889a97))
+    (pin "1" (uuid 89539944-7b53-46a2-b2df-857a2fec0a4e))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "#FLG02") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "#FLG?") (unit 1)
         )
       )
@@ -1352,14 +1352,14 @@
     (property "LCSC" "C21190" (at 76.2 82.55 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid e645a0b8-7c8b-4a9c-bd46-e64b18931bf5))
-    (pin "2" (uuid 8e4726d4-7d18-47d6-b646-2ef4eb1fbca0))
+    (pin "1" (uuid bb162bdb-c2df-491a-9dc4-e3827b10c4a0))
+    (pin "2" (uuid 3ffbe040-e970-481a-b79b-9fd684ab6362))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "R4") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "R?") (unit 1)
         )
       )
@@ -1384,14 +1384,14 @@
     (property "LCSC" "C1525" (at 242.57 101.6 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 087ea3b8-3981-4103-a717-763ff7a2ae43))
-    (pin "2" (uuid 3cccb27a-f79d-4e61-ad4b-9184616705c3))
+    (pin "1" (uuid 2c72313f-967c-47a0-b668-20949c9fe3dd))
+    (pin "2" (uuid fc3436c4-c416-486f-ba21-a0dc1190cca8))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "C3") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "C?") (unit 1)
         )
       )
@@ -1413,13 +1413,13 @@
     (property "Datasheet" "" (at 254 107.95 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 7c5afb63-1873-4908-9ae6-2898c15b24a5))
+    (pin "1" (uuid ed75e75b-a06b-48b1-be74-e2aa9bc99ade))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "#PWR022") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "#PWR?") (unit 1)
         )
       )
@@ -1441,13 +1441,13 @@
     (property "Datasheet" "" (at 242.57 110.49 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid e65a90bd-356f-4d7b-b977-47ad295f12bf))
+    (pin "1" (uuid 9817b9a1-1aa9-4970-9f95-0f774393b136))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "#PWR020") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "#PWR?") (unit 1)
         )
       )
@@ -1469,13 +1469,13 @@
     (property "Datasheet" "" (at 254 92.71 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid fb73510f-ee74-41ba-a051-ffe143a95010))
+    (pin "1" (uuid 9555f75f-8483-4b1f-a5ab-aeec2d434a8c))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "#PWR021") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "#PWR?") (unit 1)
         )
       )
@@ -1497,13 +1497,13 @@
     (property "Datasheet" "" (at 242.57 92.71 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 6d7ebd2b-bf96-40b1-b176-aca4026ce490))
+    (pin "1" (uuid e0d32de3-8d07-46aa-ae59-8ed8a93ff36f))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "#PWR019") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "#PWR?") (unit 1)
         )
       )
@@ -1528,14 +1528,14 @@
     (property "LCSC" "C1525" (at 254 101.6 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 1d4ae775-71cc-4fed-b8bc-2ec64a1c8e0b))
-    (pin "2" (uuid f3b0b7fe-2505-4a72-bafc-46f8e5a31877))
+    (pin "1" (uuid f6107f01-822a-4c25-b52a-3a5bfae3f249))
+    (pin "2" (uuid e5db1af8-9ba9-484e-b87f-bcf5f0f14263))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "C4") (unit 1)
         )
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c"
           (reference "C?") (unit 1)
         )
       )
@@ -1557,14 +1557,7 @@
     (property "Datasheet" "" (at 67.31 129.54 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 94778d46-b4c7-4447-9ef1-f7cd88679448))
-    (instances
-      (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
-          (reference "#PWR09") (unit 1)
-        )
-      )
-    )
+    (pin "1" (uuid 308ed7a9-7586-4f75-ab5d-6d1e8a1ab01e))
   )
 
   (symbol (lib_id "power:GND") (at 76.2 129.54 0) (unit 1)
@@ -1582,14 +1575,7 @@
     (property "Datasheet" "" (at 76.2 129.54 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 2c64ad33-628c-42d6-8f00-4f89cb06e350))
-    (instances
-      (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
-          (reference "#PWR011") (unit 1)
-        )
-      )
-    )
+    (pin "1" (uuid ad1dfb70-f7c4-44a3-99fd-a42e6b1b6e6f))
   )
 
   (symbol (lib_id "power:GND") (at 57.15 132.08 0) (unit 1)
@@ -1607,14 +1593,7 @@
     (property "Datasheet" "" (at 57.15 132.08 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid f70ef596-e543-48af-b121-4f4005d704d7))
-    (instances
-      (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
-          (reference "#PWR08") (unit 1)
-        )
-      )
-    )
+    (pin "1" (uuid c71b24fc-9d91-4c99-a915-0ccad423d946))
   )
 
   (symbol (lib_id "Mechanical:MountingHole_Pad") (at 57.15 128.27 0) (unit 1)
@@ -1632,10 +1611,10 @@
     (property "Datasheet" "~" (at 57.15 128.27 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 332bd730-7c66-4280-a486-8e1f022ff58a))
+    (pin "1" (uuid 42fae4e8-705d-407f-9781-29754a120e50))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "H2") (unit 1)
         )
       )
@@ -1657,10 +1636,10 @@
     (property "Datasheet" "~" (at 67.31 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 95d49f29-8a21-4db5-81fd-68038021fb3f))
+    (pin "1" (uuid 2121aeae-0601-4a50-aa63-92264caf3b3c))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "H3") (unit 1)
         )
       )
@@ -1682,10 +1661,10 @@
     (property "Datasheet" "~" (at 76.2 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid ccb91564-8902-4d73-a51b-3d459bad5645))
+    (pin "1" (uuid 9d2e27a8-f28d-4805-964b-d21081692643))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "H4") (unit 1)
         )
       )
@@ -1707,10 +1686,10 @@
     (property "Datasheet" "~" (at 110.49 128.27 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid f7f1a601-542a-4fda-baf0-7286f3041b33))
+    (pin "1" (uuid 6bed6ede-b21a-448c-8ff3-a0c3efbedc12))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "TP2_5") (unit 1)
         )
       )
@@ -1732,10 +1711,10 @@
     (property "Datasheet" "~" (at 99.06 128.27 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid de63785e-be74-4ed3-beb8-333e65b0fef7))
+    (pin "1" (uuid 6e8a5c14-89c6-4f2b-b0f2-9c5d901f3e8c))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "TP1_GND1") (unit 1)
         )
       )
@@ -1757,14 +1736,7 @@
     (property "Datasheet" "" (at 93.98 134.62 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 6d536164-2d53-4bbd-b9b6-32399d8d3286))
-    (instances
-      (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
-          (reference "#PWR013") (unit 1)
-        )
-      )
-    )
+    (pin "1" (uuid cc6d5b53-b7e0-47b5-9721-d7415a9317e1))
   )
 
   (symbol (lib_id "Mechanical:MountingHole_Pad") (at 41.91 127 0) (unit 1)
@@ -1782,10 +1754,10 @@
     (property "Datasheet" "~" (at 41.91 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 819d7aa2-44fb-4906-83d9-9cdedd7af9a2))
+    (pin "1" (uuid bda061cc-9f5b-41e0-bdf4-4cba289a6458))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "H1") (unit 1)
         )
       )
@@ -1807,14 +1779,7 @@
     (property "Datasheet" "" (at 41.91 129.54 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 8d15b2b9-2d4e-46e3-98cc-c41615118374))
-    (instances
-      (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
-          (reference "#PWR07") (unit 1)
-        )
-      )
-    )
+    (pin "1" (uuid 32ea6c09-86a0-4256-8e18-23c1644e8a2e))
   )
 
   (symbol (lib_id "Connector:Screw_Terminal_01x02") (at 147.32 91.44 180) (unit 1)
@@ -1832,11 +1797,11 @@
     (property "Datasheet" "~" (at 147.32 91.44 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid efc8b63a-fddf-457a-a3f9-738c3ce52657))
-    (pin "2" (uuid 2ad37874-7166-46cf-96d4-3f21ff59b509))
+    (pin "1" (uuid d7750788-414f-4938-ab88-8d97bb8cbe2c))
+    (pin "2" (uuid 516c3e44-66b8-46d9-8fb9-a8cb47e231a0))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "J10") (unit 1)
         )
       )
@@ -1858,14 +1823,7 @@
     (property "Datasheet" "" (at 152.4 91.44 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid ea51302e-fd29-4a40-95f1-07c5f03288ff))
-    (instances
-      (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
-          (reference "#PWR044") (unit 1)
-        )
-      )
-    )
+    (pin "1" (uuid 5e226684-f6c7-4427-af93-74f42152dd00))
   )
 
   (symbol (lib_id "Connector:Screw_Terminal_01x02") (at 149.86 55.88 90) (unit 1)
@@ -1886,11 +1844,11 @@
     (property "Description" "TB007-508-02BE " (at 149.86 55.88 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 90dc45db-d02d-4f41-994f-502c437dbf52))
-    (pin "2" (uuid a2cc7e1c-4347-4d02-a5da-14d212aa8a08))
+    (pin "1" (uuid 6a05072a-4554-45f9-ae16-0b3990c767de))
+    (pin "2" (uuid 85a80ed3-8331-45dc-88e6-8eb78ebbd31d))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "J1") (unit 1)
         )
       )
@@ -1912,14 +1870,7 @@
     (property "Datasheet" "" (at 105.41 128.27 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 6729e04e-fd4b-443d-9af6-7fffb3f2efd0))
-    (instances
-      (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
-          (reference "#PWR015") (unit 1)
-        )
-      )
-    )
+    (pin "1" (uuid 87db92ea-1826-426b-b297-d8b63abf5b29))
   )
 
   (symbol (lib_id "Connector:TestPoint") (at 116.84 128.27 0) (unit 1)
@@ -1937,10 +1888,10 @@
     (property "Datasheet" "~" (at 121.92 128.27 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid bcae613b-8c82-4a46-a332-ba73de4b2a92))
+    (pin "1" (uuid f2fe253d-6ea3-4053-b0d9-a245d5febcad))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "TP3_3_3") (unit 1)
         )
       )
@@ -1962,14 +1913,7 @@
     (property "Datasheet" "" (at 116.84 128.27 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 765da96b-3d06-4940-a757-eb51a235e89e))
-    (instances
-      (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
-          (reference "#PWR041") (unit 1)
-        )
-      )
-    )
+    (pin "1" (uuid 00490e70-f427-47d7-a3c9-420c728893b3))
   )
 
   (symbol (lib_id "Connector:TestPoint") (at 129.54 127 0) (unit 1)
@@ -1987,10 +1931,10 @@
     (property "Datasheet" "~" (at 134.62 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 4a3680a5-8c7b-4ff8-8b3e-8b3d8405dda0))
+    (pin "1" (uuid 0ab06e78-20a4-4170-be0e-51727929f96c))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "TP4_12") (unit 1)
         )
       )
@@ -2012,14 +1956,7 @@
     (property "Datasheet" "" (at 116.84 59.69 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 5f8abd0e-52ef-4bbb-9be0-cce376c72104))
-    (instances
-      (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
-          (reference "#PWR018") (unit 1)
-        )
-      )
-    )
+    (pin "1" (uuid 4ad4e785-d9b4-47e5-bfe2-e82c2970cd38))
   )
 
   (symbol (lib_id "power:+12V") (at 129.54 127 180) (unit 1)
@@ -2037,14 +1974,7 @@
     (property "Datasheet" "" (at 129.54 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 5e3f80ae-1f54-4113-8ec6-c5b05bd053b0))
-    (instances
-      (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
-          (reference "#PWR038") (unit 1)
-        )
-      )
-    )
+    (pin "1" (uuid aefd8462-c2dd-4c82-935e-bc8dc01a7e79))
   )
 
   (symbol (lib_id "Connector:Screw_Terminal_01x02") (at 139.7 91.44 180) (unit 1)
@@ -2062,11 +1992,11 @@
     (property "Datasheet" "~" (at 139.7 91.44 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid ef180764-a382-4801-aff5-4d91b163fba8))
-    (pin "2" (uuid 9cc050cc-38c5-4b88-aad7-8baaaeb97f3d))
+    (pin "1" (uuid e645d37b-a7b3-40eb-be44-7be47616264e))
+    (pin "2" (uuid bc11747e-1502-42d6-abc6-213fbc922603))
     (instances
       (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
+        (path "/47aaa642-cf41-4a4c-b77d-3e3bf0a3114c/00000000-0000-0000-0000-00006220007f"
           (reference "J11") (unit 1)
         )
       )
@@ -2088,63 +2018,6 @@
     (property "Datasheet" "" (at 144.78 91.44 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid e16630cf-08bc-43c7-a7dd-8e7202c378ed))
-    (instances
-      (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
-          (reference "#PWR042") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "power:GND") (at 85.09 129.54 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 34f27c0b-6423-43f8-926b-e83f67e7a779)
-    (property "Reference" "#PWR049" (at 85.09 135.89 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "GND" (at 85.217 133.9342 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 85.09 129.54 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 85.09 129.54 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 74988af7-4463-40be-99b7-cbeb07bac0a4))
-    (instances
-      (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
-          (reference "#PWR049") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "Mechanical:MountingHole_Pad") (at 85.09 127 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid b961a448-6e7f-4c67-82ce-d51c95526670)
-    (property "Reference" "H5" (at 87.63 125.7554 0)
-      (effects (font (size 1.27 1.27)) (justify left))
-    )
-    (property "Value" " " (at 87.63 128.0668 0)
-      (effects (font (size 1.27 1.27)) (justify left))
-    )
-    (property "Footprint" "MountingHole:MountingHole_3.7mm_Pad" (at 85.09 127 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "~" (at 85.09 127 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 7e647df4-f99b-4c3c-a0ce-a79db255b90c))
-    (instances
-      (project "CameraTriggerSensorNodeOnly"
-        (path "/be0400c2-1232-4f08-847a-2fb9cb6273cc/00000000-0000-0000-0000-00006220007f"
-          (reference "H5") (unit 1)
-        )
-      )
-    )
+    (pin "1" (uuid 8ce974de-9180-404a-a729-895c9b7dcb62))
   )
 )

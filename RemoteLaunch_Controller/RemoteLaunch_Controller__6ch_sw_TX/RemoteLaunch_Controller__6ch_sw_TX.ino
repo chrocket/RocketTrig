@@ -4,7 +4,7 @@
 // Connections
 // J7 position 2 - continuity/arm
 // J7 position 3 - fire
-// J7 position 4 - Ch 1 activate
+// J7 position 4 - Ch 1 launch activate
 // J7 position 5 - Ch 2
 // J7 position 6 - Ch 3
 // J7 position 7 - Ch 4
@@ -12,8 +12,7 @@
 // J7 position 9 - Ch 6
 
 
-// J8 position 2
-// J8 position 3 - fire relay
+
 
 #include <Wire.h>
 //MCP23017 lib by Bertand Lemasle - install using Arduino IDE library manager
@@ -64,8 +63,8 @@ const unsigned int FIRE_CH6_PIN = 6;
 
 
 
-const unsigned int HEARTBEAT_REMOTE1_INDICATOR_OUT_PIN = 14;  // D_1 14 OUT_1 10
-const unsigned int HEARTBEAT_REMOTE2_INDICATOR_OUT_PIN = 17;   // D_2 16 OUT_2 17  // check
+const unsigned int HEARTBEAT_REMOTE1_INDICATOR_OUT_PIN = 10;  // J8 pos 10; j12
+const unsigned int HEARTBEAT_REMOTE2_INDICATOR_OUT_PIN = 21;   // J8 pos 11
 
 
 // Radio module stuff
@@ -290,7 +289,7 @@ NonBlockingTimer ch5(FIRE_TIME);
 NonBlockingTimer ch6(FIRE_TIME);
 NonBlockingTimer poll(FIRE_TIME);
 FireTimer  heartbeat1(HEARTBEAT_REMOTE1_INDICATOR_OUT_PIN, FIRE_TIME);
-
+FireTimer  heartbeat2(HEARTBEAT_REMOTE2_INDICATOR_OUT_PIN, FIRE_TIME);
 
 
 void setup() {
@@ -329,7 +328,7 @@ void setup() {
   ch6.init();
   poll.init();
   heartbeat1.init();
-
+  heartbeat2.init();
   radioInit() ;
 }
 
@@ -349,6 +348,7 @@ void loop() {
   ch6.check();
   poll.check();
   heartbeat1.check();
+  heartbeat2.check();
 
   // read state of push buttons
   uint8_t io_expander_inputs = mcp.readPort(MCP23017Port::B);
@@ -491,6 +491,7 @@ void loop() {
             heartbeat1.fire();
             Serial.println("Got poll 1");
      } else if (strstr(&test, "Q")) {
+            heartbeat2.fire();
             Serial.println("Got poll 2");
       }
     }
