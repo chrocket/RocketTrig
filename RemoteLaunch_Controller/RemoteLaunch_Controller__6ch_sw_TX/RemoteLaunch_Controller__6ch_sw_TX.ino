@@ -64,7 +64,12 @@ const unsigned int FIRE_CH6_PIN = 6;
 
 
 const unsigned int HEARTBEAT_REMOTE1_INDICATOR_OUT_PIN = PIN_A0;  // J8 pos 10; j12
-const unsigned int HEARTBEAT_REMOTE2_INDICATOR_OUT_PIN = PIN_A3;   // J8 pos 11
+const unsigned int HEARTBEAT_REMOTE2_INDICATOR_OUT_PIN = PIN_A3;  // J8 pos 11
+
+const unsigned int RX_PKT_RCV_PIN = PIN_PA12;
+const unsigned int TX_PKT_SNT_PIN = PIN_PA11;   
+
+
 
 
 // Radio module stuff
@@ -176,7 +181,7 @@ public:
 
 
 
-
+char chipid[32];
 void printChipId(char *buf) {
   volatile uint32_t val1, val2, val3, val4;
   volatile uint32_t *ptr1 = (volatile uint32_t *)0x0080A00C;
@@ -250,7 +255,7 @@ void radioInit() {
   // High power mode
   radio_m0.setTxPower(23, false);
   ///< Bw = 125 kHz, Cr = 4/8, Sf = 4096chips/symbol, low data rate, CRC on. Slow+long range
- // radio_m0.setModemConfig( RH_RF95::ModemConfigChoice::Bw125Cr48Sf4096);
+  // radio_m0.setModemConfig( RH_RF95::ModemConfigChoice::Bw125Cr48Sf4096);
 }
 
 
@@ -259,6 +264,7 @@ void radioSendPollTx() {
   radiopacket[0] = 'T';
   radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
   radio_m0.waitPacketSent();
+  digitalWrite(TX_PKT_SNT_PIN,HIGH);
 }
 
 
@@ -269,14 +275,9 @@ void radioSendFireCommand(uint8_t in) {
   radiopacket[1] = in;
   radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
   radio_m0.waitPacketSent();
-}
-void pollResponse() {
-  Serial.print("Got an id response back: ");
-  Serial.print((char *)buf);
-  Serial.print(", RSSI: ");
-  Serial.println(radio_m0.lastRssi(), DEC);
-  tone(BUZZER_OUT_PIN, 1500 /* hz*/, 100 /* ms */);
-}
+  digitalWrite(TX_PKT_SNT_PIN,HIGH);
+ }
+
 const unsigned int FIRE_TIME = 2000;  // 2 s
 NonBlockingTimer fire(FIRE_TIME);
 NonBlockingTimer arm(FIRE_TIME);
@@ -287,8 +288,8 @@ NonBlockingTimer ch4(FIRE_TIME);
 NonBlockingTimer ch5(FIRE_TIME);
 NonBlockingTimer ch6(FIRE_TIME);
 NonBlockingTimer poll(FIRE_TIME);
-FireTimer  heartbeat1(HEARTBEAT_REMOTE1_INDICATOR_OUT_PIN, FIRE_TIME);
-FireTimer  heartbeat2(HEARTBEAT_REMOTE2_INDICATOR_OUT_PIN, FIRE_TIME);
+FireTimer heartbeat1(HEARTBEAT_REMOTE1_INDICATOR_OUT_PIN, FIRE_TIME);
+FireTimer heartbeat2(HEARTBEAT_REMOTE2_INDICATOR_OUT_PIN, FIRE_TIME);
 
 
 
@@ -299,6 +300,13 @@ void setup() {
   Wire.begin();
 
   Serial.begin(19200);
+  pinMode(RX_PKT_RCV_PIN, OUTPUT);  //Rx
+  digitalWrite(RX_PKT_RCV_PIN, LOW);
+  digitalWrite(LED_PIN, LOW);
+  pinMode(TX_PKT_SNT_PIN, OUTPUT);  //Rx
+  digitalWrite(TX_PKT_SNT_PIN,  LOW);
+
+
 
 
   // 23017 i/o expander
@@ -317,7 +325,7 @@ void setup() {
   mcp.writePort(MCP23017Port::A, LOW);
   Serial.println("mcp init done");
 
- //init timers
+  //init timers
   fire.init();
   arm.init();
   ch1.init();
@@ -332,7 +340,7 @@ void setup() {
 
 
 
-  radioInit() ;
+  radioInit();
 }
 
 
@@ -354,27 +362,26 @@ void loop() {
   heartbeat2.check();
 
 
-  // read state of push 
+  // read state of push
   uint32_t t = millis();
   uint8_t io_expander_inputs = mcp.readPort(MCP23017Port::B);
   Serial.print(t);
   Serial.print(" ");
   Serial.println(io_expander_inputs);
-  
+
   if (io_expander_inputs) {
     Serial.print(t);
     Serial.print(" Got = ");
     Serial.println(io_expander_inputs, BIN);
-   
   }
- bool stateContinuityArmSwitch = B00000001 & io_expander_inputs;
-  bool stateFireCommandSwitch   = B00000010 & io_expander_inputs;
-  bool stateCh1ActiveSwitch     = B00000100 & io_expander_inputs;
-  bool stateCh2ActiveSwitch     = B00001000 & io_expander_inputs;
-  bool stateCh3ActiveSwitch     = B00010000 & io_expander_inputs;
-  bool stateCh4ActiveSwitch     = B00100000 & io_expander_inputs;
-  bool stateCh5ActiveSwitch     = B01000000 & io_expander_inputs;
-  bool stateCh6ActiveSwitch     = B10000000 & io_expander_inputs;
+  bool stateContinuityArmSwitch = B00000001 & io_expander_inputs;
+  bool stateFireCommandSwitch = B00000010 & io_expander_inputs;
+  bool stateCh1ActiveSwitch = B00000100 & io_expander_inputs;
+  bool stateCh2ActiveSwitch = B00001000 & io_expander_inputs;
+  bool stateCh3ActiveSwitch = B00010000 & io_expander_inputs;
+  bool stateCh4ActiveSwitch = B00100000 & io_expander_inputs;
+  bool stateCh5ActiveSwitch = B01000000 & io_expander_inputs;
+  bool stateCh6ActiveSwitch = B10000000 & io_expander_inputs;
   if (stateContinuityArmSwitch) {
     Serial.println("  ... Got arm");
   }
@@ -399,91 +406,100 @@ void loop() {
   if (stateCh6ActiveSwitch) {
     Serial.println("  ... Ch 6");
   }
-
-
-  if (stateFireCommandSwitch) {
-    fire.fire();
-  }
   if (stateContinuityArmSwitch) {
-    arm.fire();
-    Serial.println("Relay ... arm out");
-    if (fire.check()) {
-      if (stateCh1ActiveSwitch
-          || stateCh2ActiveSwitch
-          || stateCh3ActiveSwitch
-          || stateCh4ActiveSwitch
-          || stateCh5ActiveSwitch
-          || stateCh6ActiveSwitch) {
-        if (stateCh1ActiveSwitch) {
-          ch1.fire();
-        }
-        if (stateCh2ActiveSwitch) {
-          ch2.fire();
-        }
-        if (stateCh3ActiveSwitch) {
-          ch3.fire();
-        }
-        if (stateCh4ActiveSwitch) {
-          ch4.fire();
-        }
-        if (stateCh5ActiveSwitch) {
-          ch5.fire();
-        }
-        if (stateCh6ActiveSwitch) {
-          ch6.fire();
-        }
-        Serial.print("Sending: ");
-        Serial.println(io_expander_inputs, BIN);
-        radioSendFireCommand(io_expander_inputs);
-        
-      }
+    if (!arm.check()) {
+      arm.fire();
+      Serial.println("Relay ... arm out");
+      mcp.digitalWrite(ARM_OUT_PIN, HIGH);
     }
-  } else {
-    arm.clear();
+  }
+  if (stateFireCommandSwitch) {
+    if (!fire.check()) {
+      fire.fire();
+    }
+  }
+
+  if (fire.check() && arm.check()) {
+    if (stateCh1ActiveSwitch
+        || stateCh2ActiveSwitch
+        || stateCh3ActiveSwitch
+        || stateCh4ActiveSwitch
+        || stateCh5ActiveSwitch
+        || stateCh6ActiveSwitch) {
+      if (stateCh1ActiveSwitch) {
+        ch1.fire();
+        mcp.digitalWrite(FIRE_CH1_PIN, HIGH);
+        Serial.println("Ch 1 relay");
+      }
+      if (stateCh2ActiveSwitch) {
+        ch2.fire();
+        mcp.digitalWrite(FIRE_CH2_PIN, HIGH);
+        Serial.println("Ch 2 relay");
+      }
+      if (stateCh3ActiveSwitch) {
+        ch3.fire();
+        mcp.digitalWrite(FIRE_CH3_PIN, HIGH);
+        Serial.println("Ch 3 relay");
+      }
+      if (stateCh4ActiveSwitch) {
+        ch4.fire();
+        mcp.digitalWrite(FIRE_CH4_PIN, HIGH);
+        Serial.println("Ch 4 relay");
+      }
+      if (stateCh5ActiveSwitch) {
+        ch5.fire();
+        mcp.digitalWrite(FIRE_CH5_PIN, HIGH);
+        Serial.println("Ch 5 relay");
+      }
+      if (stateCh6ActiveSwitch) {
+        ch6.fire();
+        mcp.digitalWrite(FIRE_CH6_PIN, HIGH);
+        Serial.println("Ch 6 relay");
+      }
+
+      Serial.print("Sending: ");
+      Serial.println(io_expander_inputs, BIN);
+      radioSendFireCommand(io_expander_inputs);
+    }
+  }
+
+  if(  !arm.check()){
     mcp.digitalWrite(ARM_OUT_PIN, LOW);
   }
 
+   if(arm.check()){
+    //    tone(BUZZER_OUT_PIN, 1500 /* hz*/, 40 /* ms */);
+   }
+  
 
-  if (!fire.check()) {
-      // Note: only ch 1 and ch 2 on controller station
-    ch1.clear();
-    ch2.clear();
-
+  if (!ch1.check()) {
     mcp.digitalWrite(FIRE_CH1_PIN, LOW);
+  }
+  if (!ch2.check()) {
     mcp.digitalWrite(FIRE_CH2_PIN, LOW);
-    Serial.println("Clearing all relays");
   }
-  if (arm.check()) {
-    mcp.digitalWrite(ARM_OUT_PIN, HIGH);
- //    tone(BUZZER_OUT_PIN, 1500 /* hz*/, 40 /* ms */);
-  }
-  if (ch1.check()) {
-    mcp.digitalWrite(FIRE_CH1_PIN, HIGH);
-    Serial.println("Ch 1 relay");
-  }
-  if (ch2.check()) {
-    mcp.digitalWrite(FIRE_CH2_PIN, HIGH);
-    Serial.println("Ch 2 relay");
-  }
-  if (ch3.check()) {
-    mcp.digitalWrite(FIRE_CH3_PIN, HIGH);
+  if (!ch3.check()) {
+    mcp.digitalWrite(FIRE_CH3_PIN, LOW);
   }
 
-  if (ch4.check()) {
-    mcp.digitalWrite(FIRE_CH4_PIN, HIGH);
+  if (!ch4.check()) {
+    mcp.digitalWrite(FIRE_CH4_PIN, LOW);
   }
 
-  if (ch5.check()) {
-    mcp.digitalWrite(FIRE_CH5_PIN, HIGH);
+  if (!ch5.check()) {
+    mcp.digitalWrite(FIRE_CH5_PIN, LOW);
   }
 
-  if (ch6.check()) {
-    mcp.digitalWrite(FIRE_CH6_PIN, HIGH);
+  if (!ch6.check()) {
+    mcp.digitalWrite(FIRE_CH6_PIN, LOW);
   }
   if( !poll.check()){
-    radioSendPollTx(); 
-    Serial.println("Sending Poll Tx");
+    radioSendPollTx();
+    Serial.print("Sending Poll Tx ");
+    Serial.println(chipid);
     poll.fire();
+ 
+
   }
 
   // Receive commands
@@ -497,17 +513,20 @@ void loop() {
       Serial.print("RX rcvd, rssi = ");
       Serial.print(rssi);
       Serial.println(buf[1]);
+      digitalWrite(RX_PKT_RCV_PIN, HIGH);
       char test = buf[0];
       if (strstr(&test, "P")) {
-            heartbeat1.fire();
-            Serial.println("Got poll 1");
-     } else if (strstr(&test, "Q")) {
-            heartbeat2.fire();
-            Serial.println("Got poll 2");
+        heartbeat1.fire();
+        Serial.println("Got poll 1");
+      } else if (strstr(&test, "Q")) {
+        heartbeat2.fire();
+        Serial.println("Got poll 2");
       }
     }
   }
 
   //delay(50);
-    delay(200);
+    delay(400);
+    digitalWrite(RX_PKT_RCV_PIN, LOW);
+    digitalWrite(TX_PKT_SNT_PIN, LOW);
 }
