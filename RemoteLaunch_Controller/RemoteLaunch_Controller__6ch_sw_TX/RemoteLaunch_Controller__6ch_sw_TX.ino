@@ -63,8 +63,8 @@ const unsigned int FIRE_CH6_PIN = 6;
 
 
 
-const unsigned int HEARTBEAT_REMOTE1_INDICATOR_OUT_PIN = 10;  // J8 pos 10; j12
-const unsigned int HEARTBEAT_REMOTE2_INDICATOR_OUT_PIN = 21;   // J8 pos 11
+const unsigned int HEARTBEAT_REMOTE1_INDICATOR_OUT_PIN = PIN_A0;  // J8 pos 10; j12
+const unsigned int HEARTBEAT_REMOTE2_INDICATOR_OUT_PIN = PIN_A3;   // J8 pos 11
 
 
 // Radio module stuff
@@ -93,8 +93,7 @@ RH_RF95 radio_m0(RFM95_CS, RFM95_INT);  // Adafruit 3178
 
 // ISM 33cm band USA 902-928 MHZ
 #define FREQ 920.3
-#define RF95_FREQ FREQ
-#define RF69_FREQ FREQ
+
 
 
 
@@ -292,6 +291,7 @@ FireTimer  heartbeat1(HEARTBEAT_REMOTE1_INDICATOR_OUT_PIN, FIRE_TIME);
 FireTimer  heartbeat2(HEARTBEAT_REMOTE2_INDICATOR_OUT_PIN, FIRE_TIME);
 
 
+
 void setup() {
 #ifdef DEBUG
   while (!Serial) {}  // wait for serial port to connect.
@@ -329,6 +329,9 @@ void setup() {
   poll.init();
   heartbeat1.init();
   heartbeat2.init();
+
+
+
   radioInit() ;
 }
 
@@ -350,10 +353,14 @@ void loop() {
   heartbeat1.check();
   heartbeat2.check();
 
-  // read state of push buttons
-  uint8_t io_expander_inputs = mcp.readPort(MCP23017Port::B);
 
+  // read state of push 
   uint32_t t = millis();
+  uint8_t io_expander_inputs = mcp.readPort(MCP23017Port::B);
+  Serial.print(t);
+  Serial.print(" ");
+  Serial.println(io_expander_inputs);
+  
   if (io_expander_inputs) {
     Serial.print(t);
     Serial.print(" Got = ");
@@ -438,23 +445,25 @@ void loop() {
 
 
   if (!fire.check()) {
+      // Note: only ch 1 and ch 2 on controller station
     ch1.clear();
     ch2.clear();
-    ch3.clear();
-    ch4.clear();
-    ch5.clear();
-    ch6.clear();
-    mcp.writePort(MCP23017Port::A, LOW);
+
+    mcp.digitalWrite(FIRE_CH1_PIN, LOW);
+    mcp.digitalWrite(FIRE_CH2_PIN, LOW);
+    Serial.println("Clearing all relays");
   }
   if (arm.check()) {
     mcp.digitalWrite(ARM_OUT_PIN, HIGH);
-     tone(BUZZER_OUT_PIN, 1500 /* hz*/, 40 /* ms */);
+ //    tone(BUZZER_OUT_PIN, 1500 /* hz*/, 40 /* ms */);
   }
   if (ch1.check()) {
     mcp.digitalWrite(FIRE_CH1_PIN, HIGH);
+    Serial.println("Ch 1 relay");
   }
   if (ch2.check()) {
     mcp.digitalWrite(FIRE_CH2_PIN, HIGH);
+    Serial.println("Ch 2 relay");
   }
   if (ch3.check()) {
     mcp.digitalWrite(FIRE_CH3_PIN, HIGH);
@@ -484,7 +493,9 @@ void loop() {
       if (!len) return;
       // buf[len] = 0;
       buf[5] = 0;
-      Serial.print("RX got ...");
+      float rssi = radio_m0.lastRssi();
+      Serial.print("RX rcvd, rssi = ");
+      Serial.print(rssi);
       Serial.println(buf[1]);
       char test = buf[0];
       if (strstr(&test, "P")) {
@@ -497,6 +508,6 @@ void loop() {
     }
   }
 
-  delay(50);
-  //  delay(1000);
+  //delay(50);
+    delay(200);
 }

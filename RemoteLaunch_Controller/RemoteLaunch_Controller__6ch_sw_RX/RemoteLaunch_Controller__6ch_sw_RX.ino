@@ -83,8 +83,7 @@ RH_RF95 radio_m0(RFM95_CS, RFM95_INT);  // Adafruit 3178
 
 // ISM 33cm band USA 902-928 MHZ
 #define FREQ 920.3
-#define RF95_FREQ FREQ
-#define RF69_FREQ FREQ
+
 
 
 
@@ -278,15 +277,11 @@ void setup() {
   // 23017 i/o expander
   mcp.init();
   mcp.portMode(MCP23017Port::A, 0);           //Port A as output
-  mcp.portMode(MCP23017Port::B, 0b11111111);  //Port B as input
+
 
   mcp.writeRegister(MCP23017Register::GPIO_A, 0x00);  //Reset port A
-  mcp.writeRegister(MCP23017Register::GPIO_B, 0x00);  //Reset port B
+ 
 
-  // Invert inputs (press a button to lit a led (button press gives a "1")
-  mcp.writeRegister(MCP23017Register::IPOL_B, 0xFF);
-  // Pull up resisters
-  mcp.writeRegister(MCP23017Register::GPPU_B, 0b11111111);
 
   mcp.writePort(MCP23017Port::A, LOW);
   Serial.println("mcp init done");
@@ -324,7 +319,7 @@ void loop() {
   poll.check();
   txheartbeat.check();
 
-
+   mcp.writePort(MCP23017Port::A, LOW);
 
   uint32_t t = millis();
   if (io_expander_inputs) {
@@ -425,7 +420,13 @@ void loop() {
       ch4.clear();
       ch5.clear();
       ch6.clear();
-      mcp.writePort(MCP23017Port::A, LOW);
+      mcp.digitalWrite(FIRE_CH1_PIN, LOW);
+      mcp.digitalWrite(FIRE_CH2_PIN, LOW);
+      mcp.digitalWrite(FIRE_CH3_PIN, LOW);
+      mcp.digitalWrite(FIRE_CH4_PIN, LOW);
+      mcp.digitalWrite(FIRE_CH5_PIN, LOW);
+      mcp.digitalWrite(FIRE_CH6_PIN, LOW);
+  
     }
     if (arm.check()) {
       mcp.digitalWrite(ARM_OUT_PIN, HIGH);
@@ -456,11 +457,9 @@ void loop() {
       Serial.println("Relay .. ch6 out");
     }
   }
-  if( !fire.check() || !arm.check()){
-   mcp.writePort(MCP23017Port::A, LOW);
-  }
+
    if( !poll.check()){
-    radioSendPoll1(); 
+  //  radioSendPoll1(); 
     poll.fire();
     Serial.println("Sending poll");
   }
@@ -470,8 +469,8 @@ void loop() {
 
     if (radio_m0.available()) {
       uint8_t len = sizeof(buf);
-  //    Serial.print("RX got ...");
-  //    Serial.println(buf[1]);
+      Serial.print("RX got ...");
+      Serial.println(buf[1]);
       if (radio_m0.recv(buf, &len)) {
         if (!len) return;
         // buf[len] = 0;
