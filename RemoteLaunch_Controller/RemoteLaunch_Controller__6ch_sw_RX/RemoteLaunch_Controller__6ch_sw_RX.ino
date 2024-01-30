@@ -54,7 +54,7 @@ const unsigned int FIRE_CH5_PIN = 5;
 const unsigned int FIRE_CH6_PIN = 6;
 
 const unsigned int RX_PKT_RCV_PIN = PIN_PA12;
-const unsigned int TX_PKT_SNT_PIN = PIN_PA11;   
+const unsigned int TX_PKT_SNT_PIN = PIN_PA11;
 
 
 const unsigned int HEARTBEAT_TX_INDICATOR_OUT_PIN = PIN_A0;  // // J8 pos 11
@@ -233,29 +233,27 @@ void radioInit() {
   Serial.print("Set Freq to: ");
   Serial.println(FREQ);
 
- // High power mode
+  // High power mode
   radio_m0.setTxPower(23, false);
   ///< Bw = 125 kHz, Cr = 4/8, Sf = 4096chips/symbol, low data rate, CRC on. Slow+long range
-//  radio_m0.setModemConfig( RH_RF95::ModemConfigChoice::Bw125Cr48Sf4096);
-
-
-
+  //  radio_m0.setModemConfig( RH_RF95::ModemConfigChoice::Bw125Cr48Sf4096);
 }
 
 void radioSendPollRx() {
   // Poll requeset to destination nodes
-  if(strcmp("9b088c8b5153593546202020ff06270a", chipid))
+  if (strcmp("9b088c8b5153593546202020ff06270a", chipid))
     radiopacket[0] = 'P';
   else
-   radiopacket[0] = 'Q';
+    radiopacket[0] = 'Q';
   radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
   radio_m0.waitPacketSent();
   digitalWrite(PIN_PA11, HIGH);
 }
 
 const unsigned int FIRE_TIME = 2000;  // 2 s
+const unsigned int ARM_TIME = 4000;
 NonBlockingTimer fire(FIRE_TIME);
-NonBlockingTimer arm(FIRE_TIME);
+NonBlockingTimer arm(ARM_TIME);
 NonBlockingTimer ch1(FIRE_TIME);
 NonBlockingTimer ch2(FIRE_TIME);
 NonBlockingTimer ch3(FIRE_TIME);
@@ -266,16 +264,17 @@ NonBlockingTimer poll(FIRE_TIME);
 FireTimer txheartbeat(HEARTBEAT_TX_INDICATOR_OUT_PIN, FIRE_TIME);
 
 uint8_t io_expander_inputs = 0;
+uint32_t tstart=0;
 
 void setup() {
 
-//  while (!Serial) {}  // wait for serial port to connect.
+  //  while (!Serial) {}  // wait for serial port to connect.
 
-  
+
   digitalWrite(LED_BUILTIN, LOW);
 
   pinMode(RX_PKT_RCV_PIN, OUTPUT);
-  pinMode(PIN_PA11, OUTPUT); 
+  pinMode(PIN_PA11, OUTPUT);
 
   Wire.begin();
 
@@ -284,17 +283,17 @@ void setup() {
 
   // 23017 i/o expander
   mcp.init();
-  mcp.portMode(MCP23017Port::A, 0);           //Port A as output
+  mcp.portMode(MCP23017Port::A, 0);  //Port A as output
 
 
   mcp.writeRegister(MCP23017Register::GPIO_A, 0x00);  //Reset port A
- 
+
 
 
   mcp.writePort(MCP23017Port::A, LOW);
   Serial.println("mcp init done");
 
- //init timers
+  //init timers
   fire.init();
   arm.init();
   ch1.init();
@@ -310,6 +309,13 @@ void setup() {
   radioInit();
 }
 
+bool ch1_last_state = 0;
+bool ch2_last_state = 0;
+bool ch3_last_state = 0;
+bool ch4_last_state = 0;
+bool ch5_last_state = 0;
+bool ch6_last_state = 0;
+bool arm_last_state = 0;
 
 
 void loop() {
@@ -327,7 +333,7 @@ void loop() {
   poll.check();
   txheartbeat.check();
 
-   mcp.writePort(MCP23017Port::A, LOW);
+  mcp.writePort(MCP23017Port::A, LOW);
 
   uint32_t t = millis();
   if (io_expander_inputs) {
@@ -343,7 +349,7 @@ void loop() {
   bool stateCh4ActiveSwitch = B00100000 & io_expander_inputs;
   bool stateCh5ActiveSwitch = B01000000 & io_expander_inputs;
   bool stateCh6ActiveSwitch = B10000000 & io_expander_inputs;
-  
+
   if (stateContinuityArmSwitch) {
     Serial.println("  ... Got arm");
   }
@@ -371,134 +377,139 @@ void loop() {
 
 
   if (stateFireCommandSwitch) {
-      fire.fire();
+    fire.fire();
   }
   if (stateContinuityArmSwitch) {
     if (!arm.check()) {
       arm.fire();
       mcp.digitalWrite(ARM_OUT_PIN, HIGH);
-      Serial.println("Relay ... arm out");
-    }
- 
-    if (fire.check() && arm.check()) {
-        if (stateCh1ActiveSwitch) {
-          if (!ch1.check()) {
-            ch1.fire();
-            mcp.digitalWrite(FIRE_CH1_PIN, HIGH);
-            Serial.println("Relay .. ch1 out");
-          }
-        }
-        if (stateCh2ActiveSwitch) {
-          if (!ch2.check()) {
-            ch2.fire();
-            mcp.digitalWrite(FIRE_CH2_PIN, HIGH);
-            Serial.println("Relay .. ch2 out");
-          }
-        }
-        if (stateCh3ActiveSwitch) {
-          if (!ch3.check()) {
-            ch3.fire();
-            mcp.digitalWrite(FIRE_CH3_PIN, HIGH);
-            Serial.println("Relay .. ch3 out");
-
-          }
-        }
-        if (stateCh4ActiveSwitch) {
-          if (!ch4.check()) {
-            ch4.fire();
-            mcp.digitalWrite(FIRE_CH4_PIN, HIGH);
-            Serial.println("Relay .. ch4 out");
-
-          }
-        }
-        if (stateCh5ActiveSwitch) {
-          if (!ch5.check()) {
-            mcp.digitalWrite(FIRE_CH5_PIN, HIGH);
-            Serial.println("Relay .. ch5 out");
-
-            ch5.fire();
-          }
-        }
-        if (stateCh6ActiveSwitch) {
-          if (!ch6.check()) {
-            ch6.fire();
-            mcp.digitalWrite(FIRE_CH6_PIN, HIGH);
-            Serial.println("Relay .. ch6 out");
-
-          }
-        }
-      
-    }
-    if (!arm.check()) {
-      mcp.digitalWrite(ARM_OUT_PIN, LOW);
-    }
-
-    if (!ch1.check()) {
-      mcp.digitalWrite(FIRE_CH1_PIN, LOW);
-    }
-    if (!ch2.check()) {
-      mcp.digitalWrite(FIRE_CH2_PIN, LOW);
-    }
-    if (!ch3.check()) {
-      mcp.digitalWrite(FIRE_CH3_PIN, HIGH);
-    }
-    if (ch4.check()) {
-      mcp.digitalWrite(FIRE_CH4_PIN, LOW);
-    }
-    if (!ch5.check()) {
-      mcp.digitalWrite(FIRE_CH5_PIN, HIGH);
-    }
-    if (!ch6.check()) {
-      mcp.digitalWrite(FIRE_CH6_PIN, LOW);
+      Serial.print(t);
+      Serial.println(" Relay ... arm out");
+      arm_last_state = true;
     }
   }
+  if (fire.check() && arm.check()) {
+    if (stateCh1ActiveSwitch) {
+      if (!ch1.check()) {
+        ch1.fire();
+        mcp.digitalWrite(FIRE_CH1_PIN, HIGH);
+        Serial.println("Relay .. ch1 out");
+      }
+    }
+    if (stateCh2ActiveSwitch) {
+      if (!ch2.check()) {
+        ch2.fire();
+        mcp.digitalWrite(FIRE_CH2_PIN, HIGH);
+        Serial.println("Relay .. ch2 out");
+      }
+    }
+    if (stateCh3ActiveSwitch) {
+      if (!ch3.check()) {
+        ch3.fire();
+        mcp.digitalWrite(FIRE_CH3_PIN, HIGH);
+        Serial.println("Relay .. ch3 out");
+      }
+    }
+    if (stateCh4ActiveSwitch) {
+      if (!ch4.check()) {
+        ch4.fire();
+        mcp.digitalWrite(FIRE_CH4_PIN, HIGH);
+        Serial.println("Relay .. ch4 out");
+      }
+    }
+    if (stateCh5ActiveSwitch) {
+      if (!ch5.check()) {
+        mcp.digitalWrite(FIRE_CH5_PIN, HIGH);
+        Serial.println("Relay .. ch5 out");
 
-   if( !poll.check()){
+        ch5.fire();
+      }
+    }
+    if (stateCh6ActiveSwitch) {
+      if (!ch6.check()) {
+        ch6.fire();
+        mcp.digitalWrite(FIRE_CH6_PIN, HIGH);
+        Serial.print(t);
+        tstart=t;
+        Serial.println(" Relay .. ch6 out");
+        ch6_last_state = true;
+      }
+    }
+  }
+  if (arm_last_state && !arm.check()) {
+    mcp.digitalWrite(ARM_OUT_PIN, LOW);
+    Serial.print(t);
+    Serial.println(" Arm relay clear");
+    arm_last_state = false;
+  }
+
+  if (!ch1.check()) {
+    mcp.digitalWrite(FIRE_CH1_PIN, LOW);
+  }
+  if (!ch2.check()) {
+    mcp.digitalWrite(FIRE_CH2_PIN, LOW);
+  }
+  if (!ch3.check()) {
+    mcp.digitalWrite(FIRE_CH3_PIN, HIGH);
+  }
+  if (ch4.check()) {
+    mcp.digitalWrite(FIRE_CH4_PIN, LOW);
+  }
+  if (!ch5.check()) {
+    mcp.digitalWrite(FIRE_CH5_PIN, LOW);
+  }
+  if ( (ch6_last_state==true) && !ch6.check() ){
+    mcp.digitalWrite(FIRE_CH6_PIN, LOW);
+    Serial.print(t);
+    Serial.println(" Ch6 relay clear");
+    uint32_t ton = t-tstart;
+    Serial.println("**************************");
+    Serial.print("ch 6 on time: ");
+    Serial.println(ton);
+    Serial.println("**************************");
+    ch6_last_state = false;
+  }
+
+
+  if (!poll.check()) {
     printChipId(chipid);
-    radioSendPollRx(); 
+    radioSendPollRx();
     poll.fire();
     Serial.print("Sending poll ");
     Serial.println(chipid);
- 
   }
-    // Receive commands
-    io_expander_inputs = 0;
+  // Receive commands
+  io_expander_inputs = 0;
 
 
-    if (radio_m0.available()) {
-      uint8_t len = sizeof(buf);
-      float rssi = radio_m0.lastRssi();
-      digitalWrite(RX_PKT_RCV_PIN, HIGH);
-      Serial.print("RX rcvd, rssi = ");
-      Serial.print(rssi);
-      Serial.println(buf[1]);
-      if (radio_m0.recv(buf, &len)) {
-        if (!len) return;
-        // buf[len] = 0;
-        buf[5] = 0;
-        char test = buf[0];
-        if (strstr(&test, "T")) {  // Tx heartbeat
-          txheartbeat.fire();
-          Serial.println("RX got ...heartbeat");
-        } else if (strstr(&test, "C")) {
-            Serial.println("RX got ...Clear");
-            mcp.writePort(MCP23017Port::A, LOW);
-        } else if (strstr(&test, "F")) {
-          io_expander_inputs = buf[1];
-          Serial.print("RX got ...fire: ");
-          Serial.println(io_expander_inputs);
-          
-
-        }
+  if (radio_m0.available()) {
+    uint8_t len = sizeof(buf);
+    float rssi = radio_m0.lastRssi();
+    digitalWrite(RX_PKT_RCV_PIN, HIGH);
+    Serial.print("RX rcvd, rssi = ");
+    Serial.print(rssi);
+    Serial.println(buf[1]);
+    if (radio_m0.recv(buf, &len)) {
+      if (!len) return;
+      // buf[len] = 0;
+      buf[5] = 0;
+      char test = buf[0];
+      if (strstr(&test, "T")) {  // Tx heartbeat
+        txheartbeat.fire();
+        Serial.println("RX got ...heartbeat");
+      } else if (strstr(&test, "C")) {
+        Serial.println("RX got ...Clear");
+        mcp.writePort(MCP23017Port::A, LOW);
+      } else if (strstr(&test, "F")) {
+        io_expander_inputs = buf[1];
+        Serial.print("RX got ...fire: ");
+        Serial.println(io_expander_inputs);
       }
     }
+  }
 
-    delay(50);
-    //  delay(1000);
-    digitalWrite(RX_PKT_RCV_PIN, LOW);
-    digitalWrite(PIN_PA11, LOW);
-
-
-      
-  
+  delay(50);
+  //  delay(1000);
+  digitalWrite(RX_PKT_RCV_PIN, LOW);
+  digitalWrite(PIN_PA11, LOW);
 }
