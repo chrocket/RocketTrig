@@ -333,8 +333,6 @@ void loop() {
   poll.check();
   txheartbeat.check();
 
-  mcp.writePort(MCP23017Port::A, LOW);
-
   uint32_t t = millis();
   if (io_expander_inputs) {
     Serial.print(t);
