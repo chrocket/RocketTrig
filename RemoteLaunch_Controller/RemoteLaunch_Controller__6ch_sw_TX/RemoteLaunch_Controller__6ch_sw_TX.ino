@@ -277,6 +277,19 @@ void radioSendFireCommand(uint8_t in) {
   radio_m0.waitPacketSent();
   digitalWrite(TX_PKT_SNT_PIN,HIGH);
  }
+ void radioSendArmCommand() {
+  // Trigger destination nodes
+  radiopacket[0] = 'A';
+  radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
+  radio_m0.waitPacketSent();
+ }
+ void radioSendDisArmCommand() {
+  // Trigger destination nodes
+  radiopacket[0] = 'C';
+  radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
+  radio_m0.waitPacketSent();
+ }
+
 
 const unsigned int FIRE_TIME = 2000;  // 2 s
 NonBlockingTimer fire(FIRE_TIME);
@@ -291,6 +304,7 @@ NonBlockingTimer poll(FIRE_TIME);
 FireTimer heartbeat1(HEARTBEAT_REMOTE1_INDICATOR_OUT_PIN, FIRE_TIME);
 FireTimer heartbeat2(HEARTBEAT_REMOTE2_INDICATOR_OUT_PIN, FIRE_TIME);
 
+bool lastArmState=false;
 
 
 void setup() {
@@ -468,7 +482,8 @@ void loop() {
   }
 
    if(arm.check()){
-    //    tone(BUZZER_OUT_PIN, 1500 /* hz*/, 40 /* ms */);
+     // tone(BUZZER_OUT_PIN, 1500 /* hz*/, 40 /* ms */);
+     Serial.println("BEEEEEEEEEEEEEEEEEPPPPPPPPPPPPPPPPPPP");
    }
   
 
@@ -502,6 +517,16 @@ void loop() {
 
   }
 
+    if(lastArmState != arm.check()){
+      if(lastArmState){
+        lastArmState=false;
+          radioSendDisArmCommand();
+      }else{
+          radioSendArmCommand();
+          lastArmState=true;
+      }
+    }
+
   // Receive commands
   if (radio_m0.available()) {
     uint8_t len = sizeof(buf);
@@ -524,9 +549,7 @@ void loop() {
       }
     }
   }
-
-  //delay(50);
-    delay(400);
+    delay(100);
     digitalWrite(RX_PKT_RCV_PIN, LOW);
     digitalWrite(TX_PKT_SNT_PIN, LOW);
 }

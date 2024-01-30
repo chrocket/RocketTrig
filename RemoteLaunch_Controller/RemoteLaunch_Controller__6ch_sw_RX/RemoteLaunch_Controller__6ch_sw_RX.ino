@@ -316,6 +316,8 @@ bool ch4_last_state = 0;
 bool ch5_last_state = 0;
 bool ch6_last_state = 0;
 bool arm_last_state = 0;
+bool transmitterSideArmState=false;
+
 
 
 void loop() {
@@ -496,8 +498,12 @@ void loop() {
         txheartbeat.fire();
         Serial.println("RX got ...heartbeat");
       } else if (strstr(&test, "C")) {
-        Serial.println("RX got ...Clear");
+        Serial.println("RX got ...Clear Arm");
+        transmitterSideArmState = false;
         mcp.writePort(MCP23017Port::A, LOW);
+      } else if (strstr(&test, "A")) {
+        Serial.println("RX got ...Arm");
+        transmitterSideArmState = true;
       } else if (strstr(&test, "F")) {
         io_expander_inputs = buf[1];
         Serial.print("RX got ...fire: ");
@@ -506,6 +512,13 @@ void loop() {
     }
   }
 
+
+
+   if(transmitterSideArmState){
+      tone(BUZZER_OUT_PIN, 1500 /* hz*/, 40 /* ms */);
+    Serial.println("BEEEEEEEEEEEEEEEEEPPPPPPPPPPPPPPPPPPP");
+   }
+  
   delay(50);
   //  delay(1000);
   digitalWrite(RX_PKT_RCV_PIN, LOW);
