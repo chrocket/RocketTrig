@@ -1,11 +1,11 @@
 EESchema-LIBRARY Version 2.4
 #encoding utf-8
 #
-# 3178-SamacSys_Parts
+# 3178-SamacSys_Parts-CameraTriggerSensorNodeOnly-rescue
 #
-DEF 3178-SamacSys_Parts IC 0 30 Y Y 1 F N
+DEF 3178-SamacSys_Parts-CameraTriggerSensorNodeOnly-rescue IC 0 30 Y Y 1 F N
 F0 "IC" 1950 600 50 H V L CNN
-F1 "3178-SamacSys_Parts" 1950 500 50 H V L CNN
+F1 "3178-SamacSys_Parts-CameraTriggerSensorNodeOnly-rescue" 1950 500 50 H V L CNN
 F2 "3178" 1950 400 50 H I L CNN
 F3 "https://www.adafruit.com/product/3178" 1950 300 50 H I L CNN
 F4 "Adafruit Feather M0 with RFM95 LoRa Radio - 900MHz - RadioFruit" 1950 200 50 H I L CNN "Description"

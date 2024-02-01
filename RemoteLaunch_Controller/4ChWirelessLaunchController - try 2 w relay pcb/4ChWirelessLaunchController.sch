@@ -1,6 +1,5 @@
-EESchema Schematic File Version 4
-LIBS:4ChWirelessLaunchController-cache
-EELAYER 30 0
+EESchema Schematic File Version 5
+EELAYER 43 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -13,6 +12,11 @@ Comment1 ""
 Comment2 ""
 Comment3 ""
 Comment4 ""
+Comment5 ""
+Comment6 ""
+Comment7 ""
+Comment8 ""
+Comment9 ""
 $EndDescr
 $Sheet
 S 6000 1900 3450 2350
