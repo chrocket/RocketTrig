@@ -57,7 +57,7 @@ const unsigned int RX_PKT_RCV_PIN = PIN_PA12;
 const unsigned int TX_PKT_SNT_PIN = PIN_PA11;
 
 
-const unsigned int HEARTBEAT_TX_INDICATOR_OUT_PIN = PIN_A0;  // // J8 pos 11
+const unsigned int HEARTBEAT_TX_INDICATOR_OUT_PIN = PIN_A3;  // Out_2, J8 pos 11
 
 
 // Radio module stuff
@@ -251,7 +251,7 @@ void radioSendPollRx() {
 }
 
 const unsigned int FIRE_TIME = 2000;  // 2 s
-const unsigned int ARM_TIME = 4000;
+const unsigned int ARM_TIME = FIRE_TIME;
 NonBlockingTimer fire(FIRE_TIME);
 NonBlockingTimer arm(ARM_TIME);
 NonBlockingTimer ch1(FIRE_TIME);
@@ -261,8 +261,8 @@ NonBlockingTimer ch4(FIRE_TIME);
 NonBlockingTimer ch5(FIRE_TIME);
 NonBlockingTimer ch6(FIRE_TIME);
 NonBlockingTimer poll(FIRE_TIME);
-FireTimer txheartbeat(HEARTBEAT_TX_INDICATOR_OUT_PIN, FIRE_TIME);
-
+FireTimer txheartbeat_1(HEARTBEAT_TX_INDICATOR_OUT_PIN, FIRE_TIME);
+FireTimer txheartbeat_2(PIN_A0, FIRE_TIME); // D_1
 uint8_t io_expander_inputs = 0;
 uint32_t tstart=0;
 
@@ -303,7 +303,8 @@ void setup() {
   ch5.init();
   ch6.init();
   poll.init();
-  txheartbeat.init();
+  txheartbeat_1.init();
+  txheartbeat_2.init();
 
 
   radioInit();
@@ -333,7 +334,8 @@ void loop() {
   ch5.check();
   ch6.check();
   poll.check();
-  txheartbeat.check();
+  txheartbeat_1.check();
+  txheartbeat_2.check();
 
   uint32_t t = millis();
   if (io_expander_inputs) {
@@ -495,7 +497,8 @@ void loop() {
       buf[5] = 0;
       char test = buf[0];
       if (strstr(&test, "T")) {  // Tx heartbeat
-        txheartbeat.fire();
+        txheartbeat_1.fire();
+        txheartbeat_2.fire();
         Serial.println("RX got ...heartbeat");
       } else if (strstr(&test, "C")) {
         Serial.println("RX got ...Clear Arm");
