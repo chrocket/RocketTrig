@@ -1,6 +1,9 @@
 // rf65/rf95 (lora) RocketTrig
 // This version is a 1ch remote launcher using Rev 4_2 board
 
+
+
+
 // Connections
 // J7 position 2 - arm pushbutton
 // J7 position 3 - clear pushbutton
@@ -35,7 +38,7 @@
 // But ensure you have installed the Crypto directory from arduinolibs first:
 // http://rweather.github.io/arduinolibs/index.html
 
-
+#undef DEBUG 
 
 #define MCP23017_ADDR 0x20
 MCP23017 mcp = MCP23017(MCP23017_ADDR);
@@ -292,7 +295,6 @@ void radioInit() {
 // state variables for commands received by radio
 bool isRadioArmRequest = false;
 bool isRadioDisarmRequest = false;
-bool isRadioTriggerRequest  = false;
 bool isRadioFireRequest  = false;
 
 void radioSendPoll() {
@@ -436,8 +438,14 @@ void loop() {
     if(stateArmSwitch){
       digitalWrite(LED_OUT_PIN,stateArmSwitch );
       Serial.println("Arm swith high");
-      delay(1000);
+      delay(100);
     }
+    #if DEBUG
+    if(io_expander_inputs){
+      Serial.print("MCP input: ");
+      Serial.println(io_expander_inputs);
+    }
+    #endif
 
   // Read arm switch
   if (stateArmSwitch || isRadioArmRequest) {
@@ -446,6 +454,9 @@ void loop() {
     if (stateArmSwitch){
       radioSendArmedCommand();
     }
+#if DEBUG
+    Serial.println("Setting arm state");
+#endif      
   }
   if (armed.check()) {
     tone(BUZZER_OUT_PIN, 1000 /* hz*/, 25 /* ms */);
@@ -453,7 +464,9 @@ void loop() {
   }
   // disarm
   if (stateDisarmSwitch|| isRadioDisarmRequest) {
-     
+#if DEBUG
+    Serial.println("Clearing Arm state");
+#endif   
  
     fireRelay.clear();
     armed.clear();
@@ -477,6 +490,9 @@ void loop() {
   if (fireSwitch || isRadioFireRequest) {
     isRadioFireRequest=false;
     if(!externalSensorCameraOnly){
+#if DEBUG
+    Serial.println("Recieved camera trigger and local is set");
+#endif
         focusTrigger.fire();
         cameraTrigger.fire();
     }
@@ -517,38 +533,51 @@ void loop() {
   if (radio_m0.available()) {
     uint8_t len = sizeof(buf);
     if (radio_m0.recv(buf, &len)) {
-      if (!len) return;
       // buf[len] = 0;
       buf[5] = 0;
-      /*
+      char command = buf[0];
+
+  #ifdef DEBUG
       Serial.print("Received [");
       Serial.print(len);
       Serial.print("]: ");
       Serial.println((char*)buf);
+      Serial.println(command);
       Serial.print("RSSI: ");
       Serial.println(radio_m0.lastRssi(), DEC);
-      */
-     
+      delay(200);
+  #endif
+      // if (strstr((char *)buf, "A")) {
+      //   // memcpy(buf, &radiopacket, 4);
+      //   // if( radiopacket[4]=='N' ){
+      //   //    isRadioDisarmRequest = true;
+      //   //    isRadioArmRequest = false;
+      //   // }else if( radiopacket[4]=='Y' ){
+      //   //    isRadioArmRequest = true;
+      //   // }
+      //   isRadioArmRequest = true;
+           if (strstr((char *)buf, "P")){// poll request
+               pollResponse();
+               remoteNodeInContact.fire();
+               #if DEBUG
+                  Serial.println("Received remote poll request");
+               #endif   
+           }
 
-      if (strstr((char *)buf, "A")) {
-        // memcpy(buf, &radiopacket, 4);
-        // if( radiopacket[4]=='N' ){
-        //    isRadioDisarmRequest = true;
-        //    isRadioArmRequest = false;
-        // }else if( radiopacket[4]=='Y' ){
-        //    isRadioArmRequest = true;
-        // }
-        isRadioArmRequest = true;
-      } else if (strstr((char *)buf, "P")){// poll request
-         pollResponse();
-         remoteNodeInContact.fire();
-
-      } else if (strstr((char *)buf, "D")){
-         isRadioDisarmRequest = true;
-      } else if (strstr((char *)buf, "T")){
-        isRadioTriggerRequest= true;
+      // } else if (strstr((char *)buf, "D")){
+      //    isRadioDisarmRequest = true;
+      if (strstr((char *)buf, "T")){
+#if DEBUG
+    Serial.println("Got remote trigger");
+    delay(1000);
+#endif           
+      command = 'X'; //reset command
         // trigger cameras only from sensor
-        if(externalSensorCameraOnly){
+      if(externalSensorCameraOnly){
+#if DEBUG
+    Serial.println("Recieved camera trigger and remote is set");
+#endif        
+
           focusTrigger.fire();
           cameraTrigger.fire();
         }
@@ -559,9 +588,13 @@ void loop() {
       } else if (strstr((char *)buf, "F")){
         isRadioFireRequest = true;
       }
+
+
     }
   }
-
+  #ifdef DEBUG
+     delay(500);
+  #endif
   Serial.println("Loop ...");
   delay(5);
 }
