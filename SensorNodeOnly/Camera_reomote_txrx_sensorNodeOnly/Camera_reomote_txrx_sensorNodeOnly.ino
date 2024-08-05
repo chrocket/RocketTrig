@@ -1026,7 +1026,7 @@ void loop() {
         radiopacket[0] = 'R';
 
 
-        delay(  myId_i );
+        //delay(  myId_i );// no !! causes packets to be lost
         radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
         radio_m0.waitPacketSent();
         tone(BUZZER_OUT_PIN, 1500 /* hz*/, 100 /* ms */);
