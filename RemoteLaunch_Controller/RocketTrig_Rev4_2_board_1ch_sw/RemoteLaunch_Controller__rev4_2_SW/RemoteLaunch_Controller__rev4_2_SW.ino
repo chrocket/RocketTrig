@@ -1,6 +1,7 @@
 // rf65/rf95 (lora) RocketTrigradioSendFireCommand
-// This version is a 1ch remote launcher using Rev 4_2 board
+// This version is a 1ch remote launcher using Rev 4_2 boar
 
+// Last mofidifed 8/5/2024 11:21AM
 
 
 
@@ -576,9 +577,6 @@ void loop() {
       }
       armed.clear();
       tone(BUZZER_OUT_PIN, 4000 /* hz*/, 2000 /* ms */);
-      if(!isRadioMode){
-         radioSendDisarmCommand();
-      }
     }
   }
   // MCP23017 outputs
