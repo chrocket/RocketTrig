@@ -1,0 +1,43 @@
+Designator,Footprint,Quantity,Value,LCSC Part #
+BZ1,Buzzer_TDK_PS1240P02BT_D12.2mm_H6.5mm,1,Buzzer,
+C1,CP_Elec_4x5.4,1,1uf,C87863 
+C2,C_Elec_4x5.4,1,25uf, C2895283 
+"C3, C4",0402,2,0.01 μF,C1525
+D1,0805,1,D_1,
+D2,0603,1,PWR,C2286
+D3,D_SMA,1,B330A-13-F,C110485
+D4,0805,1,LED Trig,
+D5,0805,1,LED Focus,
+D6,0805,1,D_2,
+"H1, H2, H3, H4, H5",MountingHole_3.7mm_Pad,5, ,
+IC1,3178,1,3178,
+J1,CUI_TB007-508-02BE,1,Pwr switch,
+J10,AMASS_XT30U-F_1x02_P5.0mm_Vertical,1,SW,
+J11,CUI_TB007-508-02BE,1,pwr,
+"J12, J13",TerminalBlock_TE_282834-2_1x02_P2.54mm_Horizontal,2,Screw_Terminal_01x02,
+J2,Jack_3.5mm_CUI_SJ1-3533NG_Horizontal_CircularHoles,1,Camera 1  3.5mm,
+J3,Jack_3.5mm_CUI_SJ1-3533NG_Horizontal_CircularHoles,1,Camera 2 3.5 mm,
+J4,TerminalBlock_TE_282834-3_1x03_P2.54mm_Horizontal,1,Camera 1 Term,
+J5,TerminalBlock_TE_282834-3_1x03_P2.54mm_Horizontal,1,Camera 2  Term,
+J6,JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal,1,qwiic,C160404
+J7,TB00750812BE,1,In,
+J8,TB00750812BE,1,Out,
+J9,PinHeader_1x09_P2.54mm_Vertical,1,Conn_01x09_Socket,
+JP1,SolderJumper-2_P1.3mm_Open_TrianglePad1.0x1.5mm,1, ,
+"Q1, Q4",SOT-23-3,2,2SC1815, C181171 
+"Q2, Q3",SOT-23,2,MMBT3904,C8512
+"R1, R13",0603,2,750,C23241
+"R10, R9",0805,2,0, C17477 
+"R11, R12",0603,2,10K,C25804
+"R14, R15, R2, R3, R4, R5, R7",0603,7,1K,C21190
+"R6, R8",0603,2,51, C880145 
+"TP1+1, TP2_5",TestPoint_Keystone_5010-5014_Multipurpose,2,+5V,
+TP1_GND1,TestPoint_Keystone_5010-5014_Multipurpose,1,GND,
+TP3_3_3,TestPoint_Keystone_5010-5014_Multipurpose,1,+3.3V,
+TP4Fire1,TestPoint_Keystone_5010-5014_Multipurpose,1,Fire,
+TP4_12,TestPoint_Keystone_5010-5014_Multipurpose,1,+12,
+TP5,TestPoint_Keystone_5000-5004_Miniature,1,Gnd,
+U1,SOT-223,1,AMS1117CD-5.0,C6187
+U2,SOIC-16_4.55x10.3mm_P1.27mm,1,TLP291-4, C60900
+U4,SOIC-28W_7.5x17.9mm_P1.27mm,1,MCP23017T-E/SO,C629440
+U5,SOIC127P1030X265-18N,1,ULN2803A,C9683

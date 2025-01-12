@@ -28,7 +28,7 @@
 // But ensure you have installed the Crypto directory from arduinolibs first:
 // http://rweather.github.io/arduinolibs/index.html
 
-
+//#define DEBUG 0
 
 
 // pin assignments
@@ -185,8 +185,10 @@ unsigned int unique_id() {
   char bufId[33];
   printChipId(bufId);
   unsigned int myId_i = CRC32::calculate(bufId, 32);  // compute checksum
+#if defined(DEBUG)
   Serial.print("My id = ");
   Serial.println(myId_i);
+#endif
   myId_i = myId_i % 1000;
   return myId_i;
 }
@@ -198,8 +200,10 @@ void radioInit() {
   radiopacket[3] = myId[2];
   radiopacket[4] = 'N';  // isArmed
 
+#if defined(DEBUG)
   Serial.println("CWH Camera Trigger RFM69/RFM95 TXRX!");
   Serial.println();
+#endif
 
   // RFM69 Reset pin definition
 #if defined(MODULE_RFM69)
@@ -221,8 +225,9 @@ void radioInit() {
   delay(10);
   Serial.println("Using module RFM65");
 #else
+#if defined(DEBUG)
   Serial.println("Using module RFM95");
-
+#endif
 
 #endif
 
@@ -233,7 +238,9 @@ void radioInit() {
     while (1)
       ;
   }
+#if defined(DEBUG)
   Serial.println("LoRa radio init OK!");
+#endif
 
   // Defaults after init are 434.0MHz, modulation GFSK_Rb250Fd250, +13dbM
   if (!radio_m0.setFrequency(FREQ)) {
@@ -241,9 +248,10 @@ void radioInit() {
     while (1)
       ;
   }
+#if defined(DEBUG)
   Serial.print("Set Freq to: ");
   Serial.println(FREQ);
-
+#endif
 
 
   // If you are using a high power RF69 eg RFM69HW, you *must* set a Tx power with the
@@ -332,6 +340,12 @@ FireTimer fireRelay(AUX_OUT_PIN, FIRE_TIME);
 //TODO need to check for Adafruit Feather M0
 #endif
 void setup() {
+
+#if defined(DEBUG)
+ Serial.begin(19200);
+#endif
+
+  //while (! Serial); // Uncomment for debug
   // output pins
   pinMode(ARM_INDICATOR_OUT_PIN, OUTPUT);
   pinMode(CAMERA_TRIGGER_OUT_PIN, OUTPUT);
@@ -359,7 +373,10 @@ void setup() {
 
   delay(1000);
 
+
   radioInit();
+  tone(BUZZER_OUT_PIN, 1500 /* hz*/, 1000 /* ms */);
+   delay(1000);
 }
 
 
@@ -384,7 +401,9 @@ void loop() {
   }
   if (armed.check()) {
     tone(BUZZER_OUT_PIN, 1000 /* hz*/, 25 /* ms */);
+  #if defined(DEBUG)
     Serial.println("Armed ...");
+  #endif
   }
   // disarm
   bool stateDisarmSwitch = !(digitalRead(DISARM_IN_PIN) && digitalRead(DISARM_DUP_IN_PIN));
@@ -465,7 +484,8 @@ void loop() {
       }
     }
   }
-
+#if defined(DEBUG)
   Serial.println("Loop ...");
+#endif
   delay(50);
 }

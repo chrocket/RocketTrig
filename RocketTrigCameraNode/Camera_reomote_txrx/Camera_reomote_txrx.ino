@@ -1,4 +1,8 @@
 //++++++++++++++++++++++++//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++d
+//  updated 8.5.2024  - delay with different ids causes oacjets ti be dropped, so removed.
+
+
+
 // rf65/rf95 (lora) RocketTrig
 // https://github.com/chrocket/RemoteCameraTrigger
 // By Curtis Heisey
@@ -51,7 +55,7 @@
 
 // Library https://github.com/ridencww/cww_MorseTx
 // arduino lib manager "CWW Morse Transmit" by Ralph Iden
-#include <cww_MorseTx.h>
+//#include <cww_MorseTx.h>
 
 #include <CRC32.h>
 // https://github.com/bakercp/CRC32/blob/master/examples/CRC32/CRC32.ino
@@ -104,7 +108,7 @@ const unsigned int  SHORT_TIME_MS = 200;
 
 #define TONE_FREQ 1000
 #define CW_SPEED 5
-cww_MorseTx morse(ARM_INDICATOR_OUT_PIN, CW_SPEED, BUZZER_OUT_PIN, TONE_FREQ);
+//cww_MorseTx morse(ARM_INDICATOR_OUT_PIN, CW_SPEED, BUZZER_OUT_PIN, TONE_FREQ);
 
 
 uint32_t myId_i=0;
@@ -268,13 +272,13 @@ void setup()
 
 
 
-  morse.send("Hi");
-  delay(100);
-  // send out uniqueId
-  morse.send( radiopacket[1] );
-  morse.send( radiopacket[2] );
-  morse.send( radiopacket[3] );
-  delay(100);
+  // morse.send("Hi");
+  // delay(100);
+  // // send out uniqueId
+  // morse.send( radiopacket[1] );
+  // morse.send( radiopacket[2] );
+  // morse.send( radiopacket[3] );
+  // delay(100);
 
 
   // manual reset
@@ -482,7 +486,7 @@ void loop() {
             radiopacket[0]= 'R'; 
 
  
-            delay(  myId_i );
+          //  delay(  myId_i );   /// 8/5/2024  No!!! Causes packets to be dropped
             radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
             radio_m0.waitPacketSent();  
 

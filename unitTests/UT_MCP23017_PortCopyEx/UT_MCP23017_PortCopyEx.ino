@@ -36,10 +36,12 @@ void setup() {
 
 void loop() {
     uint8_t currentB;
+    uint16_t  t = millis();
 
     currentB = mcp.readPort(MCP23017Port::B);
-    Serial.print("Input Register: ");
-    Serial.print(currentB);
+    Serial.print(t);
+    Serial.print(", Input Register: ");
+    Serial.print(currentB, BIN);
 
 
     bool testPin   = 0x4 & currentB;
@@ -50,5 +52,5 @@ void loop() {
 
     // Have outputs mirror inputs
     mcp.writePort(MCP23017Port::A, currentB);
-    delay(1000);
+    delay(100);
 }

@@ -1,12 +1,19 @@
-// rf65/rf95 (lora) RocketTrig
-// This version is a 1ch remote launcher using Rev 4_2 board
+// rf65/rf95 (lora) RocketTrigradioSendFireCommand
+// This version is a 1ch remote launcher using Rev 4_2 boar
+
+// Last mofidifed 8/5/2024 11:21AM
+
+
 
 // Connections
 // J7 position 2 - arm pushbutton
 // J7 position 3 - clear pushbutton
 // J7 position 4 - fire pushbutton
+// J7 podiyion 6 - local (launch fire) /remote (sensor in) camera trigger
+//
 // J8 position 2  - LED armed indicator
 // J8 position 3 - fire relay
+// J8 position 4 - remote node in contact (poll received)
 
 #include <Wire.h>
 //MCP23017 lib by Bertand Lemasle - install using Arduino IDE library manager
@@ -32,14 +39,14 @@
 // But ensure you have installed the Crypto directory from arduinolibs first:
 // http://rweather.github.io/arduinolibs/index.html
 
-
+#undef DEBUG
 
 #define MCP23017_ADDR 0x20
 MCP23017 mcp = MCP23017(MCP23017_ADDR);
 
 #if defined(ARDUINO_SAMD_ZERO) && defined(SERIAL_PORT_USBVIRTUAL)
-  // Required for Serial on Zero based boards
-  #define Serial SERIAL_PORT_USBVIRTUAL
+// Required for Serial on Zero based boards
+#define Serial SERIAL_PORT_USBVIRTUAL
 #endif
 
 
@@ -48,10 +55,13 @@ const unsigned int BUZZER_OUT_PIN = 10;          // Pin to audible indicator
 const unsigned int CAMERA_TRIGGER_OUT_PIN = 12;  // Pin for shtter opto-isoloatr
 const unsigned int CAMERA_FOCUS_OUT_PIN = 11;    // Pin for focus opto-isolator
 const unsigned int LED_OUT_PIN = 13;
-const unsigned int ARM_OUT_PIN = 0; //MCP23017Pin::GPA0
-const unsigned int RELAY_OUT_PIN = 1; //MCP23017Pin::GPA1
+const unsigned int ARM_OUT_PIN = 0;                 //MCP23017Pin::GPA0
+const unsigned int RELAY_OUT_PIN = 1;               //MCP23017Pin::GPA1
+const unsigned int REMOTE_NODE_IN_CONTACT_LED = 2;  //MCP23017Pin::GPA2
 const unsigned int FIRE_INDICATOR_OUT_PIN = 24;
-const unsigned int ARM_INDICATOR_OUT_PIN = 22; 
+const unsigned int ARM_INDICATOR_OUT_PIN = 22;
+const unsigned int OUT_1 = 10;
+const unsigned int OUT_2 = 17;
 
 
 // Radio module stuff
@@ -284,10 +294,10 @@ void radioInit() {
 
 
 // state variables for commands received by radio
-bool isRadioArmRequest = false;
-bool isRadioDisarmRequest = false;
-bool isRadioTriggerRequest  = false;
-bool isRadioFireRequest  = false;
+
+
+bool externalSensorCameraOnly = false;
+
 
 void radioSendPoll() {
   // Poll requeset to destination nodes
@@ -304,16 +314,12 @@ void radioSendCameraTrigger() {
 void radioSendArmedCommand() {
   radiopacket[0] = 'A';
   radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
-  radiopacket[4] = 'Y';
   radio_m0.waitPacketSent();
-
 }
 void radioSendDisarmCommand() {
   radiopacket[0] = 'D';
   radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
-  radiopacket[4] = 'N';
   radio_m0.waitPacketSent();
-  
 }
 void radioSendFireCommand() {
   // Trigger destination nodes
@@ -321,24 +327,31 @@ void radioSendFireCommand() {
   radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
   radio_m0.waitPacketSent();
 }
-void pollResponse(){
-       Serial.print("Got an id response back: ");
-        Serial.print((char*)buf);
-        Serial.print(", RSSI: ");
-        Serial.println(radio_m0.lastRssi(), DEC);
-        tone(BUZZER_OUT_PIN, 1500 /* hz*/, 100 /* ms */);
-  
+void pollResponse() {
+  Serial.print("Got an id response back: ");
+  Serial.print((char *)buf);
+  Serial.print(", RSSI: ");
+  Serial.println(radio_m0.lastRssi(), DEC);
+  tone(BUZZER_OUT_PIN, 1500 /* hz*/, 100 /* ms */);
+}
+void radioSendTickleCamera() {
+  // Poll requeset to destination nodes
+  radiopacket[0] = 'Q';
+  radio_m0.send((uint8_t *)radiopacket, strlen(radiopacket));
+  radio_m0.waitPacketSent();
 }
 
-
-const unsigned int ARMED_TIMED = 10000;  // 10-15 s
+const unsigned int ARMED_TIMED = 60000;  // 10-15 s // 11/19/23 changed to 60 s
 const unsigned int FIRE_TIME = 2000;     // 2 s
 const unsigned int POLL_TIME = 200;
+const unsigned int POLL_INTERVAL = 3000;
 
 FireTimer armed(ARM_INDICATOR_OUT_PIN, ARMED_TIMED);
 FireTimer cameraTrigger(CAMERA_TRIGGER_OUT_PIN, FIRE_TIME);
 FireTimer focusTrigger(CAMERA_FOCUS_OUT_PIN, FIRE_TIME);
 FireTimer fireRelay(FIRE_INDICATOR_OUT_PIN, FIRE_TIME);
+NonBlockingTimer remoteNodeInContact(POLL_INTERVAL);  // fires if poll response received
+NonBlockingTimer pollInterval(POLL_INTERVAL);         // sends out a poll request
 
 
 
@@ -348,9 +361,9 @@ FireTimer fireRelay(FIRE_INDICATOR_OUT_PIN, FIRE_TIME);
 #endif
 void setup() {
 #ifdef DEBUG
-  while (!Serial) { } // wait for serial port to connect.
+  while (!Serial) {}  // wait for serial port to connect.
 #endif
-   Wire.begin();
+  Wire.begin();
 
   Serial.begin(19200);
 
@@ -358,47 +371,53 @@ void setup() {
   pinMode(CAMERA_TRIGGER_OUT_PIN, OUTPUT);
   pinMode(CAMERA_FOCUS_OUT_PIN, OUTPUT);
   pinMode(LED_OUT_PIN, OUTPUT);
-  
 
- // initial output states
+
+  // initial output states
   digitalWrite(CAMERA_TRIGGER_OUT_PIN, LOW);
   digitalWrite(CAMERA_FOCUS_OUT_PIN, LOW);
   digitalWrite(LED_OUT_PIN, LOW);
- 
+
 
   // input pin assignments for push buttons - reoive
 
-   // 23017 i/o expander
-    mcp.init();
-    mcp.portMode(MCP23017Port::A, 0);          //Port A as output
-    mcp.portMode(MCP23017Port::B, 0b11111111); //Port B as input
+  // 23017 i/o expander
+  mcp.init();
+  mcp.portMode(MCP23017Port::A, 0);           //Port A as output
+  mcp.portMode(MCP23017Port::B, 0b11111111);  //Port B as input
 
-    mcp.writeRegister(MCP23017Register::GPIO_A, 0x00);  //Reset port A 
-    mcp.writeRegister(MCP23017Register::GPIO_B, 0x00);  //Reset port B
+  mcp.writeRegister(MCP23017Register::GPIO_A, 0x00);  //Reset port A
+  mcp.writeRegister(MCP23017Register::GPIO_B, 0x00);  //Reset port B
 
-    // Invert inputs (press a button to lit a led (button press gives a "1")
-    mcp.writeRegister(MCP23017Register::IPOL_B, 0xFF);
-    // Pull up resisters
-    mcp.writeRegister(MCP23017Register::GPPU_B, 0b11111111);
-    mcp.digitalWrite(RELAY_OUT_PIN, LOW);
-    mcp.digitalWrite(ARM_OUT_PIN, LOW);
-    Serial.println("mcp init done");
+  // Invert inputs (press a button to lit a led (button press gives a "1")
+  mcp.writeRegister(MCP23017Register::IPOL_B, 0xFF);
+  // Pull up resisters
+  mcp.writeRegister(MCP23017Register::GPPU_B, 0b11111111);
+  mcp.digitalWrite(RELAY_OUT_PIN, LOW);
+  mcp.digitalWrite(ARM_OUT_PIN, LOW);
+  mcp.digitalWrite(REMOTE_NODE_IN_CONTACT_LED, LOW);
+  Serial.println("mcp init done");
 
   // init timers
   fireRelay.init();
   armed.init();
   cameraTrigger.init();
   focusTrigger.init();
+  remoteNodeInContact.init();
+  pollInterval.init();
+  pollInterval.check();
+  pollInterval.fire();  // send out a poll request;
   Serial.println("Non-blocking timer init done");
 
   radioInit();
   Serial.println("Radio init done");
   delay(1000);
-
-
-
 }
 
+  bool isRadioMode = false;
+  bool stateArmSwitch  = false;
+  bool stateDisarmSwitch  = false;
+  bool fireSwitch  = false;
 
 void loop() {
 
@@ -407,120 +426,185 @@ void loop() {
   focusTrigger.check();
   cameraTrigger.check();
   fireRelay.check();
+  remoteNodeInContact.check();
 
-    // read state of push buttons
-    uint8_t io_expander_inputs = mcp.readPort(MCP23017Port::B);
-    bool stateArmSwitch     = 0x1 & io_expander_inputs;
-    bool stateDisarmSwitch = 0x2 & io_expander_inputs;
-    bool fireSwitch        = 0x4 & io_expander_inputs;
-    // debugging only
-    if(stateArmSwitch){
-      digitalWrite(LED_OUT_PIN,stateArmSwitch );
-      Serial.println("Arm swith high");
-      delay(1000);
-    }
+
+  // read state of push buttons
+  uint8_t io_expander_inputs = mcp.readPort(MCP23017Port::B);
+#if DEBUG
+  if (io_expander_inputs) {
+    Serial.print("MCP input: ");
+    Serial.println(io_expander_inputs);
+  }
+#endif  
+  stateArmSwitch = 0x1 & io_expander_inputs;
+  stateDisarmSwitch = 0x2 & io_expander_inputs;
+  fireSwitch = 0x4 & io_expander_inputs;
+  // Setting this - only external sensor will trigger camera
+  // (launch fire will not)
+  bool externalSensorCameraOnly = 0x8 & io_expander_inputs;
+
+ // Receive commands
+  if (radio_m0.available()) {
+    stateArmSwitch  = false;
+    stateDisarmSwitch  = false;
+    fireSwitch  = false;
+    
+    uint8_t len = sizeof(buf);
+    if (radio_m0.recv(buf, &len)) {
+      // buf[len] = 0;
+      buf[5] = 0;
+      char command = buf[0];
+
+#ifdef DEBUG
+      Serial.print("Received [");
+      Serial.print(len);
+      Serial.print("]: ");
+      Serial.println((char *)buf);
+      Serial.println(command);
+      Serial.print("RSSI: ");
+      Serial.println(radio_m0.lastRssi(), DEC);
+      delay(200);
+#endif
+
+
+      if (strstr((char *)buf, "A")) {
+        isRadioMode = true;
+        stateArmSwitch = true;
+
+      } else if (strstr((char *)buf, "F")) {
+        isRadioMode = true;
+        fireSwitch = true;
+
+      } else if (strstr((char *)buf, "D")) {
+        isRadioMode = true; 
+        stateDisarmSwitch = true;
+
+      
+      } else if (strstr((char *)buf, "P")) {  // poll request
+        pollResponse();
+        remoteNodeInContact.fire();
+
+#if DEBUG
+        Serial.println("Received remote poll request");
+#endif
+
+} else if (strstr((char *)buf, "T")) {
+#if DEBUG
+        Serial.println("Got remote trigger");
+        delay(1000);
+#endif
+
+
+#if DEBUG
+        Serial.println("Recieved camera trigger and remote is set");
+#endif
+
+        focusTrigger.fire();
+        cameraTrigger.fire();
+
+      } else if (strstr((char *)buf, "R")) {
+        // pollResponse();
+
+
+      }
+    }  // end buf size
+  }    // end receive command
+
+
+
+
+
+  // write state of armed switch to LED
+  if (stateArmSwitch ) {
+    digitalWrite(LED_OUT_PIN, stateArmSwitch);
+    Serial.println("Arm swith high");
+    delay(100);
+  }
+
 
   // Read arm switch
-  if (stateArmSwitch || isRadioArmRequest) {
-    isRadioArmRequest=false;
+  if (stateArmSwitch) {
     armed.fire();
-    if (stateArmSwitch){
-      radioSendArmedCommand();
+    if(!isRadioMode){
+       radioSendArmedCommand();
     }
+#if DEBUG
+    Serial.println("Setting arm state");
+#endif
   }
   if (armed.check()) {
     tone(BUZZER_OUT_PIN, 1000 /* hz*/, 25 /* ms */);
     Serial.println("Armed ...");
   }
   // disarm
-  if (stateDisarmSwitch|| isRadioDisarmRequest) {
-     
- 
+  if (stateDisarmSwitch ) {
+#if DEBUG
+    Serial.println("Clearing Arm state");
+#endif
+
     fireRelay.clear();
     armed.clear();
-    
-    // acts as poll   
+
+    // acts as poll
     digitalWrite(CAMERA_TRIGGER_OUT_PIN, HIGH);
     digitalWrite(CAMERA_FOCUS_OUT_PIN, HIGH);
-  
 
-    if (stateDisarmSwitch){
-           radioSendDisarmCommand();
-           
-    }
- 
+
     delay(100);
     digitalWrite(CAMERA_TRIGGER_OUT_PIN, LOW);
     digitalWrite(CAMERA_FOCUS_OUT_PIN, LOW);
-    isRadioDisarmRequest=false;
+    if(!isRadioMode){
+      radioSendDisarmCommand();
+    }
   }
   //  fire button is  pressed
-  if (fireSwitch || isRadioFireRequest) {
-    isRadioFireRequest=false;
-    focusTrigger.fire();
-    cameraTrigger.fire();
-    if( fireSwitch){
-      radioSendFireCommand();
+  if (fireSwitch) {
+    
+    if (!externalSensorCameraOnly) {
+#if DEBUG
+      Serial.println("Recieved camera trigger and local is set");
+#endif
+      focusTrigger.fire();
+      cameraTrigger.fire();
     }
+    
+    
     if (armed.check()) {
-
       fireRelay.fire();
+      if(!isRadioMode){
+         radioSendFireCommand();
+      }
       armed.clear();
       tone(BUZZER_OUT_PIN, 4000 /* hz*/, 2000 /* ms */);
     }
   }
   // MCP23017 outputs
-  if(armed.check()){
-      mcp.digitalWrite(ARM_OUT_PIN, HIGH);
-  }else {
-      mcp.digitalWrite(ARM_OUT_PIN, LOW);
+  if (armed.check()) {
+    mcp.digitalWrite(ARM_OUT_PIN, HIGH);
+  } else {
+    mcp.digitalWrite(ARM_OUT_PIN, LOW);
   }
-    if(fireRelay.check()){
-      mcp.digitalWrite(RELAY_OUT_PIN, HIGH);
-  }else {
-      mcp.digitalWrite(RELAY_OUT_PIN, LOW);
+  if (fireRelay.check()) {
+    mcp.digitalWrite(RELAY_OUT_PIN, HIGH);
+  } else {
+    mcp.digitalWrite(RELAY_OUT_PIN, LOW);
   }
-
-  // Receive commands
-  if (radio_m0.available()) {
-    uint8_t len = sizeof(buf);
-    if (radio_m0.recv(buf, &len)) {
-      if (!len) return;
-      // buf[len] = 0;
-      buf[5] = 0;
-      /*
-      Serial.print("Received [");
-      Serial.print(len);
-      Serial.print("]: ");
-      Serial.println((char*)buf);
-      Serial.print("RSSI: ");
-      Serial.println(radio_m0.lastRssi(), DEC);
-      */
-     
-
-      if (strstr((char *)buf, "A")) {
-        // memcpy(buf, &radiopacket, 4);
-        // if( radiopacket[4]=='N' ){
-        //    isRadioDisarmRequest = true;
-        //    isRadioArmRequest = false;
-        // }else if( radiopacket[4]=='Y' ){
-        //    isRadioArmRequest = true;
-        // }
-        isRadioArmRequest = true;
-      } else if (strstr((char *)buf, "P")){
-         radioSendPoll();
-      } else if (strstr((char *)buf, "D")){
-         isRadioDisarmRequest = true;
-      } else if (strstr((char *)buf, "T")){
-        isRadioTriggerRequest= true;
-      } else if (strstr((char *)buf, "R")){
-          pollResponse();
-      } else if (strstr((char *)buf, "F")){
-        isRadioFireRequest = true;
-      }
-    }
+  if (remoteNodeInContact.check()) {
+    mcp.digitalWrite(REMOTE_NODE_IN_CONTACT_LED, HIGH);
+  } else {
+    mcp.digitalWrite(REMOTE_NODE_IN_CONTACT_LED, LOW);
+  }
+  if (!pollInterval.check()) {
+    radioSendPoll();
+    pollInterval.fire();
   }
 
+
+ 
+#ifdef DEBUG
+  delay(500);
+#endif
   Serial.println("Loop ...");
-  delay(50);
+  delay(5);
 }
