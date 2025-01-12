@@ -48,7 +48,7 @@ const unsigned int BUZZER_OUT_PIN = 10;  // Pin to audible indicator
 const unsigned int ARM_OUT_PIN = 0;   //MCP23017Pin::GPA0;
 const unsigned int FIRE_CH1_PIN = 1;  //MCP23017Pin::GPA1;
 const unsigned int FIRE_CH2_PIN = 2;  //MCP23017Pin::GPA2;
-const unsigned int FIRE_CH3_PIN = 3;
+const unsigned int FIRE__PIN = 3;
 const unsigned int FIRE_CH4_PIN = 4;
 const unsigned int FIRE_CH5_PIN = 5;
 const unsigned int FIRE_CH6_PIN = 6;
@@ -256,7 +256,7 @@ NonBlockingTimer fire(FIRE_TIME);
 NonBlockingTimer arm(ARM_TIME);
 NonBlockingTimer ch1(FIRE_TIME);
 NonBlockingTimer ch2(FIRE_TIME);
-NonBlockingTimer ch3(FIRE_TIME);
+NonBlockingTimer (FIRE_TIME);
 NonBlockingTimer ch4(FIRE_TIME);
 NonBlockingTimer ch5(FIRE_TIME);
 NonBlockingTimer ch6(FIRE_TIME);
@@ -298,7 +298,7 @@ void setup() {
   arm.init();
   ch1.init();
   ch2.init();
-  ch3.init();
+  .init();
   ch4.init();
   ch5.init();
   ch6.init();
@@ -312,7 +312,7 @@ void setup() {
 
 bool ch1_last_state = 0;
 bool ch2_last_state = 0;
-bool ch3_last_state = 0;
+bool _last_state = 0;
 bool ch4_last_state = 0;
 bool ch5_last_state = 0;
 bool ch6_last_state = 0;
@@ -329,7 +329,7 @@ void loop() {
   arm.check();
   ch1.check();
   ch2.check();
-  ch3.check();
+  .check();
   ch4.check();
   ch5.check();
   ch6.check();
@@ -347,7 +347,7 @@ void loop() {
   bool stateFireCommandSwitch = B00000010 & io_expander_inputs;
   bool stateCh1ActiveSwitch = B00000100 & io_expander_inputs;
   bool stateCh2ActiveSwitch = B00001000 & io_expander_inputs;
-  bool stateCh3ActiveSwitch = B00010000 & io_expander_inputs;
+  bool stateActiveSwitch = B00010000 & io_expander_inputs;
   bool stateCh4ActiveSwitch = B00100000 & io_expander_inputs;
   bool stateCh5ActiveSwitch = B01000000 & io_expander_inputs;
   bool stateCh6ActiveSwitch = B10000000 & io_expander_inputs;
@@ -454,7 +454,7 @@ void loop() {
   if (!ch3.check()) {
     mcp.digitalWrite(FIRE_CH3_PIN, HIGH);
   }
-  if (ch4.check()) {
+  if (!ch4.check()) {
     mcp.digitalWrite(FIRE_CH4_PIN, LOW);
   }
   if (!ch5.check()) {
