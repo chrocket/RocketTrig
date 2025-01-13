@@ -292,6 +292,7 @@ void radioSendFireCommand(uint8_t in) {
 
 
 const unsigned int FIRE_TIME = 2000;  // 2 s
+const unsigned int HEARTBEAT_TIME =2000;  // 2.0s
 NonBlockingTimer fire(FIRE_TIME);
 NonBlockingTimer arm(FIRE_TIME);
 NonBlockingTimer ch1(FIRE_TIME);
@@ -300,9 +301,10 @@ NonBlockingTimer ch3(FIRE_TIME);
 NonBlockingTimer ch4(FIRE_TIME);
 NonBlockingTimer ch5(FIRE_TIME);
 NonBlockingTimer ch6(FIRE_TIME);
-NonBlockingTimer poll(FIRE_TIME);
-FireTimer heartbeat1(HEARTBEAT_REMOTE1_INDICATOR_OUT_PIN, FIRE_TIME);
-FireTimer heartbeat2(HEARTBEAT_REMOTE2_INDICATOR_OUT_PIN, FIRE_TIME);
+NonBlockingTimer poll(HEARTBEAT_TIME);
+FireTimer heartbeat1(HEARTBEAT_REMOTE1_INDICATOR_OUT_PIN, 300);
+FireTimer heartbeat2(HEARTBEAT_REMOTE2_INDICATOR_OUT_PIN, 300);
+
 
 bool lastArmState=false;
 
@@ -314,6 +316,11 @@ void setup() {
   Wire.begin();
 
   Serial.begin(19200);
+  tone(BUZZER_OUT_PIN, 1500 /* hz*/, 200 /* ms */);
+  delay(200);
+  
+
+
   pinMode(RX_PKT_RCV_PIN, OUTPUT);  //Rx
   digitalWrite(RX_PKT_RCV_PIN, LOW);
   digitalWrite(LED_PIN, LOW);
@@ -354,7 +361,11 @@ void setup() {
 
 
 
+
   radioInit();
+
+  // done setup
+  tone(BUZZER_OUT_PIN, 1500 /* hz*/, 200 /* ms */);
 }
 
 
@@ -374,6 +385,7 @@ void loop() {
   poll.check();
   heartbeat1.check();
   heartbeat2.check();
+
 
 
   // read state of push
@@ -482,7 +494,7 @@ void loop() {
   }
 
    if(arm.check()){
-     // tone(BUZZER_OUT_PIN, 1500 /* hz*/, 40 /* ms */);
+     tone(BUZZER_OUT_PIN, 700 /* hz*/, 40 /* ms */);
      Serial.println("BEEEEEEEEEEEEEEEEEPPPPPPPPPPPPPPPPPPP");
    }
   
@@ -543,9 +555,14 @@ void loop() {
       if (strstr(&test, "P")) {
         heartbeat1.fire();
         Serial.println("Got poll 1");
+        tone(BUZZER_OUT_PIN, 7000 /* hz*/, 40 /* ms */);
+
       } else if (strstr(&test, "Q")) {
         heartbeat2.fire();
         Serial.println("Got poll 2");
+        tone(BUZZER_OUT_PIN, 4000 /* hz*/, 40 /* ms */);
+
+        
       }
     }
   }

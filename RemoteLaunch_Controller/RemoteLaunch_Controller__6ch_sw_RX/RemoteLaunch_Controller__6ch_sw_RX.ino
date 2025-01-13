@@ -30,8 +30,6 @@
 // But ensure you have installed the Crypto directory from arduinolibs first:
 // http://rweather.github.io/arduinolibs/index.html
 
-
-
 #define MCP23017_ADDR 0x20
 MCP23017 mcp = MCP23017(MCP23017_ADDR);
 
@@ -48,7 +46,7 @@ const unsigned int BUZZER_OUT_PIN = 10;  // Pin to audible indicator
 const unsigned int ARM_OUT_PIN = 0;   //MCP23017Pin::GPA0;
 const unsigned int FIRE_CH1_PIN = 1;  //MCP23017Pin::GPA1;
 const unsigned int FIRE_CH2_PIN = 2;  //MCP23017Pin::GPA2;
-const unsigned int FIRE__PIN = 3;
+const unsigned int FIRE_CH3_PIN = 3;
 const unsigned int FIRE_CH4_PIN = 4;
 const unsigned int FIRE_CH5_PIN = 5;
 const unsigned int FIRE_CH6_PIN = 6;
@@ -218,7 +216,7 @@ void radioInit() {
   Serial.println("Using module RFM95");
   while (!radio_m0.init()) {
     Serial.println("LoRa radio init failed");
-    Serial.println("Uncomment '#define SERIAL_DEBUG' in RH_RF95.cpp for detailed debug info");
+    Serial.println("Uncomment '#define SERIAL_' in RH_RF95.cpp for detailed  info");
     while (1)
       ;
   }
@@ -251,25 +249,30 @@ void radioSendPollRx() {
 }
 
 const unsigned int FIRE_TIME = 2000;  // 2 s
+const unsigned int HEARTBEAT_TIME = 2000;// 0.5s
 const unsigned int ARM_TIME = FIRE_TIME;
 NonBlockingTimer fire(FIRE_TIME);
 NonBlockingTimer arm(ARM_TIME);
 NonBlockingTimer ch1(FIRE_TIME);
 NonBlockingTimer ch2(FIRE_TIME);
-NonBlockingTimer (FIRE_TIME);
+NonBlockingTimer ch3(FIRE_TIME);
 NonBlockingTimer ch4(FIRE_TIME);
 NonBlockingTimer ch5(FIRE_TIME);
 NonBlockingTimer ch6(FIRE_TIME);
-NonBlockingTimer poll(FIRE_TIME);
-FireTimer txheartbeat_1(HEARTBEAT_TX_INDICATOR_OUT_PIN, FIRE_TIME);
-FireTimer txheartbeat_2(PIN_A0, FIRE_TIME); // D_1
+NonBlockingTimer poll(HEARTBEAT_TIME);
+FireTimer txheartbeat_from_tx(HEARTBEAT_TX_INDICATOR_OUT_PIN, 300);
+
 uint8_t io_expander_inputs = 0;
 uint32_t tstart=0;
 
+#undef DEBUG_ME
+
 void setup() {
 
-  //  while (!Serial) {}  // wait for serial port to connect.
-
+#ifdef DEBUG_ME
+   while (!Serial) {}  // wait for serial port to connect.
+   Serial.println("Top of serial loop");
+#endif
 
   digitalWrite(LED_BUILTIN, LOW);
 
@@ -279,10 +282,14 @@ void setup() {
   Wire.begin();
 
   Serial.begin(19200);
-
-
-  // 23017 i/o expander
-  mcp.init();
+  tone(BUZZER_OUT_PIN, 1500 /* hz*/, 200 /* ms */);
+  delay(200);
+  
+    Serial.println("MCP init"); 
+                                                                                     
+  // 23017 i/o expande
+  mcp.init();  
+  
   mcp.portMode(MCP23017Port::A, 0);  //Port A as output
 
 
@@ -298,21 +305,25 @@ void setup() {
   arm.init();
   ch1.init();
   ch2.init();
-  .init();
+  ch3.init();
   ch4.init();
   ch5.init();
   ch6.init();
   poll.init();
-  txheartbeat_1.init();
-  txheartbeat_2.init();
+  txheartbeat_from_tx.init();
+ 
 
-
+  Serial.print(" Init of radio");
   radioInit();
+  tone(BUZZER_OUT_PIN, 1500 /* hz*/, 200 /* ms */);
+  delay(200);
+  Serial.print(" Done setup");
+
 }
 
 bool ch1_last_state = 0;
 bool ch2_last_state = 0;
-bool _last_state = 0;
+bool ch3_last_state = 0;
 bool ch4_last_state = 0;
 bool ch5_last_state = 0;
 bool ch6_last_state = 0;
@@ -329,13 +340,13 @@ void loop() {
   arm.check();
   ch1.check();
   ch2.check();
-  .check();
+  ch3.check();
   ch4.check();
   ch5.check();
   ch6.check();
   poll.check();
-  txheartbeat_1.check();
-  txheartbeat_2.check();
+  txheartbeat_from_tx.check();
+
 
   uint32_t t = millis();
   if (io_expander_inputs) {
@@ -347,7 +358,7 @@ void loop() {
   bool stateFireCommandSwitch = B00000010 & io_expander_inputs;
   bool stateCh1ActiveSwitch = B00000100 & io_expander_inputs;
   bool stateCh2ActiveSwitch = B00001000 & io_expander_inputs;
-  bool stateActiveSwitch = B00010000 & io_expander_inputs;
+  bool stateCh3ActiveSwitch = B00010000 & io_expander_inputs;
   bool stateCh4ActiveSwitch = B00100000 & io_expander_inputs;
   bool stateCh5ActiveSwitch = B01000000 & io_expander_inputs;
   bool stateCh6ActiveSwitch = B10000000 & io_expander_inputs;
@@ -452,7 +463,7 @@ void loop() {
     mcp.digitalWrite(FIRE_CH2_PIN, LOW);
   }
   if (!ch3.check()) {
-    mcp.digitalWrite(FIRE_CH3_PIN, HIGH);
+    mcp.digitalWrite(FIRE_CH3_PIN, LOW);
   }
   if (!ch4.check()) {
     mcp.digitalWrite(FIRE_CH4_PIN, LOW);
@@ -497,8 +508,11 @@ void loop() {
       buf[5] = 0;
       char test = buf[0];
       if (strstr(&test, "T")) {  // Tx heartbeat
-        txheartbeat_1.fire();
-        txheartbeat_2.fire();
+        txheartbeat_from_tx.fire();
+
+        //tmp
+        tone(BUZZER_OUT_PIN, 5000 /* hz*/, 40 /* ms */);
+
         Serial.println("RX got ...heartbeat");
       } else if (strstr(&test, "C")) {
         Serial.println("RX got ...Clear Arm");
@@ -518,12 +532,19 @@ void loop() {
 
 
    if(transmitterSideArmState){
-      tone(BUZZER_OUT_PIN, 1500 /* hz*/, 40 /* ms */);
+      tone(BUZZER_OUT_PIN, 700 /* hz*/, 40 /* ms */);
     Serial.println("BEEEEEEEEEEEEEEEEEPPPPPPPPPPPPPPPPPPP");
    }
   
   delay(50);
-  //  delay(1000);
   digitalWrite(RX_PKT_RCV_PIN, LOW);
   digitalWrite(PIN_PA11, LOW);
+
+#ifdef DEBUG_ME
+//debug only
+  delay(300);
+  Serial.println("end of loop");
+#endif
+
+  
 }
